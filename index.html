@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tarang Cloud · Monday Morning AI Triage Agent</title>
+<title>Tarang Cloud · Monday Morning AI Triage Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -29,42 +29,51 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- HERO HEADER -->
+  <!-- HERO HEADER: ZERO JARGON, 5-SECOND CLARITY -->
   <header class="bg-white border-b border-slate-200">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
         <div class="inline-flex items-center gap-2 text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1 rounded-full">
-          <i data-lucide="bot" class="w-3.5 h-3.5"></i>
-          Tarang Cloud · Monday, 9:30 AM AI Decision Agent
+          <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+          Tarang Cloud · Monday 9:30 AM Portfolio Decision System
         </div>
         <button type="button" id="btn-export-json" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-medium text-slate-700 hover:bg-slate-50 transition">
-          <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Plan (JSON)
+          <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Plan
         </button>
       </div>
 
       <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-3xl">
-        7 client fires. ₹4.4 Cr at stake. Only 9 specialist hours.
+        7 Monday fires. ₹4.4 Cr at stake. Only 9 specialist hours.
       </h1>
       <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
-        An AI-assisted triage agent that reads Monday's 120 emails and 40 tickets, labels every issue across <strong>6 transparent business parameters</strong>, applies <strong>emergency safety rules</strong>, and tells you exactly what to handle first—while keeping humans in control of every client message.
+        An AI-assisted prioritization system for managing 12 business clients. It separates <strong>true emergencies</strong> from <strong>weighted priorities</strong>, checks your <strong>Engineer (8 hrs)</strong> and <strong>Demo Specialist (1 hr)</strong> availability, and pauses for <strong>human approval</strong> before any message goes out.
       </p>
 
-      <!-- 3-STEP NAVIGATION -->
-      <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2.5" role="tablist">
+      <!-- 12-CLIENT PORTFOLIO COVERAGE STRIP -->
+      <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5">
+        <span><strong class="text-slate-900">12 Clients Monitored</strong></span>
+        <span class="text-slate-300">|</span>
+        <span><strong class="text-blue-700">6 Active Triggers</strong> + 1 Internal Audit today</span>
+        <span class="text-slate-300">|</span>
+        <span><strong class="text-teal-700">6 Quiet Accounts</strong> (watched weekly for silent usage drops)</span>
+      </div>
+
+      <!-- 3 PLAIN-ENGLISH STEP TABS -->
+      <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-2.5" role="tablist">
         <button type="button" data-step="plan" class="step-tab text-left p-3.5 rounded-xl border-2 border-blue-600 bg-blue-50/70 transition">
-          <span class="text-xs font-bold text-blue-700 uppercase tracking-wide block">Step 1 · Ranked Plan</span>
+          <span class="text-xs font-bold text-blue-700 uppercase tracking-wide block">Step 1 · Priority Plan</span>
           <span class="text-sm font-bold text-slate-900 block mt-0.5">What should I do first?</span>
-          <span class="text-xs text-slate-600 block mt-0.5">See the 6-factor math &amp; 9h schedule</span>
+          <span class="text-xs text-slate-600 block mt-0.5">Emergency lane, weighted math &amp; team hours</span>
         </button>
         <button type="button" data-step="ai" class="step-tab text-left p-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition">
-          <span class="text-xs font-bold text-slate-500 uppercase tracking-wide block">Step 2 · Live AI Agent</span>
-          <span class="text-sm font-bold text-slate-900 block mt-0.5">Watch the agent think</span>
-          <span class="text-xs text-slate-600 block mt-0.5">Live 5-step trace + Gemini API call</span>
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wide block">Step 2 · Live AI Triage</span>
+          <span class="text-sm font-bold text-slate-900 block mt-0.5">Test the AI on a new message</span>
+          <span class="text-xs text-slate-600 block mt-0.5">Watch AI score an email &amp; update the plan</span>
         </button>
         <button type="button" data-step="messages" class="step-tab text-left p-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition">
           <span class="text-xs font-bold text-slate-500 uppercase tracking-wide block">Step 3 · Human Safety</span>
-          <span class="text-sm font-bold text-slate-900 block mt-0.5">Approve drafts &amp; red lines</span>
-          <span class="text-xs text-slate-600 block mt-0.5">What AI drafts vs. never sends</span>
+          <span class="text-sm font-bold text-slate-900 block mt-0.5">Approve replies &amp; red lines</span>
+          <span class="text-xs text-slate-600 block mt-0.5">What AI drafts vs. never sends alone</span>
         </button>
       </div>
     </div>
@@ -72,173 +81,186 @@
 
   <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
 
-    <!-- ==================== STEP 1: RANKED PLAN & TRANSPARENT MATH ==================== -->
+    <!-- ==================== STEP 1: PRIORITY PLAN ==================== -->
     <section id="panel-plan" class="space-y-6">
 
-      <!-- SCENARIO & NAIVE COMPARISON -->
+      <!-- HOW PRIORITY WORKS + SCENARIO SWITCHER -->
       <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 class="text-base font-bold text-slate-900">1. How priority is decided (and why weights change by week)</h2>
-            <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Every client issue is scored <strong>1–5</strong> on 6 business factors, weighted by the week's situation, and protected by 2 emergency safety rules.</p>
+            <h2 class="text-base font-bold text-slate-900">1. How priority adapts to the week</h2>
+            <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Switch the weekly situation below—or compare against sorting blindly by contract value.</p>
           </div>
           <div class="inline-flex rounded-lg bg-slate-100 p-1 shrink-0 self-start">
             <button type="button" id="mode-smart" class="px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-900 text-white transition">Smart System</button>
-            <button type="button" id="mode-naive" class="px-3 py-1.5 rounded-md text-xs font-semibold text-slate-600 hover:text-slate-900 transition">Naive (Deal Size Only)</button>
+            <button type="button" id="mode-naive" class="px-3 py-1.5 rounded-md text-xs font-semibold text-slate-600 hover:text-slate-900 transition">Compare: Deal Size Only</button>
           </div>
         </div>
 
-        <!-- 4 Scenarios -->
         <div id="scenario-row" class="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
           <button type="button" data-scenario="crisis" class="scenario-btn p-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-left transition">
             <span class="text-xs font-bold text-blue-800 block">Today: Crisis Monday</span>
-            <span class="text-[11px] text-slate-600 block mt-0.5">Live outage &amp; public PR fire</span>
+            <span class="text-[11px] text-slate-600 block mt-0.5">Live outage &amp; public complaint</span>
           </button>
           <button type="button" data-scenario="renewal" class="scenario-btn p-3 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition">
             <span class="text-xs font-bold text-slate-800 block">Quarter-End Crunch</span>
-            <span class="text-[11px] text-slate-600 block mt-0.5">Renewals matter most</span>
+            <span class="text-[11px] text-slate-600 block mt-0.5">Expiring contracts first</span>
           </button>
           <button type="button" data-scenario="exec" class="scenario-btn p-3 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition">
-            <span class="text-xs font-bold text-slate-800 block">VP Visit Week</span>
-            <span class="text-[11px] text-slate-600 block mt-0.5">Exec meetings &amp; open debt</span>
+            <span class="text-xs font-bold text-slate-800 block">Executive Visit Week</span>
+            <span class="text-[11px] text-slate-600 block mt-0.5">Leadership meetings &amp; debt</span>
           </button>
           <button type="button" data-scenario="growth" class="scenario-btn p-3 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition">
             <span class="text-xs font-bold text-slate-800 block">Calm Growth Week</span>
-            <span class="text-[11px] text-slate-600 block mt-0.5">Upsells &amp; fixing old bugs</span>
+            <span class="text-[11px] text-slate-600 block mt-0.5">Expansion &amp; fixing repeat bugs</span>
           </button>
         </div>
 
-        <!-- Plain-English Explanation -->
         <div id="mode-explanation" class="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs sm:text-sm text-blue-950 flex items-start gap-2.5">
-          <i data-lucide="sparkles" class="w-4 h-4 text-blue-700 shrink-0 mt-0.5"></i>
+          <i data-lucide="info" class="w-4 h-4 text-blue-700 shrink-0 mt-0.5"></i>
           <div id="mode-explanation-text"></div>
         </div>
 
-        <!-- Two Clean Expanders: (A) What the 1-5 labels mean, (B) Customize weights -->
+        <!-- Expanders for Rubric & Weights -->
         <div class="flex flex-wrap items-center gap-5 pt-1">
           <button type="button" id="btn-toggle-rubric" class="text-xs font-semibold text-blue-700 hover:text-blue-900 inline-flex items-center gap-1.5 transition">
             <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-            <span id="toggle-rubric-label">See how the 1–5 labels are defined</span>
+            <span id="toggle-rubric-label">See how the 6 factors are scored (1–5 scale)</span>
           </button>
           <button type="button" id="btn-toggle-weights" class="text-xs font-semibold text-slate-600 hover:text-blue-700 inline-flex items-center gap-1.5 transition">
             <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
-            <span id="toggle-weights-label">Customize the 6 weights live</span>
+            <span id="toggle-weights-label">Adjust the 6 factor weights live</span>
           </button>
         </div>
 
-        <!-- 1-5 Labeling Rubric Drawer -->
+        <!-- 1-5 Rubric Drawer (Zero shortforms) -->
         <div id="rubric-drawer" class="hidden pt-3 border-t border-slate-200">
-          <p class="text-xs font-bold text-slate-900 mb-2">Exact 6-Parameter Labeling Rubric (Every issue gets a 1–5 score on each):</p>
+          <p class="text-xs font-bold text-slate-900 mb-2">Every issue is scored 1 to 5 on six plain-English business factors:</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
             <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">1. Deal Size &amp; Upside (F)</strong>
+              <strong class="text-slate-900 block">1. Deal Value &amp; Upside</strong>
               <span class="text-slate-600">5 = ₹1 Cr+, 4 = ₹70–95L, 3 = ₹40–65L, 1 = ≤₹10L or internal.</span>
             </div>
             <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">2. Deadline Urgency (U)</strong>
-              <span class="text-slate-600">5 = Happening right now, 4 = Within 72 hrs / &lt;10d renewal, 2 = Due Friday.</span>
+              <strong class="text-slate-900 block">2. Deadline Urgency</strong>
+              <span class="text-slate-600">5 = Happening right now, 4 = Within 72 hrs / &lt;10-day renewal, 2 = Due Friday.</span>
             </div>
             <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">3. Damage If Delayed (I)</strong>
-              <span class="text-slate-600">5 = Irreversible external harm (unpaid farmers / public PR), 1 = Reversible internal task.</span>
+              <strong class="text-slate-900 block">3. Harm If Delayed</strong>
+              <span class="text-slate-600">5 = Irreversible external harm (unpaid farmers or public backlash), 1 = Reversible internal task.</span>
             </div>
             <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">4. Churn / Trust Risk (R)</strong>
-              <span class="text-slate-600">5 = Active anger or silent renewal, 4 = Repeat failure, 1 = Routine admin.</span>
+              <strong class="text-slate-900 block">4. Churn &amp; Trust Risk</strong>
+              <span class="text-slate-600">5 = Active anger or silent renewal, 4 = Repeated failure, 1 = Routine admin.</span>
             </div>
             <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">5. Fixes Repeat Bug (S)</strong>
-              <span class="text-slate-600">5 = Stops 3rd recurring failure permanently, 4 = Prevents future outage, 2 = One-off.</span>
+              <strong class="text-slate-900 block">5. Fixes Repeat Bug</strong>
+              <span class="text-slate-600">5 = Stops a recurring failure permanently, 4 = Prevents future outage, 2 = One-off issue.</span>
             </div>
             <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">6. Growth / Exec Optics (G)</strong>
-              <span class="text-slate-600">5 = ₹60L expansion or VP on-site visit, 3 = Moderate retention, 1 = Low strategic upside.</span>
+              <strong class="text-slate-900 block">6. Growth &amp; Leadership Visibility</strong>
+              <span class="text-slate-600">5 = ₹60L expansion or executive visit next week, 3 = Standard retention, 1 = Low upside.</span>
             </div>
           </div>
         </div>
 
-        <!-- Custom Weights Drawer -->
+        <!-- Custom Weights Drawer with Auto-Balance -->
         <div id="weights-drawer" class="hidden pt-3 border-t border-slate-200 space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-            <span class="text-slate-600">Drag any slider to watch the ranked list and score math update instantly.</span>
-            <div class="flex items-center gap-4">
+            <span class="text-slate-600">Drag any slider—scores automatically normalize to 100%, or click Auto-Balance.</span>
+            <div class="flex flex-wrap items-center gap-3">
               <label class="inline-flex items-center gap-1.5 font-medium text-slate-800 cursor-pointer">
                 <input type="checkbox" id="cb-safety-rules" checked class="w-3.5 h-3.5 rounded">
-                Emergency Safety Rules (Outage + Public PR)
+                Separate Emergency Lane (Outage + Public Complaint)
               </label>
-              <span id="weight-total-pill" class="mono font-semibold text-teal-800 bg-teal-50 px-2 py-0.5 rounded">Total: 100%</span>
+              <button type="button" id="btn-rebalance" class="px-2.5 py-1 rounded bg-slate-900 text-white font-semibold hover:bg-slate-800 transition">Auto-Balance 100%</button>
             </div>
           </div>
           <div id="sliders-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
         </div>
       </div>
 
-      <!-- 9-HOUR SPECIALIST BUDGET -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+      <!-- DYNAMIC 9-HOUR SPECIALIST CAPACITY BAR (REACTS TO AI-ADDED TASKS!) -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 class="text-base font-bold text-slate-900">2. How to spend your 9 scarce specialist hours</h2>
-            <p class="text-xs text-slate-600">Your Engineer (8 hrs) and Demo Specialist (1 hr) are separate people—so the ₹60L demo never delays Annam Foods.</p>
+            <h2 class="text-base font-bold text-slate-900">2. Live specialist hours budget (9 hours total this week)</h2>
+            <p class="text-xs text-slate-600">Your Technical Engineer (8 hrs) and Sales Demo Specialist (1 hr) are separate people—and this bar updates automatically if AI adds a new emergency.</p>
           </div>
-          <span class="text-xs font-semibold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-full">₹3.25 Cr Protected &amp; Targeted</span>
+          <span id="capacity-status-pill" class="text-xs font-semibold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-full">Within Budget</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+        <div id="capacity-warning" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-900 font-medium"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
           <div class="md:col-span-8 space-y-1.5">
             <div class="flex justify-between text-xs font-semibold text-slate-700">
-              <span>Technical Engineer (TAM) · 8.0 Hours Total</span>
-              <span class="mono text-blue-700">₹2.65 Cr Protected</span>
+              <span>Technical Engineer · <span id="eng-hours-text" class="mono">8.0 / 8.0 hrs</span></span>
+              <span id="eng-rev-text" class="mono text-blue-700">₹2.65 Cr Protected</span>
             </div>
-            <div class="w-full h-9 rounded-lg overflow-hidden flex text-[11px] font-bold text-white">
-              <div class="bg-rose-600 flex items-center justify-center px-1 truncate" style="width: 50%">Annam Foods · 4h</div>
-              <div class="bg-blue-600 flex items-center justify-center px-1 truncate border-l border-white/30" style="width: 31.25%">Order Bug · 2.5h</div>
-              <div class="bg-slate-600 flex items-center justify-center px-1 truncate border-l border-white/30" style="width: 18.75%">Orbit · 1.5h</div>
-            </div>
-            <p class="text-[11px] text-slate-500">Kabir's ticket routes to Tier-2 Support (0h Engineer). Renewal &amp; CRM Audit are handled by you + AI.</p>
+            <div id="eng-bar" class="w-full h-9 rounded-lg overflow-hidden flex text-[11px] font-bold text-white bg-slate-100"></div>
+            <p class="text-[11px] text-slate-500">Kabir's ticket goes to Tier-2 Support (0 Engineer hrs). Renewal &amp; internal audit are handled by you + AI.</p>
           </div>
+
           <div class="md:col-span-4 space-y-1.5">
             <div class="flex justify-between text-xs font-semibold text-slate-700">
-              <span>Demo Specialist (SC) · 1.0 Hr</span>
-              <span class="mono text-teal-700">+₹60L Upside</span>
+              <span>Sales Demo Specialist · <span id="demo-hours-text" class="mono">1.0 / 1.0 hr</span></span>
+              <span id="demo-rev-text" class="mono text-teal-700">+₹60L Upside</span>
             </div>
-            <div class="w-full h-9 rounded-lg overflow-hidden flex text-[11px] font-bold text-white">
-              <div class="bg-teal-600 w-full flex items-center justify-center px-2 truncate">Wed Expansion Demo · 1.0h</div>
-            </div>
-            <p class="text-[11px] text-slate-500">Book Monday morning—zero conflict with crises.</p>
+            <div id="demo-bar" class="w-full h-9 rounded-lg overflow-hidden flex text-[11px] font-bold text-white bg-slate-100"></div>
+            <p class="text-[11px] text-slate-500">Booked in parallel Monday morning—zero conflict with outages.</p>
           </div>
         </div>
       </div>
 
-      <!-- RANKED ACTION CARDS -->
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
-          <h2 class="text-base font-bold text-slate-900">3. Your Ranked Action List (<span id="list-count">7</span> Items)</h2>
-          <span class="text-xs text-slate-500">Click any card to see its exact score formula &amp; action plan</span>
+      <!-- TWO-TIER PRIORITY LIST (SOLVES THE 3.80 > 3.90 CONFUSION!) -->
+      <div class="space-y-5">
+        <!-- Lane 1: Emergency Overrides -->
+        <div id="emergency-section" class="space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="text-base font-bold text-rose-800 flex items-center gap-2">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                Lane A · Immediate Emergencies (Bypass Weighted Queue)
+              </h2>
+              <p class="text-xs text-slate-600">Live financial outages and active public reputation fires cannot wait for a score comparison—handle these first before 10:00 AM.</p>
+            </div>
+            <span id="emergency-count" class="text-xs font-bold text-rose-800 bg-rose-100 px-2.5 py-1 rounded-full">2 Immediate</span>
+          </div>
+          <div id="emergency-cards" class="space-y-2.5"></div>
         </div>
-        <div id="action-cards" class="space-y-2.5"></div>
+
+        <!-- Lane 2: Dynamically Ranked Queue -->
+        <div class="space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 id="queue-heading" class="text-base font-bold text-slate-900">Lane B · Ranked Priority Queue (Sorted Strictly by Weighted Score)</h2>
+              <p class="text-xs text-slate-600">Every item below is ordered highest-to-lowest by its transparent 6-factor score. Click any card to inspect the exact math and action plan.</p>
+            </div>
+            <span id="queue-count" class="text-xs font-bold text-slate-700 bg-slate-200 px-2.5 py-1 rounded-full">5 Ranked</span>
+          </div>
+          <div id="queue-cards" class="space-y-2.5"></div>
+        </div>
       </div>
     </section>
 
-    <!-- ==================== STEP 2: LIVE AI AGENT WORKBENCH ==================== -->
+    <!-- ==================== STEP 2: LIVE AI TRIAGE ==================== -->
     <section id="panel-ai" class="hidden space-y-6">
       <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-5">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 class="text-lg font-bold text-slate-900">Watch the AI Triage Agent Run Step-by-Step</h2>
-            <p class="text-sm text-slate-600 mt-1">Instead of a black box, this shows the exact <strong>5-step agent loop</strong>: reading a messy client message, calling the <strong>Gemini 2.5 Flash API</strong> to label the 6 parameters, running deterministic scoring math, checking specialist capacity, and pausing at a human safety gate.</p>
-          </div>
-          <span class="text-xs font-mono font-semibold bg-slate-900 text-white px-3 py-1 rounded-full">POST /gemini-2.5-flash</span>
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Test How the AI Triage Agent Handles a New Monday Message</h2>
+          <p class="text-sm text-slate-600 mt-1">In production, this agent scans Monday's ~120 emails, 40 tickets, 12 CRM accounts, and LinkedIn mentions at 7:00 AM. Pick a sample message below (or write your own) to watch the AI label all 6 factors, run the scoring math, check your 9 specialist hours, and pause for human approval.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <!-- Left: Input Controls -->
+          <!-- Left: Message Input -->
           <div class="lg:col-span-5 space-y-4">
             <div>
-              <p class="text-xs font-semibold text-slate-700 mb-2">1. Pick a sample Monday message (or type your own):</p>
+              <p class="text-xs font-semibold text-slate-700 mb-2">Pick a realistic incoming signal:</p>
               <div class="flex flex-wrap gap-2">
-                <button type="button" data-sample="silent" class="sample-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-800 transition">Silent Churn (₹65L)</button>
-                <button type="button" data-sample="outage" class="sample-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-800 transition">Dispatch Outage (₹85L)</button>
-                <button type="button" data-sample="upsell" class="sample-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-800 transition">Expansion Demo (₹50L)</button>
+                <button type="button" data-sample="silent" class="sample-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-800 transition">Silent Client Going Dark (₹65L)</button>
+                <button type="button" data-sample="outage" class="sample-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-800 transition">Warehouse Dispatch Outage (₹85L)</button>
+                <button type="button" data-sample="upsell" class="sample-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-800 transition">New Expansion Demo (₹50L)</button>
               </div>
             </div>
 
@@ -254,48 +276,48 @@
             </div>
 
             <div>
-              <label for="ai-message" class="block text-xs font-semibold text-slate-700 mb-1">Raw Email / Ticket / LinkedIn Text</label>
+              <label for="ai-message" class="block text-xs font-semibold text-slate-700 mb-1">Raw Client Email, Ticket, or Social Post</label>
               <textarea id="ai-message" rows="4" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg">CRM alert: FreshMart Logistics (₹65L) has had zero logins from their warehouse manager for 14 days, invoice volume dropped 62% this week, and renewal is in 21 days with no reply to our check-in.</textarea>
             </div>
 
-            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-              <div class="flex items-center justify-between">
-                <label for="ai-key" class="text-xs font-semibold text-slate-800">Live Gemini API Key (Optional)</label>
-                <span class="text-[11px] text-slate-500">Blank = built-in agent simulator</span>
-              </div>
-              <input id="ai-key" type="password" placeholder="AIzaSy... (makes a real Gemini 2.5 Flash call)" class="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg bg-white mono">
-            </div>
-
             <button type="button" id="btn-analyze" class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
-              <i data-lucide="play" class="w-4 h-4"></i> Run 5-Step AI Triage Agent
+              <i data-lucide="sparkles" class="w-4 h-4"></i> Run AI Triage Agent
             </button>
+
+            <!-- Tucked-away Developer Settings so first-time viewers aren't confused -->
+            <div class="pt-1">
+              <button type="button" id="btn-dev-settings" class="text-[11px] text-slate-400 hover:text-slate-700 underline">Developer option: override server key with your own Gemini API key</button>
+              <div id="dev-key-box" class="hidden mt-2">
+                <input id="ai-key" type="password" placeholder="Optional: AIzaSy... (leave blank to use hosted Vercel backend)" class="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg mono">
+              </div>
+            </div>
           </div>
 
-          <!-- Right: Live Agent Execution Trace -->
-          <div class="lg:col-span-7 bg-slate-950 text-slate-100 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4">
+          <!-- Right: Executive 5-Step Agent Flow (Clean light UI, not a coder console!) -->
+          <div class="lg:col-span-7 bg-slate-50 rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-col justify-between space-y-4">
             <div class="space-y-3">
-              <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
-                <span class="text-xs font-bold text-slate-200 flex items-center gap-2">
-                  <i data-lucide="terminal" class="w-4 h-4 text-teal-400"></i>
-                  Live Agent Execution Trace
-                </span>
-                <span id="agent-status-pill" class="text-[11px] mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">Idle</span>
+              <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+                <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="workflow" class="w-4 h-4 text-blue-600"></i>
+                  Behind the Scenes: 5-Step AI Process
+                </h3>
+                <span id="agent-status-pill" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700">Ready</span>
               </div>
 
-              <!-- 5 Step Trace Feed -->
-              <div id="agent-trace" class="space-y-2 text-xs mono min-h-[210px]">
-                <p class="text-slate-400">Click "Run 5-Step AI Triage Agent" to watch the agent ingest the message, call Gemini 2.5 Flash, compute weighted math, assign a specialist, and pause for human approval.</p>
+              <div id="agent-trace" class="space-y-2 text-xs min-h-[220px]">
+                <div class="p-4 rounded-xl bg-white border border-slate-200 text-slate-600 leading-relaxed">
+                  Click <strong>"Run AI Triage Agent"</strong> on the left to watch how AI reads messy text, labels the 6 business factors, runs transparent math, checks your 9 specialist hours, and asks for your approval before adding it to Monday's plan.
+                </div>
               </div>
 
-              <!-- Inspect Raw API Payload Toggle -->
-              <div id="api-inspect-wrap" class="hidden pt-2 border-t border-slate-800">
-                <button type="button" id="btn-toggle-payload" class="text-[11px] mono text-blue-400 hover:text-blue-300 underline">Inspect exact API Request &amp; JSON Response</button>
-                <pre id="raw-payload-box" class="hidden mt-2 p-3 rounded-lg bg-slate-900 text-[11px] text-teal-300 overflow-x-auto max-h-48"></pre>
+              <div id="api-inspect-wrap" class="hidden pt-1">
+                <button type="button" id="btn-toggle-payload" class="text-xs font-medium text-blue-700 hover:underline">View technical API request &amp; JSON output</button>
+                <pre id="raw-payload-box" class="hidden mt-2 p-3 rounded-xl bg-slate-900 text-[11px] mono text-teal-300 overflow-x-auto max-h-48"></pre>
               </div>
             </div>
 
-            <button type="button" id="btn-add-to-list" disabled class="w-full py-2.5 px-4 rounded-xl bg-teal-600 text-white text-xs font-bold disabled:opacity-35 disabled:cursor-not-allowed hover:bg-teal-500 transition inline-flex items-center justify-center gap-1.5">
-              <i data-lucide="plus-circle" class="w-4 h-4"></i> Approve &amp; Add This Signal to Step 1 Ranked Plan
+            <button type="button" id="btn-add-to-list" disabled class="w-full py-2.5 px-4 rounded-xl bg-teal-600 text-white text-xs font-bold disabled:opacity-35 disabled:cursor-not-allowed hover:bg-teal-700 transition inline-flex items-center justify-center gap-1.5">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i> Approve &amp; Add to Step 1 Plan (Updates Team Hours Live)
             </button>
           </div>
         </div>
@@ -307,25 +329,25 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
           <div>
-            <h2 class="text-base font-bold text-slate-900">AI drafts the message. You verify before sending.</h2>
-            <p class="text-xs text-slate-600 mt-0.5">To stop AI from hallucinating fix times or sounding robotic, copy/send stays locked until you tick every check.</p>
+            <h2 class="text-base font-bold text-slate-900">AI prepares the draft. You verify before anything is sent.</h2>
+            <p class="text-xs text-slate-600 mt-0.5">To prevent hallucinated fix times or robotic apologies, copying stays locked until every human check is ticked.</p>
           </div>
 
           <div class="flex flex-wrap gap-2">
-            <button type="button" data-msg="sushma" class="msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white">Sushma (2-Line Crisis Msg)</button>
-            <button type="button" data-msg="kabir" class="msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Kabir (LinkedIn Reply)</button>
-            <button type="button" data-msg="vp" class="msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">VP Brief (Orbit)</button>
+            <button type="button" data-msg="sushma" class="msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white">Sushma (2-Line Crisis Message)</button>
+            <button type="button" data-msg="kabir" class="msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Kabir (Public LinkedIn Reply)</button>
+            <button type="button" data-msg="vp" class="msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Leadership Pre-Brief (Orbit)</button>
           </div>
 
           <textarea id="msg-editor" rows="5" class="w-full p-3.5 text-sm border border-slate-300 rounded-xl leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
 
           <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 space-y-2">
-            <p class="text-xs font-bold text-amber-900">Required Human Check Before Sending:</p>
+            <p class="text-xs font-bold text-amber-900">Required Human Verification Before Sending:</p>
             <div id="msg-checks" class="space-y-2 text-xs text-amber-950"></div>
           </div>
 
           <div class="flex items-center justify-between pt-1">
-            <span id="msg-lock-hint" class="text-xs text-slate-500">Check all boxes to unlock copy.</span>
+            <span id="msg-lock-hint" class="text-xs text-slate-500">Tick all boxes to unlock copy.</span>
             <button type="button" id="btn-copy-msg" disabled class="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-800 transition inline-flex items-center gap-1.5">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Verified Message
             </button>
@@ -337,23 +359,23 @@
             <i data-lucide="shield-ban" class="w-5 h-5"></i>
             <h2 class="text-base font-bold text-white">What AI Must NEVER Handle Alone</h2>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed">With a ₹1.2 Cr client like Sushma facing 40 unpaid farmers, these four boundaries stay strictly human:</p>
+          <p class="text-xs text-slate-300 leading-relaxed">With a ₹1.2 Cr client like Sushma facing 40 unpaid farmers, these four decisions stay strictly human:</p>
           <div class="space-y-2.5 text-xs">
             <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
               <strong class="text-white block">1. Sending crisis apologies automatically</strong>
-              <span class="text-slate-300">A robotic auto-reply destroys trust when farmers are calling her directly.</span>
+              <span class="text-slate-300">An automated reply signals indifference when 40 suppliers are calling her directly.</span>
             </div>
             <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-              <strong class="text-white block">2. Guessing when a bug will be fixed</strong>
-              <span class="text-slate-300">AI can't inspect live production logs; promising a wrong ETA breaks trust twice.</span>
+              <strong class="text-white block">2. Promising when a technical bug will be fixed</strong>
+              <span class="text-slate-300">AI cannot inspect live server logs; guessing a wrong timeline breaks trust twice.</span>
             </div>
             <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-              <strong class="text-white block">3. Offering discounts or SLA credits</strong>
-              <span class="text-slate-300">Commercial and legal commitments need you + Priya's approval.</span>
+              <strong class="text-white block">3. Offering discounts, credits, or contract terms</strong>
+              <span class="text-slate-300">Commercial concessions require you and your manager Priya's direct approval.</span>
             </div>
             <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-              <strong class="text-white block">4. Deciding when to pitch an upsell</strong>
-              <span class="text-slate-300">Only a human can read when crisis recovery ends and trust is rebuilt.</span>
+              <strong class="text-white block">4. Deciding when to pitch an expansion</strong>
+              <span class="text-slate-300">Only a human can judge when crisis recovery ends and trust is rebuilt.</span>
             </div>
           </div>
         </div>
@@ -369,129 +391,150 @@ const SCENARIOS = {
   crisis: {
     name: 'Today: Crisis Monday',
     weights: { F: 20, U: 25, I: 25, R: 15, S: 10, G: 5 },
-    note: '<strong>Why Smart System wins today:</strong> Safety rules instantly promote <strong>Annam Foods</strong> (40 unpaid farmers) and <strong>Kabir</strong> (live LinkedIn backlash, even though his deal is only ₹5L), while booking the <strong>₹60L Wednesday demo</strong> in parallel because it uses a separate Demo Specialist—not your Engineer.'
+    note: '<strong>Why this beats deal-size sorting:</strong> Live outages and public complaints go straight to <strong>Lane A (Immediate Emergencies)</strong> so Kabir’s ₹5L LinkedIn fire isn’t ignored, while <strong>Lane B</strong> ranks the remaining work cleanly from <strong>3.90 down to 1.45</strong>.'
   },
   renewal: {
     name: 'Quarter-End Crunch',
     weights: { F: 30, U: 20, I: 15, R: 20, S: 5, G: 10 },
-    note: '<strong>Quarter-End shift:</strong> Deal size and churn risk carry 50% of the weight—pushing the silent <strong>₹70L Renewal</strong> and <strong>₹90L Orbit</strong> higher so revenue never slips at quarter close.'
+    note: '<strong>Quarter-End shift:</strong> Deal Value (30%) and Churn Risk (20%) carry half the score—pushing the silent <strong>₹70L Renewal</strong> and <strong>₹90L Orbit</strong> to the top of Lane B.'
   },
   exec: {
-    name: 'VP Visit Week',
+    name: 'Executive Visit Week',
     weights: { F: 20, U: 15, I: 15, R: 20, S: 15, G: 15 },
-    note: '<strong>Exec Visit shift:</strong> Strategic visibility rises to 15%, elevating <strong>Orbit Electronics (₹90L)</strong> so its 3 carryover issues are audited before your VP walks in.'
+    note: '<strong>Executive Visit shift:</strong> Leadership Visibility triples to 15%, lifting <strong>Orbit Electronics (₹90L)</strong> so its three carryover issues are audited before your Vice President visits.'
   },
   growth: {
     name: 'Calm Growth Week',
     weights: { F: 20, U: 10, I: 10, R: 15, S: 20, G: 25 },
-    note: '<strong>Calm Week shift:</strong> Without live fires, 45% of the score goes to Growth &amp; fixing chronic bugs—lifting the <strong>₹60L Expansion Demo</strong> and permanent <strong>Order-Sync fix</strong> to the top.'
+    note: '<strong>Calm Week shift:</strong> Without live fires, 45% of the weight goes to Growth &amp; fixing repeat bugs—elevating the <strong>₹60L Expansion Demo</strong> and permanent <strong>Order-Sync fix</strong>.'
   }
 };
 
-const WEIGHT_LABELS = [
-  { key: 'F', name: 'Deal Size (F)' },
-  { key: 'U', name: 'Urgency (U)' },
-  { key: 'I', name: 'Damage (I)' },
-  { key: 'R', name: 'Churn Risk (R)' },
-  { key: 'S', name: 'Repeat Bug (S)' },
-  { key: 'G', name: 'Growth/Exec (G)' }
+const FACTORS = [
+  { key: 'F', label: 'Deal Value' },
+  { key: 'U', label: 'Urgency' },
+  { key: 'I', label: 'Harm if Delayed' },
+  { key: 'R', label: 'Churn Risk' },
+  { key: 'S', label: 'Repeat Bug' },
+  { key: 'G', label: 'Growth / Exec' }
 ];
 
 const INITIAL_TASKS = [
   {
     id: 1,
-    name: 'Annam Foods — 40 farmers unpaid since Saturday',
-    deal: 120, upside: 0, dealText: '₹1.2 Cr deal', gate: 'OUTAGE',
-    timing: 'DO AT 9:35 AM', timingStyle: 'bg-rose-100 text-rose-800', owner: 'Engineer (4 hrs) + You',
-    why: 'Active financial outage hitting your biggest client and 40 external suppliers.',
-    nextStep: 'Send 2-line ownership message at 9:35 AM. Put Engineer on invoice logs immediately (4h Mon AM). Call Sushma at 11:00 AM sharp with root cause.',
-    rootCause: 'Weekend invoice batch failed silently with zero internal alerting.',
+    name: 'Annam Foods — 40 farmers & suppliers unpaid since Saturday',
+    shortLabel: 'Annam Foods',
+    deal: 120, upside: 0, dealText: '₹1.2 Cr/yr contract', gate: 'OUTAGE',
+    engHours: 4.0, demoHours: 0, barColor: 'bg-rose-600',
+    timing: 'ACT AT 9:35 AM', timingStyle: 'bg-rose-100 text-rose-800', owner: 'Technical Engineer (4h) + You',
+    why: 'Active financial outage hitting your largest client and 40 external suppliers.',
+    evidence: 'Deal: 5 (₹1.2 Cr) · Urgency: 5 (stuck 2 days) · Harm: 5 (40 unpaid farmers)',
+    nextStep: 'Send 2-line ownership message at 9:35 AM. Put Technical Engineer on invoice logs immediately (4h Mon morning). Call Sushma at 11:00 AM sharp with root cause.',
+    rootCause: 'Weekend invoice batch failed silently with zero automated alerting.',
     scores: { F: 5, U: 5, I: 5, R: 5, S: 4, G: 4 }
   },
   {
     id: 4,
-    name: 'Kabir (Toy Brand) — Public LinkedIn post about 10-day delay',
-    deal: 5, upside: 0, dealText: '₹5L deal', gate: 'PR',
-    timing: 'DO AT 9:50 AM', timingStyle: 'bg-rose-100 text-rose-800', owner: 'You (15 mins) + Support Lead',
-    why: 'Small contract, huge public brand damage—takes only 15 mins to contain without using your Engineer.',
-    nextStep: 'Post accountable public reply on LinkedIn + DM your phone number. Escalate ticket to Tier-2 Support Lead (0h Engineer).',
+    name: 'Kabir (Toy Brand) — Public LinkedIn post about 10-day ignored ticket',
+    shortLabel: 'Kabir',
+    deal: 5, upside: 0, dealText: '₹5L/yr contract', gate: 'PR',
+    engHours: 0, demoHours: 0, barColor: 'bg-amber-600',
+    timing: 'ACT AT 9:50 AM', timingStyle: 'bg-rose-100 text-rose-800', owner: 'You (15 mins) + Support Lead',
+    why: 'Small contract, high public brand damage—takes 15 minutes to contain without using your Engineer.',
+    evidence: 'Deal: 1 (₹5L) · Urgency: 5 (live public post) · Harm: 5 (visible to prospects)',
+    nextStep: 'Post accountable public reply on LinkedIn + send your phone number privately. Escalate ticket to Senior Support Lead (0 Engineer hours).',
     rootCause: 'Small-deal tickets sat untouched because support had no 48-hour age escalation rule.',
     scores: { F: 1, U: 5, I: 5, R: 5, S: 3, G: 1 }
   },
   {
     id: 3,
-    name: 'Silent Renewal — Contract expires in 9 days, no reply',
-    deal: 70, upside: 0, dealText: '₹70L deal', gate: 'NONE',
-    timing: 'CALL AT 10:30 AM', timingStyle: 'bg-blue-100 text-blue-800', owner: 'You + Priya (async)',
-    why: 'Silence 9 days before renewal is the strongest signal of hidden churn or a competing quote.',
-    nextStep: 'Call the buyer directly at 10:30 AM to uncover commercial or legal blockers; message Priya only if pricing sign-off is needed.',
-    rootCause: 'Revised terms sent without a booked follow-up call to handle objections live.',
+    name: 'Silent Renewal — Contract expires in 9 days, no reply to revised terms',
+    shortLabel: '9-Day Renewal',
+    deal: 70, upside: 0, dealText: '₹70L/yr contract', gate: 'NONE',
+    engHours: 0, demoHours: 0, barColor: 'bg-blue-600',
+    timing: 'CALL AT 10:30 AM', timingStyle: 'bg-blue-100 text-blue-800', owner: 'You + Manager Priya',
+    why: 'Silence 9 days before renewal is the strongest signal of hidden churn or a competing vendor.',
+    evidence: 'Deal: 4 (₹70L) · Urgency: 4 (9 days left) · Churn Risk: 5 (no response)',
+    nextStep: 'Call the buyer directly at 10:30 AM to uncover commercial or legal blockers; message Priya asynchronously if pricing sign-off is needed.',
+    rootCause: 'Revised terms were emailed without booking a live follow-up call to resolve objections.',
     scores: { F: 4, U: 4, I: 4, R: 5, S: 2, G: 3 }
   },
   {
     id: 5,
     name: 'Missing Automatic Order Updates — 3rd failure this quarter',
-    deal: 55, upside: 0, dealText: '₹55L deal', gate: 'NONE',
-    timing: 'MON AFTERNOON', timingStyle: 'bg-blue-100 text-blue-800', owner: 'Engineer (2.5 hrs)',
-    why: 'Restarting the server twice only hid the symptom—a 4th failure will trigger churn.',
-    nextStep: 'Assign 2.5h Engineer Mon PM to pull logs, ban restart-only closures, and add a 30-min sync-lag alert.',
-    rootCause: 'Underlying memory leak, expired auth token, or unretried webhook drop never fixed.',
+    shortLabel: 'Order Bug',
+    deal: 55, upside: 0, dealText: '₹55L/yr contract', gate: 'NONE',
+    engHours: 2.5, demoHours: 0, barColor: 'bg-blue-600',
+    timing: 'MON AFTERNOON', timingStyle: 'bg-blue-100 text-blue-800', owner: 'Technical Engineer (2.5h)',
+    why: 'Restarting the server twice only hid the symptom—a 4th failure will likely trigger churn.',
+    evidence: 'Repeat Bug: 5 (3rd time) · Urgency: 4 (active sync gap) · Churn Risk: 4',
+    nextStep: 'Assign 2.5h Technical Engineer Mon afternoon to inspect logs, ban restart-only closures, and add a 30-minute sync-lag alert.',
+    rootCause: 'Underlying memory leak, expired auth token, or dropped webhook was never fixed.',
     scores: { F: 3, U: 4, I: 4, R: 4, S: 5, G: 2 }
   },
   {
     id: 6,
-    name: 'Orbit Electronics — VP visiting next week, 3 open issues',
-    deal: 90, upside: 0, dealText: '₹90L deal', gate: 'NONE',
-    timing: 'TUE AUDIT + BRIEF', timingStyle: 'bg-slate-200 text-slate-800', owner: 'Engineer (1.5 hrs) + You',
-    why: 'High-value account where your VP risks walking blind into unresolved Q3 complaints.',
-    nextStep: 'Use last 1.5h of Engineer time Tue AM to classify all 3 issues; send VP a 1-page No-Surprises Brief by Tue 4:00 PM.',
-    rootCause: 'Old issues carried over from last quarter without executive pre-visit tracking.',
+    name: 'Orbit Electronics — Vice President visiting next week, 3 open issues',
+    shortLabel: 'Orbit Audit',
+    deal: 90, upside: 0, dealText: '₹90L/yr contract', gate: 'NONE',
+    engHours: 1.5, demoHours: 0, barColor: 'bg-slate-600',
+    timing: 'TUE AUDIT + BRIEF', timingStyle: 'bg-slate-200 text-slate-800', owner: 'Technical Engineer (1.5h) + You',
+    why: 'High-value account where your Vice President risks walking blind into unresolved complaints.',
+    evidence: 'Deal: 4 (₹90L) · Growth/Exec: 5 (VP visit) · Repeat Debt: 4 (3 open issues)',
+    nextStep: 'Use last 1.5h of Technical Engineer time Tue morning to audit all 3 issues; send Vice President a 1-page No-Surprises Brief by Tue 4:00 PM.',
+    rootCause: 'Old issues carried over from last quarter without pre-visit executive tracking.',
     scores: { F: 4, U: 3, I: 3, R: 4, S: 4, G: 5 }
   },
   {
     id: 2,
     name: 'Wednesday Demo — Delivery-Partner Scheduling Module',
-    deal: 40, upside: 60, dealText: '₹40L + ₹60L upside', gate: 'NONE',
-    timing: 'BOOK IN PARALLEL', timingStyle: 'bg-teal-100 text-teal-800', owner: 'Demo Specialist (1 hr)',
-    why: 'Biggest expansion win (+150% growth) and uses a separate specialist—zero conflict with Annam Foods.',
-    nextStep: 'Lock the 1-hour Wednesday Demo Specialist slot Monday at 11:00 AM and send a 3-question prep brief so the demo converts.',
-    rootCause: 'Strong expansion intent; naive ranking would wrongly delay this behind Engineer fires.',
+    shortLabel: 'Wed Demo',
+    deal: 40, upside: 60, dealText: '₹40L + ₹60L expansion', gate: 'NONE',
+    engHours: 0, demoHours: 1.0, barColor: 'bg-teal-600',
+    timing: 'BOOK IN PARALLEL', timingStyle: 'bg-teal-100 text-teal-800', owner: 'Sales Demo Specialist (1h)',
+    why: 'Biggest growth win (+150% expansion) and uses a separate specialist—zero conflict with Annam Foods.',
+    evidence: 'Deal Value: 5 (₹1 Cr total) · Growth: 5 (+₹60L new) · Separate specialist pool',
+    nextStep: 'Lock the 1-hour Wednesday Sales Demo Specialist slot Monday at 11:00 AM and send a 3-question prep brief so the demo converts.',
+    rootCause: 'Strong expansion intent; sorting without resource awareness would wrongly delay this.',
     scores: { F: 5, U: 4, I: 2, R: 2, S: 2, G: 5 }
   },
   {
     id: 7,
-    name: 'Internal Audit — Update client notes & pipeline in CRM',
-    deal: 0, upside: 0, dealText: 'Internal · Due Fri', gate: 'NONE',
+    name: 'Internal Audit — Update client notes & pipeline in CRM by Friday',
+    shortLabel: 'CRM Audit',
+    deal: 0, upside: 0, dealText: 'Internal · Due Friday', gate: 'NONE',
+    engHours: 0, demoHours: 0, barColor: 'bg-slate-400',
     timing: 'AUTO / THU–FRI', timingStyle: 'bg-slate-100 text-slate-600', owner: 'AI Drafts + You (Fri)',
-    why: 'Reversible internal task due Friday—let the AI workflow auto-draft CRM updates from your week.',
+    why: 'Reversible internal task due Friday—let the weekly AI workflow auto-stage CRM updates.',
+    evidence: 'Deal: 1 (Internal) · Urgency: 2 (Due Friday) · Harm: 1 (Reversible)',
     nextStep: 'Skip manual entry Monday; review and approve AI-staged CRM notes Thursday/Friday afternoon.',
-    rootCause: 'Manual admin work that AI can automate as a byproduct of weekly triage.',
+    rootCause: 'Manual admin overhead easily automated as a byproduct of weekly AI triage.',
     scores: { F: 1, U: 2, I: 1, R: 1, S: 3, G: 1 }
   }
 ];
 
 const MESSAGES = {
   sushma: {
-    text: `Sushma, I own this—I've pulled our Technical Account Manager onto Annam Foods right now as our #1 priority to unblock all 40 supplier invoices.\nI will call you at [VERIFY CALLBACK TIME, e.g. 11:00 AM] sharp with the root cause and exact payout clearance time, and stay on this personally until every invoice is through.`,
+    text: `Sushma, I own this—I've pulled our Technical Engineer onto Annam Foods right now as our #1 priority to unblock all 40 supplier invoices.\nI will call you at [VERIFY CALLBACK TIME, e.g. 11:00 AM] sharp with the root cause and exact payout clearance time, and stay on this personally until every invoice is through.`,
     checks: [
-      'Confirmed our Engineer is actively inspecting Annam Foods logs right now',
+      'Confirmed our Technical Engineer is actively inspecting Annam Foods logs right now',
       'Confirmed I am personally free for the 11:00 AM callback',
       'Replaced [VERIFY...] tag and promised zero unverified fix times'
     ]
   },
   kabir: {
-    text: `Hi Kabir, waiting 10 days on a support ticket is unacceptable—we dropped the ball and I'm sorry for the frustration. I've escalated your ticket directly to our senior support lead and just sent you a DM with my phone number so we can get this fixed today.`,
+    text: `Hi Kabir, waiting 10 days on a support ticket is unacceptable—we dropped the ball and I'm sorry for the frustration. I've escalated your ticket directly to our senior support lead and just sent you a private message with my phone number so we can get this fixed today.`,
     checks: [
-      'Confirmed Kabir’s ticket is already assigned to Tier-2 Support Lead',
-      'Ready to send direct DM with my phone number right after posting',
+      'Confirmed Kabir’s ticket is already assigned to Senior Support Lead',
+      'Ready to send private message with my phone number right after posting',
       'Tone is accountable, calm, and under 50 words'
     ]
   },
   vp: {
-    text: `Hi [VP Name] — quick pre-brief before next week's Orbit Electronics visit (₹90L). They have 3 open issues from last quarter:\n1. [Issue #1]: Fixed by our Engineer before your visit.\n2. [Issues #2 & #3]: Root-caused with owner [VERIFY OWNER] and firm ETA [VERIFY DATE].\nRecommended opener: Acknowledge these in minute one so we own the room.`,
+    text: `Hi [VP Name] — quick pre-brief before next week's Orbit Electronics visit (₹90L). They have 3 open issues from last quarter:\n1. [Issue #1]: Fixed by our Technical Engineer before your visit.\n2. [Issues #2 & #3]: Root-caused with owner [VERIFY OWNER] and confirmed fix date [VERIFY DATE].\nRecommended opener: Acknowledge these in minute one so we own the room.`,
     checks: [
-      'Completed 1.5h Engineer audit of all 3 Orbit issues',
-      'Filled in real engineering owner and confirmed ETA dates',
+      'Completed 1.5h Technical Engineer audit of all 3 Orbit issues',
+      'Filled in real engineering owner and confirmed fix dates',
       'Sent a copy to Priya asynchronously'
     ]
   }
@@ -508,7 +551,7 @@ const SAMPLES = {
   },
   upsell: {
     client: 'Verve Beverages', acv: 50,
-    msg: 'Hi team, we are opening 4 new warehouses next quarter and want a Demo Specialist walkthrough of your inventory forecasting module. Potential ₹45L expansion if we pilot this month.'
+    msg: 'Hi team, we are opening 4 new warehouses next quarter and want a Sales Demo Specialist walkthrough of your inventory forecasting module. Potential ₹45L expansion if we pilot this month.'
   }
 };
 
@@ -532,117 +575,172 @@ function showToast(txt) {
   window._t = setTimeout(() => el.classList.add('hidden'), 2600);
 }
 
-function scoreTask(t) {
+function getNormalizedWeights() {
   const w = state.weights;
   const sum = Object.values(w).reduce((a, b) => a + b, 0) || 100;
-  const val = (
-    t.scores.F * (w.F / sum) +
-    t.scores.U * (w.U / sum) +
-    t.scores.I * (w.I / sum) +
-    t.scores.R * (w.R / sum) +
-    t.scores.S * (w.S / sum) +
-    t.scores.G * (w.G / sum)
-  );
+  const out = {};
+  FACTORS.forEach(f => { out[f.key] = (w[f.key] / sum) * 100; });
+  return out;
+}
+
+function scoreTask(t) {
+  const nw = getNormalizedWeights();
+  const val = FACTORS.reduce((acc, f) => acc + t.scores[f.key] * (nw[f.key] / 100), 0);
   return Number(val.toFixed(2));
 }
 
-function formatMathLine(t) {
-  const w = state.weights;
-  const sum = Object.values(w).reduce((a, b) => a + b, 0) || 100;
-  const parts = WEIGHT_LABELS.map(l => `${l.key}:${t.scores[l.key]}×${Math.round((w[l.key] / sum) * 100)}%`);
-  return `${parts.join(' + ')} = ${scoreTask(t).toFixed(2)}`;
+function formatPlainMath(t) {
+  const nw = getNormalizedWeights();
+  const parts = FACTORS.map(f => `${f.label} (${t.scores[f.key]}×${Math.round(nw[f.key])}%)`);
+  return `${parts.join(' + ')} = ${scoreTask(t).toFixed(2)} / 5.00`;
 }
 
-function getSortedTasks() {
-  if (state.mode === 'naive') {
-    return state.tasks
-      .map(t => ({ ...t, score: scoreTask(t), gateHit: false }))
-      .sort((a, b) => (b.deal + b.upside) - (a.deal + a.upside));
+function renderCapacityBar() {
+  const engTasks = state.tasks.filter(t => t.engHours > 0);
+  const demoTasks = state.tasks.filter(t => t.demoHours > 0);
+  const engSum = engTasks.reduce((s, t) => s + t.engHours, 0);
+  const demoSum = demoTasks.reduce((s, t) => s + t.demoHours, 0);
+  const engRev = engTasks.reduce((s, t) => s + t.deal, 0);
+  const demoRev = demoTasks.reduce((s, t) => s + (t.upside || t.deal), 0);
+
+  document.getElementById('eng-hours-text').textContent = `${engSum.toFixed(1)} / 8.0 hrs`;
+  document.getElementById('eng-rev-text').textContent = `₹${(engRev / 100).toFixed(2)} Cr Protected`;
+  document.getElementById('demo-hours-text').textContent = `${demoSum.toFixed(1)} / 1.0 hr`;
+  document.getElementById('demo-rev-text').textContent = `+₹${demoRev}L Upside`;
+
+  const engBase = Math.max(8, engSum);
+  document.getElementById('eng-bar').innerHTML = engTasks.map((t, i) => `
+    <div class="${t.barColor} flex items-center justify-center px-1.5 truncate ${i > 0 ? 'border-l border-white/30' : ''}" style="width:${(t.engHours / engBase) * 100}%">
+      ${t.shortLabel} · ${t.engHours}h
+    </div>
+  `).join('');
+
+  const demoBase = Math.max(1, demoSum);
+  document.getElementById('demo-bar').innerHTML = demoTasks.map((t, i) => `
+    <div class="${t.barColor} flex items-center justify-center px-1.5 truncate ${i > 0 ? 'border-l border-white/30' : ''}" style="width:${(t.demoHours / demoBase) * 100}%">
+      ${t.shortLabel} · ${t.demoHours}h
+    </div>
+  `).join('');
+
+  const warn = document.getElementById('capacity-warning');
+  const pill = document.getElementById('capacity-status-pill');
+  if (engSum > 8 || demoSum > 1) {
+    const msgs = [];
+    if (engSum > 8) msgs.push(`Technical Engineer is overbooked by ${(engSum - 8).toFixed(1)} hrs (${engSum.toFixed(1)}/8.0h) — defer Orbit's 1.5h audit to Wednesday or pull backup.`);
+    if (demoSum > 1) msgs.push(`Sales Demo Specialist is overbooked by ${(demoSum - 1).toFixed(1)} hrs (${demoSum.toFixed(1)}/1.0h) — schedule the second demo for next week.`);
+    warn.textContent = `Capacity Alert: ${msgs.join(' ')}`;
+    warn.classList.remove('hidden');
+    pill.textContent = 'Overbooked — Tradeoff Needed';
+    pill.className = 'text-xs font-semibold text-rose-800 bg-rose-100 px-2.5 py-1 rounded-full';
+  } else {
+    warn.classList.add('hidden');
+    pill.textContent = 'Within 9h Budget';
+    pill.className = 'text-xs font-semibold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-full';
   }
-  return state.tasks
-    .map(t => {
-      const score = scoreTask(t);
-      const gateHit = state.safetyRules && (t.gate === 'OUTAGE' || t.gate === 'PR');
-      const boost = gateHit ? (t.gate === 'OUTAGE' ? 12 : 10) : 0;
-      return { ...t, score, gateHit, sortVal: boost + score };
-    })
-    .sort((a, b) => b.sortVal - a.sortVal);
+}
+
+function buildCardHTML(t, rankNum, isEmergency) {
+  const isOpen = state.openCardId === t.id;
+  const badgeBg = isEmergency ? 'bg-rose-600 text-white' : rankNum <= 2 ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-800';
+  const rightMetric = state.mode === 'naive'
+    ? `<span class="text-xs font-bold mono text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">${t.dealText}</span>`
+    : `<div class="text-right">
+         <span class="text-base font-extrabold mono ${isEmergency ? 'text-rose-700' : 'text-blue-700'}">${t.score.toFixed(2)}</span>
+         <span class="text-[11px] text-slate-400 block leading-none">/ 5.0</span>
+       </div>`;
+
+  return `
+    <div class="bg-white rounded-2xl border ${isOpen ? 'border-blue-400 ring-1 ring-blue-100' : isEmergency ? 'border-rose-200' : 'border-slate-200'} shadow-sm overflow-hidden transition">
+      <div class="p-4 flex flex-wrap sm:flex-nowrap items-start justify-between gap-3 cursor-pointer card-header" data-cid="${t.id}">
+        <div class="flex items-start gap-3.5 min-w-0">
+          <div class="w-8 h-8 rounded-full ${badgeBg} flex items-center justify-center text-xs font-extrabold mono shrink-0 mt-0.5">${isEmergency ? '!' : '#' + rankNum}</div>
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md ${t.timingStyle}">${t.timing}</span>
+              <span class="text-xs font-medium text-slate-500 mono">${t.dealText}</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 leading-snug">${t.name}</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">${t.why}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 shrink-0 ml-auto">
+          <div class="hidden sm:block text-right">
+            <span class="text-[11px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">${t.owner}</span>
+          </div>
+          ${rightMetric}
+          <i data-lucide="${isOpen ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4 text-slate-400"></i>
+        </div>
+      </div>
+
+      ${isOpen ? `
+        <div class="px-4 pb-4 pt-3 bg-slate-50 border-t border-slate-200 space-y-3 text-xs sm:text-sm">
+          <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+            <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">How this score was calculated (normalized to 100%)</div>
+            <div class="text-xs mono text-blue-900 leading-relaxed">${formatPlainMath(t)}</div>
+            <div class="text-xs text-slate-600"><strong>Why those 1–5 ratings:</strong> ${t.evidence}</div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <span class="font-bold text-slate-900 block mb-1">Exact Next Step (${t.owner}):</span>
+              <p class="text-slate-700 leading-relaxed">${t.nextStep}</p>
+            </div>
+            <div>
+              <span class="font-bold text-slate-900 block mb-1">Underlying Root Cause:</span>
+              <p class="text-slate-700 leading-relaxed">${t.rootCause}</p>
+            </div>
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
 }
 
 function renderPlan() {
-  const sorted = getSortedTasks();
-  document.getElementById('list-count').textContent = sorted.length;
+  renderCapacityBar();
 
   const expBox = document.getElementById('mode-explanation');
   const expTxt = document.getElementById('mode-explanation-text');
+  const emSec = document.getElementById('emergency-section');
+  const queueHeading = document.getElementById('queue-heading');
+
+  const scored = state.tasks.map(t => ({ ...t, score: scoreTask(t) }));
+
   if (state.mode === 'naive') {
+    emSec.classList.add('hidden');
+    queueHeading.textContent = 'Naive Ranking (Sorted Only by Contract Value)';
     expBox.className = 'p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs sm:text-sm text-rose-950 flex items-start gap-2.5';
-    expTxt.innerHTML = '<strong>See why sorting only by Deal Size fails:</strong> Kabir’s live LinkedIn backlash drops to <strong>#6</strong> (letting public brand damage spread all day), while Orbit’s next-week visit jumps ahead of today’s 9-day silent renewal and chronic order-sync failures.';
+    expTxt.innerHTML = '<strong>Why Deal-Size-Only sorting fails:</strong> Kabir’s live LinkedIn backlash drops to the bottom (#6) while public brand damage spreads all day, and Orbit’s next-week visit jumps ahead of today’s 9-day silent renewal and chronic order-sync failures.';
+    const naiveSorted = [...scored].sort((a, b) => (b.deal + b.upside) - (a.deal + a.upside));
+    document.getElementById('queue-count').textContent = `${naiveSorted.length} Items`;
+    document.getElementById('queue-cards').innerHTML = naiveSorted.map((t, i) => buildCardHTML(t, i + 1, false)).join('');
   } else {
     expBox.className = 'p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs sm:text-sm text-blue-950 flex items-start gap-2.5';
     expTxt.innerHTML = SCENARIOS[state.scenario]
       ? SCENARIOS[state.scenario].note
-      : '<strong>Custom weights active:</strong> Your list is live-ranked using your adjusted weights' + (state.safetyRules ? ' with Emergency Safety Rules ON.' : ' with Emergency Safety Rules OFF.');
+      : '<strong>Custom weights active:</strong> Scores are automatically normalized to 100% so every calculation stays transparent.';
+
+    const emergencies = state.safetyRules
+      ? scored.filter(t => t.gate === 'OUTAGE' || t.gate === 'PR').sort((a, b) => b.score - a.score)
+      : [];
+    const regular = state.safetyRules
+      ? scored.filter(t => t.gate !== 'OUTAGE' && t.gate !== 'PR').sort((a, b) => b.score - a.score)
+      : [...scored].sort((a, b) => b.score - a.score);
+
+    if (emergencies.length > 0) {
+      emSec.classList.remove('hidden');
+      document.getElementById('emergency-count').textContent = `${emergencies.length} Immediate`;
+      document.getElementById('emergency-cards').innerHTML = emergencies.map((t, i) => buildCardHTML(t, i + 1, true)).join('');
+      queueHeading.textContent = 'Lane B · Ranked Priority Queue (Sorted Strictly by Weighted Score)';
+    } else {
+      emSec.classList.add('hidden');
+      queueHeading.textContent = 'All Items Ranked Strictly by Weighted Score (Emergency Lane Off)';
+    }
+
+    document.getElementById('queue-count').textContent = `${regular.length} Ranked`;
+    document.getElementById('queue-cards').innerHTML = regular.map((t, i) => buildCardHTML(t, i + 1, false)).join('');
   }
 
-  const container = document.getElementById('action-cards');
-  container.innerHTML = sorted.map((t, i) => {
-    const isOpen = state.openCardId === t.id;
-    const rankColor = i === 0 ? 'bg-rose-600 text-white' : i === 1 && t.gateHit ? 'bg-rose-600 text-white' : i < 3 ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-800';
-    const scorePill = state.mode === 'naive'
-      ? `<span class="text-xs font-bold mono text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">${t.dealText}</span>`
-      : `<div class="text-right">
-           <span class="text-base font-extrabold mono ${t.gateHit ? 'text-rose-700' : 'text-blue-700'}">${t.score.toFixed(2)}</span>
-           <span class="text-[11px] text-slate-400 block leading-none">/ 5.0</span>
-         </div>`;
-
-    return `
-      <div class="bg-white rounded-2xl border ${isOpen ? 'border-blue-400 ring-1 ring-blue-100' : 'border-slate-200'} shadow-sm overflow-hidden transition">
-        <div class="p-4 flex flex-wrap sm:flex-nowrap items-start justify-between gap-3 cursor-pointer card-header" data-cid="${t.id}">
-          <div class="flex items-start gap-3.5 min-w-0">
-            <div class="w-8 h-8 rounded-full ${rankColor} flex items-center justify-center text-xs font-extrabold mono shrink-0 mt-0.5">#${i + 1}</div>
-            <div class="min-w-0">
-              <div class="flex flex-wrap items-center gap-2 mb-1">
-                <span class="text-[11px] font-bold px-2 py-0.5 rounded-md ${t.timingStyle}">${t.timing}</span>
-                ${t.gateHit ? '<span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-rose-600 text-white">Safety Rule Override</span>' : ''}
-                <span class="text-xs font-medium text-slate-500 mono">${t.dealText}</span>
-              </div>
-              <h3 class="text-sm sm:text-base font-bold text-slate-900 leading-snug">${t.name}</h3>
-              <p class="text-xs sm:text-sm text-slate-600 mt-1">${t.why}</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3 shrink-0 ml-auto">
-            <div class="hidden sm:block text-right">
-              <span class="text-[11px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">${t.owner}</span>
-            </div>
-            ${scorePill}
-            <i data-lucide="${isOpen ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4 text-slate-400"></i>
-          </div>
-        </div>
-
-        ${isOpen ? `
-          <div class="px-4 pb-4 pt-3 bg-slate-50 border-t border-slate-200 space-y-3 text-xs sm:text-sm">
-            <div class="p-2.5 rounded-lg bg-white border border-slate-200 text-[11px] mono text-blue-900 overflow-x-auto">
-              <strong>Live Score Math:</strong> ${formatMathLine(t)} ${t.gateHit ? ' · [+ Safety Rule P0 Pin]' : ''}
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <span class="font-bold text-slate-900 block mb-1">Exact Next Step (${t.owner}):</span>
-                <p class="text-slate-700 leading-relaxed">${t.nextStep}</p>
-              </div>
-              <div>
-                <span class="font-bold text-slate-900 block mb-1">Underlying Root Cause:</span>
-                <p class="text-slate-700 leading-relaxed">${t.rootCause}</p>
-              </div>
-            </div>
-          </div>
-        ` : ''}
-      </div>
-    `;
-  }).join('');
-
-  container.querySelectorAll('.card-header').forEach(el => {
+  document.querySelectorAll('.card-header').forEach(el => {
     el.addEventListener('click', () => {
       const id = Number(el.getAttribute('data-cid'));
       state.openCardId = state.openCardId === id ? null : id;
@@ -654,33 +752,23 @@ function renderPlan() {
 }
 
 function renderSliders() {
-  const sum = Object.values(state.weights).reduce((a, b) => a + b, 0);
-  const pill = document.getElementById('weight-total-pill');
-  pill.textContent = `Total: ${sum}%`;
-  pill.className = sum === 100
-    ? 'mono font-semibold text-teal-800 bg-teal-50 px-2 py-0.5 rounded'
-    : 'mono font-semibold text-amber-900 bg-amber-100 px-2 py-0.5 rounded';
-
+  const nw = getNormalizedWeights();
   const grid = document.getElementById('sliders-grid');
-  grid.innerHTML = WEIGHT_LABELS.map(w => `
+  grid.innerHTML = FACTORS.map(f => `
     <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
       <div class="flex justify-between text-xs mb-1">
-        <span class="font-semibold text-slate-700">${w.name}</span>
-        <span class="mono font-bold text-blue-700">${state.weights[w.key]}%</span>
+        <span class="font-semibold text-slate-700">${f.label}</span>
+        <span class="mono font-bold text-blue-700">${Math.round(nw[f.key])}%</span>
       </div>
-      <input type="range" data-w="${w.key}" min="0" max="50" step="5" value="${state.weights[w.key]}" class="w-range w-full h-1.5 cursor-pointer">
+      <input type="range" data-w="${f.key}" min="0" max="50" step="5" value="${state.weights[f.key]}" class="w-range w-full h-1.5 cursor-pointer">
     </div>
   `).join('');
 
   grid.querySelectorAll('.w-range').forEach(sl => {
     sl.addEventListener('input', (e) => {
       state.weights[e.target.getAttribute('data-w')] = Number(e.target.value);
-      state.scenario = 'custom';
-      state.mode = 'smart';
-      syncModeButtons();
-      syncScenarioButtons();
-      renderSliders();
-      renderPlan();
+      state.scenario = 'custom'; state.mode = 'smart';
+      syncModeButtons(); syncScenarioButtons(); renderSliders(); renderPlan();
     });
   });
 }
@@ -705,7 +793,7 @@ function syncScenarioButtons() {
   });
 }
 
-// ==================== STEP 2: LIVE 5-STEP AI AGENT TRACE ====================
+// ==================== STEP 2: EXECUTIVE 5-STEP AI PROCESS ====================
 function localAnalyze(client, acv, msg) {
   const t = msg.toLowerCase();
   const outage = /(stopped|stuck|outage|down|cannot print|failed|waiting)/.test(t);
@@ -721,34 +809,49 @@ function localAnalyze(client, acv, msg) {
   const G = upsell ? 5 : acv >= 80 ? 4 : 2;
 
   const gate = outage ? 'OUTAGE' : pr ? 'PR' : 'NONE';
-  const owner = outage ? 'Engineer (2 hrs) + You' : upsell ? 'Demo Specialist (1 hr)' : 'You (Today)';
-  const timing = outage ? 'DO RIGHT NOW' : pr ? 'CONTAIN TODAY' : silent ? 'CALL TODAY' : upsell ? 'BOOK IN PARALLEL' : 'SCHEDULE THIS WEEK';
+  const engHours = outage ? 2.0 : 0;
+  const demoHours = upsell ? 1.0 : 0;
+  const owner = outage ? 'Technical Engineer (2h) + You' : upsell ? 'Sales Demo Specialist (1h)' : 'You (Today)';
+  const timing = outage ? 'ACT RIGHT NOW' : pr ? 'CONTAIN TODAY' : silent ? 'CALL TODAY' : upsell ? 'BOOK IN PARALLEL' : 'THIS WEEK';
   const timingStyle = outage || pr ? 'bg-rose-100 text-rose-800' : upsell ? 'bg-teal-100 text-teal-800' : 'bg-blue-100 text-blue-800';
-  const why = outage ? 'Detected active operational outage blocking client dispatch/billing.'
-    : pr ? 'Detected public brand escalation requiring immediate human containment.'
-    : silent ? 'Detected silent churn warning (usage drop + upcoming renewal with no reply).'
-    : upsell ? 'Detected high-intent expansion request using separate Demo Specialist capacity.'
+  const why = outage ? 'Detected active operational outage blocking client dispatch and billing.'
+    : pr ? 'Detected public reputation complaint requiring immediate human containment.'
+    : silent ? 'Detected silent churn risk (usage drop + upcoming renewal with zero reply).'
+    : upsell ? 'Detected high-intent expansion request for the Sales Demo Specialist.'
     : 'Standard client inquiry flagged for human review.';
   const confidence = (outage || pr || silent || upsell) ? 88 : 68;
 
   return {
     id: Date.now(),
     name: `${client} — ${outage ? 'Live Outage Alert' : silent ? 'Silent Churn Risk' : upsell ? 'Expansion Demo Ask' : 'New Client Signal'}`,
-    deal: acv, upside: upsell ? 45 : 0, dealText: `₹${acv}L deal`, gate, timing, timingStyle, owner, why,
-    nextStep: outage ? 'Send 2-line ownership ack + mobilize Engineer immediately.'
-      : silent ? 'Call ops sponsor today to diagnose 14-day drop before renewal.'
-      : upsell ? 'Book Demo Specialist walkthrough and prepare ROI case.'
+    shortLabel: client.split(' ')[0],
+    deal: acv, upside: upsell ? 45 : 0, dealText: `₹${acv}L/yr contract`, gate,
+    engHours, demoHours, barColor: outage ? 'bg-rose-500' : 'bg-teal-500',
+    timing, timingStyle, owner, why,
+    evidence: `AI labeled Deal: ${F}, Urgency: ${U}, Harm: ${I}, Churn: ${R}, Repeat Bug: ${S}, Growth: ${G} (${confidence}% confidence)`,
+    nextStep: outage ? 'Send 2-line ownership ack + mobilize Technical Engineer immediately.'
+      : silent ? 'Call operations sponsor today to diagnose 14-day drop before renewal.'
+      : upsell ? 'Book Sales Demo Specialist walkthrough and prepare ROI case.'
       : 'Review manually and follow up within 24 hours.',
-    rootCause: `AI extracted from message: "${msg.slice(0, 90)}${msg.length > 90 ? '...' : ''}"`,
+    rootCause: `Extracted from message: "${msg.slice(0, 95)}${msg.length > 95 ? '...' : ''}"`,
     scores: { F, U, I, R, S, G }, confidence
   };
 }
 
-function appendTrace(stepTag, colorCls, text) {
+function addStepRow(num, title, detail, badgeText, badgeCls) {
   const trace = document.getElementById('agent-trace');
   const row = document.createElement('div');
-  row.className = 'p-2 rounded-lg bg-slate-900 border border-slate-800 flex items-start gap-2';
-  row.innerHTML = `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0 ${colorCls}">${stepTag}</span><span class="text-slate-200 leading-relaxed">${text}</span>`;
+  row.className = 'p-3 rounded-xl bg-white border border-slate-200 flex items-start justify-between gap-3';
+  row.innerHTML = `
+    <div class="flex items-start gap-2.5 min-w-0">
+      <div class="w-5 h-5 rounded-full bg-blue-600 text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">${num}</div>
+      <div class="min-w-0">
+        <strong class="text-slate-900 block">${title}</strong>
+        <span class="text-slate-600 leading-relaxed">${detail}</span>
+      </div>
+    </div>
+    <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${badgeCls}">${badgeText}</span>
+  `;
   trace.appendChild(row);
 }
 
@@ -759,7 +862,7 @@ async function runAnalyzer() {
   const acv = Math.max(1, Number(document.getElementById('ai-acv').value) || 50);
   const msg = document.getElementById('ai-message').value.trim();
   const key = document.getElementById('ai-key').value.trim();
-  if (!msg) { showToast('Please enter a message first.'); return; }
+  if (!msg) { showToast('Please enter a client message first.'); return; }
 
   const trace = document.getElementById('agent-trace');
   const pill = document.getElementById('agent-status-pill');
@@ -769,39 +872,34 @@ async function runAnalyzer() {
   trace.innerHTML = '';
   addBtn.disabled = true;
   inspectWrap.classList.add('hidden');
-  pill.textContent = 'Running Agent...';
-  pill.className = 'text-[11px] mono px-2 py-0.5 rounded bg-blue-900 text-blue-200';
+  pill.textContent = 'Running...';
+  pill.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800';
 
-  appendTrace('1 · INGEST', 'bg-slate-700 text-slate-200', `Matched "${client}" (₹${acv}L ACV) against 12-client CRM registry.`);
-  await wait(320);
-
-  let apiEndpoint = 'POST /api/triage (Vercel Serverless → Gemini 2.5 Flash)';
-  const reqPrompt = `Extract JSON {gate, why, nextStep, confidence, scores:{F,U,I,R,S,G}} for "${client}" (₹${acv}L): "${msg}"`;
+  addStepRow(1, 'Read & Match Client Record', `Matched "${client}" (₹${acv}L/yr contract) against Tarang Cloud's 12-client portfolio.`, 'Done', 'bg-slate-100 text-slate-700');
+  await wait(280);
 
   let parsed = localAnalyze(client, acv, msg);
-  let apiMode = 'Built-in Simulator (Local Preview)';
+  let engineSource = 'Built-in Simulator';
+  let endpointUsed = 'POST /api/triage (Vercel Serverless → Gemini 2.5 Flash)';
 
   if (key) {
-    apiEndpoint = 'POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
-    appendTrace('2 · API CALL', 'bg-blue-700 text-white', `Calling live ${apiEndpoint}...`);
+    endpointUsed = 'POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
     try {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`, {
+      const res = await fetch(`${endpointUsed}?key=${encodeURIComponent(key)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: 'Return ONLY raw JSON (no markdown): ' + reqPrompt }] }] })
+        body: JSON.stringify({ contents: [{ parts: [{ text: `Return ONLY raw JSON {"gate":"OUTAGE"|"PR"|"NONE","why":string,"nextStep":string,"confidence":number,"scores":{"F":1-5,"U":1-5,"I":1-5,"R":1-5,"S":1-5,"G":1-5}} for "${client}" (₹${acv}L): "${msg}"` }] }] })
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       const raw = (data.candidates?.[0]?.content?.parts?.[0]?.text || '').replace(/```json|```/g, '').trim();
       const j = JSON.parse(raw);
       parsed = { ...parsed, ...j, scores: j.scores || parsed.scores };
-      apiMode = 'LIVE Direct Gemini 2.5 Flash API (HTTP 200 OK)';
+      engineSource = 'Live Gemini 2.5 Flash';
     } catch (e) {
-      apiMode = 'Direct API Error — Fell Back to Local Simulator';
-      showToast('Gemini API call failed; fell back to local simulator.');
+      engineSource = 'Simulator Fallback';
     }
   } else {
-    appendTrace('2 · API CALL', 'bg-blue-700 text-white', `Calling ${apiEndpoint}...`);
     try {
       const res = await fetch('/api/triage', {
         method: 'POST',
@@ -811,41 +909,41 @@ async function runAnalyzer() {
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const j = await res.json();
       parsed = { ...parsed, ...j, scores: j.scores || parsed.scores };
-      apiMode = 'LIVE Vercel Backend → Gemini 2.5 Flash (HTTP 200 OK)';
-      appendTrace('2B · LLM OK', 'bg-teal-700 text-white', `${apiMode} → Labeled 6 parameters (F:${parsed.scores.F}, U:${parsed.scores.U}, I:${parsed.scores.I}, R:${parsed.scores.R}, S:${parsed.scores.S}, G:${parsed.scores.G}) · Confidence ${parsed.confidence}%.`);
+      engineSource = 'Live Gemini (Vercel Server)';
     } catch (e) {
-      apiMode = 'Built-in Simulator (Deploy to Vercel with GEMINI_API_KEY for live server calls)';
-      appendTrace('2B · FALLBACK', 'bg-slate-700 text-slate-200', `${apiMode} → Labeled 6 parameters (F:${parsed.scores.F}, U:${parsed.scores.U}, I:${parsed.scores.I}, R:${parsed.scores.R}, S:${parsed.scores.S}, G:${parsed.scores.G}) · Confidence ${parsed.confidence}%.`);
+      engineSource = 'Offline Simulator';
     }
   }
-  await wait(360);
 
-  const calcScore = scoreTask(parsed);
-  appendTrace('3 · MATH', 'bg-teal-700 text-white', `Deterministic Engine (${SCENARIOS[state.scenario]?.name || 'Custom'}): ${formatMathLine(parsed)} · Safety Gate: ${parsed.gate}.`);
-  await wait(320);
-
-  appendTrace('4 · CAPACITY', 'bg-indigo-700 text-white', `Assigned pool: ${parsed.owner} (${parsed.timing}) — verified zero conflict with existing P0 commitments.`);
+  addStepRow(2, 'AI Labels 6 Risk Factors', `Scored Deal ${parsed.scores.F}/5, Urgency ${parsed.scores.U}/5, Harm ${parsed.scores.I}/5, Churn ${parsed.scores.R}/5, Repeat Bug ${parsed.scores.S}/5, Growth ${parsed.scores.G}/5 (${parsed.confidence}% confidence).`, engineSource, engineSource.startsWith('Live') ? 'bg-teal-100 text-teal-800' : 'bg-blue-100 text-blue-800');
   await wait(300);
 
-  appendTrace('5 · HITL GATE', 'bg-amber-600 text-white', `Paused for human review. AI NEVER auto-sends client emails. Verdict: ${parsed.why}`);
+  const calcScore = scoreTask(parsed);
+  const laneText = (parsed.gate === 'OUTAGE' || parsed.gate === 'PR') ? 'Lane A · Immediate Emergency' : 'Lane B · Ranked Queue';
+  addStepRow(3, 'Calculate Transparent Priority', `Weighted score = ${calcScore.toFixed(2)} / 5.00 under "${SCENARIOS[state.scenario]?.name || 'Custom'}". Placed in ${laneText}.`, `${calcScore.toFixed(2)} / 5`, 'bg-blue-100 text-blue-800');
+  await wait(280);
+
+  const curEng = state.tasks.reduce((s, t) => s + t.engHours, 0);
+  const capDetail = parsed.engHours > 0
+    ? `Needs ${parsed.engHours}h Technical Engineer — will bring week total to ${(curEng + parsed.engHours).toFixed(1)}/8.0 hrs (triggers capacity tradeoff alert in Step 1).`
+    : `Assigned to ${parsed.owner} — zero Technical Engineer hours consumed.`;
+  addStepRow(4, 'Check 9-Hour Specialist Budget', capDetail, parsed.engHours > 0 && curEng + parsed.engHours > 8 ? 'Over Cap Alert' : 'Fits Budget', parsed.engHours > 0 && curEng + parsed.engHours > 8 ? 'bg-rose-100 text-rose-800' : 'bg-teal-100 text-teal-800');
+  await wait(260);
+
+  addStepRow(5, 'Pause for Human Approval', `${parsed.why} AI will never send client replies automatically.`, 'Human Gate', 'bg-amber-100 text-amber-900');
 
   state.parsedTask = parsed;
-  pill.textContent = apiMode.startsWith('LIVE') ? 'Live API Complete' : 'Agent Complete';
-  pill.className = 'text-[11px] mono px-2 py-0.5 rounded bg-teal-900 text-teal-200';
+  pill.textContent = engineSource.startsWith('Live') ? 'Live AI Complete' : 'Analysis Complete';
+  pill.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-800';
 
   document.getElementById('raw-payload-box').textContent = JSON.stringify({
-    endpoint: apiEndpoint,
-    mode: apiMode,
-    prompt_sent: reqPrompt,
-    parsed_json_output: {
-      client: client,
-      acv_lakh: acv,
-      safety_gate: parsed.gate,
-      scores_1_to_5: parsed.scores,
-      deterministic_weighted_score: calcScore,
-      assigned_owner: parsed.owner,
-      confidence_pct: parsed.confidence
-    }
+    endpoint: endpointUsed,
+    engine: engineSource,
+    extracted_labels: parsed.scores,
+    emergency_override: parsed.gate,
+    deterministic_score: calcScore,
+    confidence_pct: parsed.confidence,
+    assigned_owner: parsed.owner
   }, null, 2);
 
   inspectWrap.classList.remove('hidden');
@@ -872,7 +970,7 @@ function renderMessageTab(key) {
     document.getElementById('btn-copy-msg').disabled = !ok;
     document.getElementById('msg-lock-hint').textContent = ok
       ? 'All human checks confirmed — safe to copy and send.'
-      : 'Check all boxes to unlock copy.';
+      : 'Tick all boxes to unlock copy.';
   };
 
   box.querySelectorAll('.m-cb').forEach(cb => {
@@ -891,11 +989,9 @@ function renderMessageTab(key) {
   syncLock();
 }
 
-// ==================== WIRE EVENTS ====================
+// ==================== EVENTS ====================
 function switchStep(step) {
-  ['plan', 'ai', 'messages'].forEach(s => {
-    document.getElementById(`panel-${s}`).classList.toggle('hidden', s !== step);
-  });
+  ['plan', 'ai', 'messages'].forEach(s => document.getElementById(`panel-${s}`).classList.toggle('hidden', s !== step));
   document.querySelectorAll('.step-tab').forEach(btn => {
     const active = btn.getAttribute('data-step') === step;
     btn.className = active
@@ -915,18 +1011,29 @@ document.querySelectorAll('.scenario-btn').forEach(b => {
     const sc = b.getAttribute('data-scenario');
     state.mode = 'smart'; state.scenario = sc; state.weights = { ...SCENARIOS[sc].weights };
     syncModeButtons(); syncScenarioButtons(); renderSliders(); renderPlan();
-    showToast(`Switched scenario to ${SCENARIOS[sc].name}`);
+    showToast(`Switched to ${SCENARIOS[sc].name}`);
   });
 });
 
 document.getElementById('btn-toggle-rubric').addEventListener('click', () => {
   const hidden = document.getElementById('rubric-drawer').classList.toggle('hidden');
-  document.getElementById('toggle-rubric-label').textContent = hidden ? 'See how the 1–5 labels are defined' : 'Hide 1–5 label definitions';
+  document.getElementById('toggle-rubric-label').textContent = hidden ? 'See how the 6 factors are scored (1–5 scale)' : 'Hide 1–5 scoring guide';
 });
 
 document.getElementById('btn-toggle-weights').addEventListener('click', () => {
   const hidden = document.getElementById('weights-drawer').classList.toggle('hidden');
-  document.getElementById('toggle-weights-label').textContent = hidden ? 'Customize the 6 weights live' : 'Hide weight sliders';
+  document.getElementById('toggle-weights-label').textContent = hidden ? 'Adjust the 6 factor weights live' : 'Hide weight sliders';
+});
+
+document.getElementById('btn-rebalance').addEventListener('click', () => {
+  const nw = getNormalizedWeights();
+  let running = 0;
+  FACTORS.forEach((f, idx) => {
+    if (idx === FACTORS.length - 1) state.weights[f.key] = Math.max(0, 100 - running);
+    else { const v = Math.round(nw[f.key] / 5) * 5; state.weights[f.key] = v; running += v; }
+  });
+  renderSliders(); renderPlan();
+  showToast('Weights auto-balanced cleanly to 100%');
 });
 
 document.getElementById('cb-safety-rules').addEventListener('change', (e) => { state.safetyRules = e.target.checked; renderPlan(); });
@@ -941,11 +1048,12 @@ document.querySelectorAll('.sample-btn').forEach(b => {
   });
 });
 
-document.getElementById('btn-analyze').addEventListener('click', runAnalyzer);
-
-document.getElementById('btn-toggle-payload').addEventListener('click', () => {
-  document.getElementById('raw-payload-box').classList.toggle('hidden');
+document.getElementById('btn-dev-settings').addEventListener('click', () => {
+  document.getElementById('dev-key-box').classList.toggle('hidden');
 });
+
+document.getElementById('btn-analyze').addEventListener('click', runAnalyzer);
+document.getElementById('btn-toggle-payload').addEventListener('click', () => document.getElementById('raw-payload-box').classList.toggle('hidden'));
 
 document.getElementById('btn-add-to-list').addEventListener('click', () => {
   if (!state.parsedTask) return;
@@ -954,7 +1062,7 @@ document.getElementById('btn-add-to-list').addEventListener('click', () => {
   state.parsedTask = null;
   document.getElementById('btn-add-to-list').disabled = true;
   state.mode = 'smart'; syncModeButtons(); renderPlan(); switchStep('plan');
-  showToast('Added AI-triaged client to Step 1 Ranked Plan!');
+  showToast('Added to Step 1 Plan & updated 9h specialist budget!');
 });
 
 document.querySelectorAll('.msg-tab').forEach(b => b.addEventListener('click', () => renderMessageTab(b.getAttribute('data-msg'))));
@@ -971,12 +1079,12 @@ document.getElementById('btn-copy-msg').addEventListener('click', () => {
 });
 
 document.getElementById('btn-export-json').addEventListener('click', () => {
-  const sorted = getSortedTasks();
-  const blob = new Blob([JSON.stringify({ mode: state.mode, scenario: state.scenario, weights: state.weights, ranked: sorted.map((t, i) => ({ rank: i + 1, name: t.name, timing: t.timing, owner: t.owner, score: t.score, formula: formatMathLine(t) })) }, null, 2)], { type: 'application/json' });
+  const scored = state.tasks.map(t => ({ name: t.name, lane: (state.safetyRules && (t.gate === 'OUTAGE' || t.gate === 'PR')) ? 'Emergency' : 'Ranked Queue', score: scoreTask(t), math: formatPlainMath(t), owner: t.owner }));
+  const blob = new Blob([JSON.stringify({ scenario: state.scenario, items: scored }, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'tarang-cloud-monday-plan.json';
+  const a = document.createElement('a'); a.href = url; a.download = 'tarang-cloud-priority-plan.json';
   document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-  showToast('Exported Monday plan as JSON');
+  showToast('Exported priority plan');
 });
 
 renderSliders();
