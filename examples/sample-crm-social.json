@@ -1,0 +1,18 @@
+[
+  {
+    "externalId": "SAMPLE-CRM-1",
+    "source": "crm",
+    "clientId": "renewal",
+    "incidentRef": "case-3",
+    "content": "Simulated CRM note: no buyer response to revised renewal terms.",
+    "simulated": true
+  },
+  {
+    "externalId": "SAMPLE-SOCIAL-1",
+    "source": "social",
+    "clientId": "kabir",
+    "incidentRef": "case-4",
+    "content": "Simulated public LinkedIn complaint: support ticket ignored for 10 days.",
+    "simulated": true
+  }
+]

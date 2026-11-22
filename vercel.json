@@ -1,7 +1,10 @@
 {
   "version": 2,
   "functions": {
-    "api/triage.js": { "maxDuration": 30 }
+    "api/triage.js": { "maxDuration": 30 },
+    "api/intelligence.js": { "maxDuration": 30 },
+    "api/workspace.js": { "maxDuration": 30 },
+    "api/session.js": { "maxDuration": 30 }
   },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" }

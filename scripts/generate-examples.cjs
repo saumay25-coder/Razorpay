@@ -1,0 +1,10 @@
+const fs=require('node:fs');const path=require('node:path');const D=require('../lib/domain.js');
+const directory=path.join(__dirname,'../examples');fs.mkdirSync(directory,{recursive:true});
+const rows=D.sampleMonday();
+fs.writeFileSync(path.join(directory,'sample-monday-160.json'),JSON.stringify(rows,null,2));
+const fields=['externalId','source','clientId','subject','content','timestamp','sender','threadId','incidentRef','status','simulated'];
+const quote=value=>'"'+String(value??'').replace(/"/g,'""')+'"';
+fs.writeFileSync(path.join(directory,'sample-monday-160.csv'),fields.join(',')+'\n'+rows.map(row=>fields.map(key=>quote(row[key])).join(',')).join('\n'));
+fs.writeFileSync(path.join(directory,'sample-crm-social.json'),JSON.stringify(D.sampleSupplement(),null,2));
+fs.writeFileSync(path.join(directory,'mapping-example.csv'),'RecordRef,AccountCode,MessageText,Channel,simulated\nMAP-001,annam,"Simulated invoice blockage; suppliers unpaid",email,true\nMAP-002,annam,,ticket,true\n');
+console.log('Wrote reproducible 120-email / 40-ticket JSON and CSV examples, plus separate supplements and a mapping exercise.');

@@ -53,7 +53,7 @@ module.exports = async function handler(req, res) {
       'OUTAGE is only a current operational/financial halt blocking invoices, payments or fulfillment. Historical or resolved incidents do not qualify.',
       'PR is only an active public social-media complaint. An ignored private ticket alone does not qualify. Otherwise gate is NONE.',
       'Engineer handles technical investigation; Demo Specialist handles explicit product demos; Support handles public complaints or routine tickets; None covers account-management work.',
-      'F = Deal Value including only explicitly stated expansion: 5 for 100+ lakh, 4 for 70-99, 3 for 40-69, 2 for 11-39, 1 for 0-10.',
+      'F = Deal Value uses CONTRACTED annual value only: 5 for 100+ lakh, 4 for 70-99, 3 for 40-69, 2 for above 10 and below 40, 1 for 0-10. Never add expansion; growth belongs only in G.',
       'U = Urgency: 5 immediate live harm, 4 within 72 hours or renewal under 10 days, 3 this week, 2 due Friday/admin, 1 no deadline.',
       'I = Harm if delayed: 5 external financial/public harm, 4 substantial ongoing customer impact, 3 limited business disruption, 2 reversible inconvenience, 1 internal admin.',
       'R = Churn risk: 5 active anger or silent near renewal, 4 repeated failure, 3 warning signs, 2 ordinary request, 1 routine admin.',
@@ -85,6 +85,7 @@ module.exports = async function handler(req, res) {
     } catch {
       return res.status(502).json({ error: 'Live AI returned an invalid classification. Use the practice simulator or retry.', code: 'INVALID_MODEL_RESPONSE' });
     }
+    result.scores.F = require('../lib/domain.js').valueRating(body.acv);
     return res.status(200).json({ source: 'vercel-gemini-2.5-flash', ...result });
   } catch {
     const timedOut = controller.signal.aborted;

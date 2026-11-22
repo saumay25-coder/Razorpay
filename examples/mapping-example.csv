@@ -1,0 +1,3 @@
+RecordRef,AccountCode,MessageText,Channel,simulated
+MAP-001,annam,"Simulated invoice blockage; suppliers unpaid",email,true
+MAP-002,annam,,ticket,true
