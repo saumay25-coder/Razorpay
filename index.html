@@ -2,390 +2,1937 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tarang Cloud · Monday Morning AI Triage Assistant</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2457d6">
+<meta name="description" content="Prioritize client issues, assess new messages and plan limited specialist capacity with human approval.">
+<title>Tarang Cloud · Portfolio Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
-<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: {
-          sans: ['Inter', 'system-ui', 'sans-serif'],
-          mono: ['JetBrains Mono', 'monospace']
-        }
-      }
-    }
-  };
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700;750&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js" defer></script>
 <style>
-  body { font-family: 'Inter', system-ui, sans-serif; background-color: #F8FAFC; color: #0F172A; }
-  .mono { font-family: 'JetBrains Mono', monospace; }
-  input[type="range"] { accent-color: #2563EB; }
+:root {
+  --ink:#17263f;
+  --muted:#617087;
+  --line:#e3e8f0;
+  --bg:#f6f8fb;
+  --blue:#2457d6;
+  --blue-soft:#eef3ff;
+  --red:#b83243;
+  --red-soft:#fff4f5;
+  --teal:#087b69;
+  --teal-soft:#edf9f5;
+  --amber:#8c6015;
+  --amber-soft:#fff8e8;
+  --radius:12px
+}
+* {
+  box-sizing:border-box
+}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Inter,system-ui,sans-serif;
+  font-size:14px;
+  line-height:1.5
+}
+button,input,textarea {
+  font:inherit
+}
+button {
+  cursor:pointer
+}
+button:disabled {
+  cursor:not-allowed;
+  opacity:.48
+}
+button,a,input,textarea,summary {
+  outline-offset:4px
+}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible {
+  outline:3px solid #91b0ff
+}
+button {
+  color:inherit
+}
+a {
+  color:var(--blue)
+}
+h1,h2,h3,p {
+  margin:0
+}
+h1 {
+  font-size:25px;
+  letter-spacing:-.65px;
+  line-height:1.3;
+  font-weight:700
+}
+h2 {
+  font-size:17px;
+  letter-spacing:-.25px;
+  font-weight:700
+}
+h3 {
+  font-size:15px;
+  font-weight:650
+}
+svg {
+  width:18px;
+  height:18px;
+  flex-shrink:0
+}
+button svg {
+  pointer-events:none
+}
+.hidden,[hidden] {
+  display:none!important
+}
+.muted {
+  color:var(--muted)
+}
+.small {
+  font-size:13px
+}
+.mono {
+  font-variant-numeric:tabular-nums
+}
+.topbar {
+  height:70px;
+  border-bottom:1px solid var(--line);
+  background:white
+}
+.topbar-inner {
+  max-width:1380px;
+  margin:auto;
+  padding:0 32px;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:11px
+}
+.brand-icon {
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  background:var(--blue);
+  border-radius:9px;
+  color:white
+}
+.brand-icon svg {
+  width:22px;
+  height:22px
+}
+.brand-name {
+  font-weight:750;
+  font-size:16px;
+  line-height:1.3
+}
+.brand-subtitle {
+  font-size:12px;
+  color:var(--muted)
+}
+.workspace-note {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  font-size:13px
+}
+.workspace-note .demo-tag {
+  padding:4px 9px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:#fafbfe
+}
+.workspace {
+  max-width:1380px;
+  margin:auto;
+  padding:27px 32px 50px
+}
+.page-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:20px
+}
+.page-description {
+  margin-top:5px;
+  color:var(--muted);
+  font-size:14px
+}
+.button {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:40px;
+  border-radius:8px;
+  padding:8px 13px;
+  border:1px solid var(--line);
+  background:white;
+  font-weight:600;
+  font-size:13px;
+  white-space:nowrap
+}
+.button:hover {
+  background:#f8faff;
+  border-color:#c6d2e7
+}
+.button.primary {
+  background:var(--blue);
+  border-color:var(--blue);
+  color:white
+}
+.button.primary:hover {
+  background:#1747bc
+}
+.button.success {
+  background:var(--teal);
+  border-color:var(--teal);
+  color:white
+}
+.button.full {
+  width:100%
+}
+.button.ghost {
+  border:0;
+  background:transparent;
+  padding:5px 8px;
+  min-height:32px;
+  color:var(--blue)
+}
+.kpi-strip {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:white;
+  overflow:hidden
+}
+.kpi {
+  padding:15px 20px;
+  border-right:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0
+}
+.kpi:last-child {
+  border-right:0
+}
+.kpi-icon {
+  background:#f2f5fb;
+  color:#6a7c9b;
+  display:grid;
+  place-items:center;
+  width:37px;
+  height:37px;
+  border-radius:10px
+}
+.kpi.emergency .kpi-icon {
+  background:var(--red-soft);
+  color:var(--red)
+}
+.kpi-value {
+  font-size:23px;
+  letter-spacing:-.6px;
+  font-weight:700;
+  line-height:1.2
+}
+.kpi-label {
+  font-size:12px;
+  color:var(--muted);
+  margin-top:3px
+}
+.kpi-value.over {
+  color:var(--red)
+}
+.portfolio-meta {
+  padding:12px 2px 15px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  font-size:13px;
+  color:var(--muted)
+}
+.portfolio-meta strong {
+  color:#3f506a;
+  font-weight:600
+}
+.portfolio-meta .finance {
+  display:flex;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap
+}
+.separator {
+  color:#c2cbd9
+}
+.navigation {
+  display:flex;
+  align-items:stretch;
+  border-bottom:1px solid #dbe2ed;
+  margin-bottom:23px;
+  gap:22px
+}
+.nav-item {
+  display:flex;
+  align-items:center;
+  position:relative;
+  gap:1px
+}
+.nav-tab {
+  border:0;
+  background:transparent;
+  padding:12px 5px 14px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-weight:600;
+  color:var(--muted);
+  font-size:14px;
+  min-height:48px
+}
+.nav-tab[aria-selected=true] {
+  color:var(--blue)
+}
+.nav-item:has(.nav-tab[aria-selected=true]):after {
+  position:absolute;
+  content:"";
+  bottom:-1px;
+  left:0;
+  right:0;
+  height:3px;
+  background:var(--blue);
+  border-radius:3px 3px 0 0
+}
+.info {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  border:0;
+  border-radius:50%;
+  width:28px;
+  height:28px;
+  background:transparent;
+  color:#7c8aa0;
+  padding:5px;
+  vertical-align:middle
+}
+.info svg {
+  width:15px;
+  height:15px
+}
+.info:hover,.info[aria-expanded=true] {
+  color:var(--blue);
+  background:var(--blue-soft)
+}
+.help-bubble {
+  position:fixed;
+  z-index:100;
+  max-width:300px;
+  background:#21324e;
+  color:white;
+  padding:12px 14px;
+  border-radius:9px;
+  font-size:13px;
+  line-height:1.55;
+  box-shadow:0 6px 24px #17263f22;
+  overflow-wrap:anywhere
+}
+.portfolio-layout {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 346px;
+  gap:23px;
+  align-items:start
+}
+.section-title {
+  display:flex;
+  align-items:center;
+  gap:7px
+}
+.section-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px
+}
+.section-heading .muted {
+  font-size:13px
+}
+.group-heading {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:17px 0 9px
+}
+.group-heading:first-child {
+  margin-top:0
+}
+.group-heading h3 {
+  font-size:14px
+}
+.group-heading.danger {
+  color:var(--red)
+}
+.count {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:650;
+  border-radius:5px;
+  padding:1px 6px;
+  background:#eaf0f7;
+  color:#52627d
+}
+.danger .count {
+  background:#fce6e9;
+  color:var(--red)
+}
+.task-list {
+  display:grid;
+  gap:10px
+}
+.task {
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:white;
+  overflow:hidden
+}
+.task.emergency {
+  border-color:#edcdd2;
+  border-left:3px solid #c64555
+}
+.task-content {
+  padding:13px 15px 10px
+}
+.task-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px
+}
+.task-title-wrap {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+  flex-wrap:wrap
+}
+.task-title {
+  font-size:15px;
+  font-weight:650;
+  letter-spacing:-.18px;
+  overflow-wrap:anywhere
+}
+.rank {
+  display:inline-flex;
+  width:21px;
+  height:21px;
+  align-items:center;
+  justify-content:center;
+  border-radius:5px;
+  background:#f0f3f8;
+  color:#6b7d97;
+  font-size:11px;
+  font-weight:700;
+  flex-shrink:0
+}
+.badge {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:3px 7px;
+  border-radius:5px;
+  font-size:11px;
+  line-height:1.45;
+  font-weight:650;
+  white-space:nowrap
+}
+.badge.red {
+  color:var(--red);
+  background:#ffebee
+}
+.badge.blue {
+  color:var(--blue);
+  background:var(--blue-soft)
+}
+.badge.teal {
+  color:var(--teal);
+  background:var(--teal-soft)
+}
+.badge.amber {
+  color:var(--amber);
+  background:var(--amber-soft)
+}
+.badge.gray {
+  color:#62748f;
+  background:#eff3f8
+}
+.deal {
+  font-size:12px;
+  color:var(--muted);
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums
+}
+.task-problem {
+  margin:5px 0 9px;
+  color:#52627a;
+  font-size:13px;
+  line-height:1.5
+}
+.task-bottom {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  flex-wrap:wrap
+}
+.assignment {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  color:#42546e
+}
+.assignment svg {
+  width:14px;
+  height:14px
+}
+.next-action {
+  margin-top:8px;
+  font-size:13px;
+  color:#465975;
+  overflow-wrap:anywhere
+}
+.next-action strong {
+  font-weight:650;
+  color:#273f66
+}
+.task-details>summary {
+  margin:0 15px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:8px 0 10px;
+  color:var(--blue);
+  font-size:12px;
+  font-weight:600;
+  list-style:none;
+  cursor:pointer;
+  min-height:35px
+}
+.task-details>summary::-webkit-details-marker {
+  display:none
+}
+.task-details>summary:after {
+  content:"+";
+  font-size:16px;
+  line-height:1
+}
+.task-details[open]>summary:after {
+  content:"−"
+}
+.task-detail-content {
+  padding:14px 15px;
+  border-top:1px solid var(--line);
+  background:#fafbfe;
+  display:grid;
+  gap:12px;
+  font-size:13px
+}
+.detail-label {
+  display:block;
+  font-weight:650;
+  font-size:12px;
+  color:#3c4e6a;
+  margin-bottom:3px
+}
+.math-details {
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:10px;
+  background:white
+}
+.math-details summary {
+  cursor:pointer;
+  color:var(--blue);
+  font-size:12px;
+  font-weight:600
+}
+.factor-table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+  font-size:12px
+}
+.factor-table th,.factor-table td {
+  text-align:left;
+  padding:6px 3px;
+  border-bottom:1px solid #edf0f6
+}
+.factor-table th {
+  color:var(--muted);
+  font-weight:500
+}
+.factor-table td:last-child,.factor-table th:last-child {
+  text-align:right
+}
+.formula {
+  font-size:12px;
+  color:#465975;
+  line-height:1.65;
+  margin-top:9px;
+  overflow-wrap:anywhere
+}
+.sidebar {
+  display:grid;
+  gap:15px
+}
+.panel-card {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:17px
+}
+.panel-card h2 {
+  font-size:14px
+}
+.panel-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:7px;
+  margin-bottom:12px
+}
+.scenario-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px
+}
+.scenario-wrap {
+  position:relative;
+  display:flex;
+  align-items:center;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#fafbfd
+}
+.scenario-wrap:has([aria-pressed=true]) {
+  border-color:#96b1f3;
+  background:var(--blue-soft)
+}
+.scenario-btn {
+  flex:1;
+  text-align:left;
+  border:0;
+  background:none;
+  padding:9px 2px 9px 10px;
+  line-height:1.45;
+  font-size:12px;
+  font-weight:600;
+  min-height:48px
+}
+.scenario-btn[aria-pressed=true] {
+  color:var(--blue)
+}
+.scenario-wrap .info {
+  width:25px;
+  height:30px;
+  padding:4px
+}
+.change-note {
+  padding:10px 11px;
+  margin-top:12px;
+  background:#f4f7fd;
+  border-radius:7px;
+  font-size:12px;
+  color:#526580
+}
+.change-note strong {
+  display:block;
+  color:#304869;
+  margin-bottom:3px
+}
+.compare-control {
+  display:flex;
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:3px;
+  margin-top:13px;
+  gap:3px
+}
+.compare-control button {
+  flex:1;
+  background:transparent;
+  border:0;
+  border-radius:5px;
+  padding:7px 6px;
+  font-size:12px;
+  min-height:33px;
+  color:var(--muted);
+  font-weight:600
+}
+.compare-control button[aria-pressed=true] {
+  background:#edf2fc;
+  color:var(--blue)
+}
+.settings-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:5px
+}
+.text-button {
+  background:none;
+  border:0;
+  color:var(--blue);
+  font-size:12px;
+  font-weight:600;
+  padding:6px;
+  min-height:34px
+}
+.weights-body {
+  margin-top:13px;
+  border-top:1px solid var(--line);
+  padding-top:12px
+}
+.weight-total {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12px;
+  margin-bottom:13px
+}
+.weight-row {
+  margin:12px 0
+}
+.weight-label {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  font-size:12px
+}
+.weight-label label {
+  font-weight:500
+}
+.weight-label .info {
+  width:23px;
+  height:23px
+}
+.weight-label .percent {
+  margin-left:auto;
+  color:var(--blue);
+  font-variant-numeric:tabular-nums;
+  font-weight:600
+}
+input[type=range] {
+  accent-color:var(--blue);
+  width:100%;
+  height:5px;
+  margin:8px 0;
+  cursor:pointer
+}
+.budget-block+.budget-block {
+  margin-top:20px;
+  padding-top:15px;
+  border-top:1px solid var(--line)
+}
+.budget-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:13px;
+  gap:5px
+}
+.budget-heading strong {
+  font-weight:600
+}
+.budget-heading .usage {
+  font-size:12px;
+  white-space:nowrap
+}
+.capacity-bar {
+  height:21px;
+  display:flex;
+  background:#edf1f7;
+  border-radius:5px;
+  overflow:hidden;
+  margin:10px 0 7px
+}
+.capacity-segment {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  min-width:0;
+  border-right:2px solid white;
+  font-size:10px;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden
+}
+.capacity-segment:last-child {
+  border:0
+}
+.capacity-legend {
+  display:grid;
+  gap:5px;
+  margin-top:8px
+}
+.legend-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  color:#586a84;
+  font-size:12px
+}
+.legend-name {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-width:0;
+  overflow-wrap:anywhere
+}
+.swatch {
+  width:7px;
+  height:7px;
+  border-radius:2px;
+  flex-shrink:0
+}
+.remaining {
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px
+}
+.over {
+  color:var(--red)!important
+}
+.capacity-alert {
+  border:1px solid #edc7ce;
+  background:var(--red-soft);
+  color:#9d2e40;
+  padding:11px;
+  border-radius:8px;
+  margin-top:12px;
+  font-size:12px;
+  line-height:1.55
+}
+.capacity-alert strong {
+  display:block;
+  margin-bottom:3px
+}
+.allocation-editor {
+  margin-top:14px;
+  border-top:1px solid var(--line);
+  padding-top:9px
+}
+.allocation-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin:10px 0;
+  font-size:12px
+}
+.allocation-row label {
+  min-width:0;
+  max-width:170px;
+  overflow-wrap:anywhere
+}
+.hour-control {
+  display:flex;
+  border:1px solid #d9e1ed;
+  border-radius:6px;
+  overflow:hidden;
+  flex-shrink:0;
+  background:white
+}
+.hour-control button {
+  border:0;
+  background:#f7f9fd;
+  width:28px;
+  min-height:32px;
+  font-size:17px;
+  color:#536985
+}
+.hour-control input {
+  width:48px;
+  border:0;
+  text-align:center;
+  font-size:12px;
+  font-variant-numeric:tabular-nums;
+  -moz-appearance:textfield
+}
+.hour-control input::-webkit-inner-spin-button {
+  appearance:none
+}
+.capacity-footnote {
+  font-size:12px;
+  color:var(--muted);
+  margin-top:13px;
+  display:flex;
+  align-items:center;
+  gap:5px
+}
+.comparison-note {
+  font-size:12px;
+  color:var(--amber);
+  background:var(--amber-soft);
+  padding:9px 12px;
+  border-radius:7px;
+  margin-bottom:12px
+}
+.quiet-note {
+  margin-top:16px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--muted);
+  font-size:12px
+}
+.workflow {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  margin:-2px 0 19px;
+  color:#6a7c95;
+  font-size:12px;
+  flex-wrap:wrap
+}
+.workflow svg {
+  width:13px;
+  height:13px;
+  color:#a0adbf
+}
+.workflow span {
+  display:inline-flex;
+  align-items:center;
+  gap:5px
+}
+.triage-grid {
+  display:grid;
+  grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);
+  gap:20px;
+  align-items:start
+}
+.triage-grid .panel-card {
+  padding:22px
+}
+.triage-grid h2 {
+  font-size:16px
+}
+.examples {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:16px 0
+}
+.example-button {
+  border:1px solid var(--line);
+  background:#f8faff;
+  border-radius:6px;
+  padding:7px 10px;
+  font-size:12px;
+  color:#4e6280;
+  min-height:34px
+}
+.example-button:hover {
+  background:var(--blue-soft);
+  color:var(--blue);
+  border-color:#b2c5f3
+}
+.field-grid {
+  display:grid;
+  grid-template-columns:minmax(0,1.7fr) minmax(100px,1fr);
+  gap:13px
+}
+.field {
+  display:grid;
+  gap:6px;
+  margin-bottom:16px
+}
+.field label {
+  font-size:12px;
+  color:#4c5f7a;
+  font-weight:600
+}
+.field input,.field textarea,.draft-editor {
+  width:100%;
+  padding:11px 12px;
+  border:1px solid #d5deeb;
+  border-radius:7px;
+  color:#20334e;
+  background:white;
+  min-width:0
+}
+.field input {
+  height:42px
+}
+.field textarea {
+  resize:vertical;
+  min-height:195px;
+  line-height:1.65;
+  font-size:14px
+}
+.field input:hover,.field textarea:hover,.draft-editor:hover {
+  border-color:#b1c0d6
+}
+.practice-control {
+  display:flex;
+  align-items:start;
+  gap:8px;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:14px
+}
+.practice-control input,.checklist input,.review-check input {
+  accent-color:var(--blue);
+  width:16px;
+  height:16px;
+  flex-shrink:0;
+  margin:2px 0 0
+}
+.input-note {
+  margin:12px 0 0;
+  color:var(--muted);
+  font-size:12px;
+  display:flex;
+  gap:5px;
+  align-items:center
+}
+.empty-state {
+  min-height:360px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:30px 35px
+}
+.empty-icon {
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border:1px solid #dce5f5;
+  border-radius:12px;
+  color:#7a98ce;
+  background:#f7faff;
+  margin-bottom:15px
+}
+.empty-icon svg {
+  width:23px;
+  height:23px
+}
+.empty-state h3 {
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:6px
+}
+.empty-state p {
+  max-width:310px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.7
+}
+.analysis-body {
+  display:grid;
+  gap:15px
+}
+.analysis-summary {
+  font-size:14px;
+  color:#4e607b;
+  line-height:1.65;
+  overflow-wrap:anywhere
+}
+.analysis-title {
+  font-size:16px;
+  font-weight:650
+}
+.analysis-topline {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  flex-wrap:wrap
+}
+.priority-result {
+  padding:11px 12px;
+  border:1px solid #dce6fb;
+  background:#f7f9ff;
+  border-radius:8px
+}
+.priority-result strong {
+  display:block;
+  font-size:14px;
+  color:#244f9e
+}
+.priority-result p {
+  font-size:12px;
+  margin-top:3px;
+  color:#617391
+}
+.factor-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 16px
+}
+.factor-score {
+  font-size:12px
+}
+.factor-score-title {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:5px;
+  color:#4e6180
+}
+.factor-score-title strong {
+  color:#294674;
+  font-variant-numeric:tabular-nums;
+  font-weight:650;
+  white-space:nowrap
+}
+.score-scale {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:3px
+}
+.score-scale span {
+  height:4px;
+  background:#e8edf5;
+  border-radius:2px
+}
+.score-scale span.filled {
+  background:#6e91e2
+}
+.confidence-line {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  color:#617391
+}
+.action-box {
+  border-left:3px solid #7d9ee8;
+  padding:2px 0 2px 11px;
+  font-size:13px;
+  line-height:1.65;
+  color:#3d5477;
+  overflow-wrap:anywhere
+}
+.action-box strong {
+  display:block;
+  color:#233e66;
+  font-size:12px;
+  margin-bottom:3px
+}
+.analysis-resource {
+  display:grid;
+  gap:6px;
+  font-size:12px;
+  color:#4f6381;
+  border-top:1px solid var(--line);
+  padding-top:12px
+}
+.capacity-prediction {
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap
+}
+.prediction-item {
+  background:#f3f6fb;
+  padding:5px 8px;
+  border-radius:5px
+}
+.prediction-item.conflict {
+  background:var(--red-soft);
+  color:var(--red)
+}
+.review-check {
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  padding:12px;
+  background:#f5f8fe;
+  border:1px solid #e1e9f9;
+  border-radius:7px;
+  font-size:12px;
+  color:#486080
+}
+.analysis-approval {
+  display:grid;
+  gap:9px;
+  border-top:1px solid var(--line);
+  padding-top:14px
+}
+.technical-details {
+  margin-top:16px;
+  border-top:1px solid var(--line);
+  padding-top:12px;
+  font-size:12px;
+  color:var(--muted)
+}
+.technical-details>summary {
+  cursor:pointer;
+  color:#597092;
+  font-weight:500
+}
+.technical-details p {
+  margin-top:10px;
+  line-height:1.7
+}
+.payload {
+  font-family:ui-monospace,monospace;
+  font-size:11px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  background:#f3f6fb;
+  border-radius:7px;
+  padding:12px;
+  max-height:240px;
+  overflow:auto;
+  color:#4a6081;
+  margin-top:10px
+}
+.inline-notice {
+  background:var(--amber-soft);
+  border:1px solid #f0dfb4;
+  padding:10px 11px;
+  border-radius:7px;
+  font-size:12px;
+  color:var(--amber)
+}
+.approval-layout {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 326px;
+  gap:20px;
+  align-items:start
+}
+.draft-tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:16px 0
+}
+.draft-tab {
+  padding:8px 11px;
+  background:#f7f9fc;
+  border:1px solid var(--line);
+  border-radius:7px;
+  font-size:12px;
+  min-height:38px;
+  font-weight:500
+}
+.draft-tab[aria-pressed=true] {
+  background:var(--blue-soft);
+  color:var(--blue);
+  border-color:#a8bdf0
+}
+.draft-editor {
+  font-size:14px;
+  line-height:1.75;
+  min-height:220px;
+  resize:vertical
+}
+.draft-editor-label {
+  font-size:12px;
+  color:var(--muted);
+  display:block;
+  margin-bottom:6px
+}
+.verification-box {
+  margin-top:17px;
+  background:#fafbfe;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:13px
+}
+.verification-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+  font-size:13px;
+  font-weight:600
+}
+.checklist {
+  display:grid;
+  gap:11px
+}
+.checklist label {
+  display:flex;
+  align-items:start;
+  gap:9px;
+  font-size:13px;
+  color:#4e617d;
+  cursor:pointer
+}
+.approval-footer {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:17px
+}
+.lock-status {
+  color:var(--muted);
+  font-size:12px;
+  max-width:370px
+}
+.rules-intro {
+  font-size:12px;
+  color:var(--muted);
+  margin:-3px 0 14px
+}
+.rule {
+  border-bottom:1px solid var(--line);
+  padding:12px 0
+}
+.rule:last-child {
+  border-bottom:0;
+  padding-bottom:0
+}
+.rule summary {
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+  font-size:13px;
+  font-weight:500;
+  color:#405574
+}
+.rule summary::-webkit-details-marker {
+  display:none
+}
+.rule summary>svg {
+  width:16px;
+  height:16px;
+  color:#7c91b0;
+  margin-top:2px
+}
+.rule summary:after {
+  content:"+";
+  margin-left:auto;
+  color:#8293ab;
+  font-size:15px
+}
+.rule[open] summary:after {
+  content:"−"
+}
+.rule p {
+  font-size:12px;
+  color:var(--muted);
+  padding:10px 0 0 25px;
+  line-height:1.7
+}
+.approval-info {
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  gap:7px;
+  align-items:flex-start;
+  margin-top:17px
+}
+.approval-info svg {
+  width:15px;
+  height:15px;
+  margin-top:2px
+}
+.footer-note {
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  border-top:1px solid var(--line);
+  padding-top:17px;
+  margin-top:27px;
+  font-size:12px;
+  color:#8090a6
+}
+.toast {
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:11px 16px;
+  border-radius:8px;
+  background:#20334f;
+  color:white;
+  font-size:13px;
+  box-shadow:0 4px 20px #17263f20;
+  z-index:120;
+  max-width:calc(100% - 32px);
+  text-align:center
+}
+.panel-tab:focus {
+  outline:none
+}
+.info:has(i)::before {
+  content:"ⓘ";
+  font-size:15px;
+  line-height:1
+}
+.info:has(i) i {
+  display:none
+}
+.export-button:has(i)::before {
+  content:"Export";
+  font-size:11px
+}
+@media(min-width:641px) {
+  .task-details {
+    position:relative
+  }
+  .task-details>summary {
+    position:absolute;
+    right:15px;
+    top:-35px;
+    margin:0;
+    padding:4px 0;
+    min-height:30px
+  }
+  .task-content {
+    padding-bottom:13px
+  }
+  .next-action {
+    padding-right:105px
+  }
+}
+@media(min-width:1500px) {
+  .workspace {
+    padding-top:32px
+  }
+  .portfolio-layout {
+    grid-template-columns:minmax(0,1fr) 370px;
+    gap:27px
+  }
+  .task-content {
+    padding:14px 17px 13px
+  }
+}
+@media(max-width:1100px) {
+  .workspace {
+    padding:24px
+  }
+  .topbar-inner {
+    padding:0 24px
+  }
+  .portfolio-layout {
+    grid-template-columns:minmax(0,1fr) 315px;
+    gap:18px
+  }
+  .kpi {
+    padding:14px;
+    gap:10px
+  }
+  .kpi-icon {
+    width:31px;
+    height:31px
+  }
+  .kpi-label {
+    font-size:11px
+  }
+  .kpi-value {
+    font-size:21px
+  }
+  .portfolio-meta .finance {
+    gap:10px
+  }
+  .task-top {
+    align-items:flex-start
+  }
+  .task-title-wrap {
+    gap:6px
+  }
+  .triage-grid .panel-card {
+    padding:17px
+  }
+  .approval-layout {
+    grid-template-columns:minmax(0,1fr) 290px
+  }
+  .analysis-topline {
+    align-items:flex-start
+  }
+}
+@media(max-width:850px) {
+  .portfolio-layout {
+    grid-template-columns:1fr
+  }
+  .sidebar {
+    grid-template-columns:1fr 1fr
+  }
+  .capacity-card {
+    grid-column:2;
+    grid-row:1 / span 2
+  }
+  .scenario-card {
+    grid-column:1;
+    grid-row:1
+  }
+  .scoring-card {
+    grid-column:1;
+    grid-row:2
+  }
+  .triage-grid {
+    grid-template-columns:1fr 1fr;
+    gap:14px
+  }
+  .workflow {
+    gap:6px;
+    font-size:11px
+  }
+  .approval-layout {
+    grid-template-columns:1fr
+  }
+  .rules-card {
+    max-width:none
+  }
+  .field-grid {
+    grid-template-columns:1fr
+  }
+  .kpi-icon {
+    display:none
+  }
+  .page-description {
+    max-width:520px
+  }
+  .portfolio-meta {
+    align-items:flex-start
+  }
+  .navigation {
+    margin-bottom:20px
+  }
+  .factor-grid {
+    gap:10px
+  }
+  .analysis-title {
+    font-size:14px
+  }
+  .empty-state {
+    padding:24px 10px
+  }
+}
+@media(max-width:640px) {
+  body {
+    font-size:14px
+  }
+  .topbar {
+    height:62px
+  }
+  .topbar-inner {
+    padding:0 16px
+  }
+  .workspace-note {
+    font-size:11px
+  }
+  .workspace-note .desktop-only {
+    display:none
+  }
+  .brand-name {
+    font-size:15px
+  }
+  .brand-subtitle {
+    font-size:11px
+  }
+  .brand-icon {
+    width:31px;
+    height:31px
+  }
+  .workspace {
+    padding:20px 15px 32px
+  }
+  h1 {
+    font-size:21px;
+    letter-spacing:-.4px
+  }
+  .page-heading {
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:17px
+  }
+  .page-description {
+    font-size:13px;
+    line-height:1.65;
+    max-width:290px
+  }
+  .export-button {
+    font-size:0;
+    padding:8px 10px;
+    gap:0;
+    min-width:40px
+  }
+  .export-button svg {
+    width:17px;
+    height:17px
+  }
+  .kpi-strip {
+    grid-template-columns:1fr 1fr
+  }
+  .kpi {
+    padding:13px 14px;
+    min-height:75px
+  }
+  .kpi:nth-child(2) {
+    border-right:0
+  }
+  .kpi:nth-child(-n+2) {
+    border-bottom:1px solid var(--line)
+  }
+  .kpi-value {
+    font-size:21px
+  }
+  .kpi-label {
+    font-size:11px;
+    line-height:1.4
+  }
+  .portfolio-meta {
+    gap:6px;
+    padding:11px 1px 13px;
+    font-size:11px
+  }
+  .portfolio-meta .finance {
+    gap:5px 12px
+  }
+  .portfolio-meta .separator {
+    display:none
+  }
+  .navigation {
+    gap:8px;
+    justify-content:space-between;
+    margin-bottom:20px
+  }
+  .nav-tab {
+    font-size:12px;
+    gap:5px;
+    padding-left:0;
+    padding-right:0;
+    min-height:49px
+  }
+  .nav-tab svg {
+    width:15px;
+    height:15px
+  }
+  .nav-item {
+    gap:0
+  }
+  .nav-item .info {
+    width:24px;
+    height:36px;
+    padding:5px
+  }
+  .nav-item .info svg {
+    width:13px;
+    height:13px
+  }
+  .portfolio-layout {
+    gap:21px
+  }
+  .section-heading {
+    margin-bottom:13px
+  }
+  .section-heading .muted {
+    font-size:11px
+  }
+  .task-content {
+    padding:12px 12px 8px
+  }
+  .task-title {
+    font-size:14px
+  }
+  .task-top {
+    gap:6px
+  }
+  .deal {
+    font-size:11px
+  }
+  .task-problem {
+    font-size:12px;
+    margin-bottom:8px
+  }
+  .assignment {
+    font-size:11px
+  }
+  .next-action {
+    font-size:12px
+  }
+  .task-details>summary {
+    margin:0 12px;
+    min-height:36px;
+    padding:7px 0 10px
+  }
+  .task-detail-content {
+    padding:12px;
+    font-size:12px
+  }
+  .badge {
+    font-size:10px
+  }
+  .sidebar {
+    grid-template-columns:1fr
+  }
+  .scenario-card,.scoring-card,.capacity-card {
+    grid-column:auto;
+    grid-row:auto
+  }
+  .scenario-card {
+    order:0
+  }
+  .scoring-card {
+    order:1
+  }
+  .capacity-card {
+    order:2
+  }
+  .panel-card {
+    padding:15px
+  }
+  .scenario-btn {
+    font-size:13px
+  }
+  .scenario-wrap .info {
+    width:32px;
+    height:40px
+  }
+  .workflow {
+    justify-content:flex-start;
+    font-size:10px;
+    gap:4px;
+    margin-bottom:14px;
+    flex-wrap:nowrap;
+    white-space:nowrap;
+    letter-spacing:-.2px
+  }
+  .workflow svg {
+    width:10px;
+    height:10px
+  }
+  .workflow .flow-icon {
+    display:none
+  }
+  .triage-grid {
+    grid-template-columns:1fr;
+    gap:16px
+  }
+  .triage-grid .panel-card {
+    padding:17px
+  }
+  .field-grid {
+    grid-template-columns:minmax(0,1.4fr) minmax(100px,1fr)
+  }
+  .field textarea {
+    min-height:170px
+  }
+  .examples {
+    gap:5px
+  }
+  .example-button {
+    padding:7px 8px;
+    font-size:11px;
+    min-height:36px
+  }
+  .empty-state {
+    min-height:220px;
+    padding:25px 20px
+  }
+  .analysis-approval .button {
+    white-space:normal
+  }
+  .factor-grid {
+    gap:11px 13px
+  }
+  .analysis-title {
+    font-size:15px
+  }
+  .approval-footer {
+    align-items:flex-start;
+    flex-direction:column
+  }
+  .approval-footer .button {
+    width:100%
+  }
+  .lock-status {
+    max-width:none
+  }
+  .draft-tabs {
+    gap:5px
+  }
+  .draft-tab {
+    font-size:11px;
+    padding:8px;
+    flex:1;
+    white-space:normal
+  }
+  .draft-editor {
+    min-height:260px
+  }
+  .checklist label {
+    font-size:12px
+  }
+  .verification-box {
+    padding:12px
+  }
+  .footer-note {
+    font-size:10px;
+    gap:6px
+  }
+  .capacity-footnote {
+    font-size:11px
+  }
+  .info {
+    min-height:28px
+  }
+  .help-bubble {
+    max-width:calc(100vw - 32px)
+  }
+  .rank {
+    width:19px;
+    height:19px
+  }
+}
+@media(max-width:640px) {
+  .navigation {
+    gap:3px
+  }
+  .nav-tab {
+    gap:3px;
+    white-space:nowrap
+  }
+  .nav-tab svg {
+    width:14px;
+    height:14px
+  }
+  .nav-item .info {
+    min-height:44px
+  }
+  .portfolio-meta .separator {
+    display:inline
+  }
+  .workflow {
+    flex-wrap:wrap;
+    white-space:normal
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*:before,*:after {
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important
+  }
+}
 </style>
 </head>
-<body class="min-h-screen flex flex-col">
-
-  <!-- HERO HEADER: ZERO JARGON, 5-SECOND CLARITY -->
-  <header class="bg-white border-b border-slate-200">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-        <div class="inline-flex items-center gap-2 text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1 rounded-full">
-          <i data-lucide="compass" class="w-3.5 h-3.5"></i>
-          Tarang Cloud · Monday 9:30 AM Portfolio Decision System
-        </div>
-        <button type="button" id="btn-export-json" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-medium text-slate-700 hover:bg-slate-50 transition">
-          <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Plan
-        </button>
+<body>
+<header class="topbar"><div class="topbar-inner">
+  <div class="brand"><span class="brand-icon"><i data-lucide="cloud" aria-hidden="true"></i></span><div><div class="brand-name">Tarang Cloud</div><div class="brand-subtitle">Portfolio Intelligence</div></div></div>
+  <div class="workspace-note"><span class="desktop-only">Associate Manager workspace</span><span class="demo-tag">Demo portfolio</span></div>
+</div></header>
+<main class="workspace">
+  <div class="page-heading"><div><h1>Monday Portfolio Overview</h1><p class="page-description">Prioritize client issues, respond to emerging risks and allocate limited specialist resources.</p></div>
+    <button type="button" id="btn-export-json" class="button export-button" aria-label="Export Plan"><i data-lucide="download" aria-hidden="true"></i>Export Plan</button>
+  </div>
+  <section class="kpi-strip" aria-label="Portfolio summary" id="kpi-strip"></section>
+  <div class="portfolio-meta"><span id="portfolio-coverage"></span><span class="finance" id="portfolio-finance"></span></div>
+  <nav class="navigation" aria-label="Main navigation">
+    <div class="nav-item"><button type="button" class="nav-tab" id="tab-plan" data-step="plan" role="tab" aria-selected="true" aria-controls="panel-plan"><i data-lucide="layout-dashboard" aria-hidden="true"></i>Portfolio</button><button type="button" class="info" aria-label="About Portfolio" data-help="View ranked issues, select scenarios and allocate specialist hours."><i data-lucide="info" aria-hidden="true"></i></button></div>
+    <div class="nav-item"><button type="button" class="nav-tab" id="tab-ai" data-step="ai" role="tab" aria-selected="false" aria-controls="panel-ai" tabindex="-1"><i data-lucide="sparkles" aria-hidden="true"></i>AI Triage</button><button type="button" class="info" aria-label="About AI Triage" data-help="Analyze new client messages and determine how they affect current priorities."><i data-lucide="info" aria-hidden="true"></i></button></div>
+    <div class="nav-item"><button type="button" class="nav-tab" id="tab-messages" data-step="messages" role="tab" aria-selected="false" aria-controls="panel-messages" tabindex="-1"><i data-lucide="shield-check" aria-hidden="true"></i>Human Approval</button><button type="button" class="info" aria-label="About Human Approval" data-help="Review drafted responses and verify sensitive actions before copying for manual sending."><i data-lucide="info" aria-hidden="true"></i></button></div>
+  </nav>
+  <section id="panel-plan" class="panel-tab" role="tabpanel" aria-labelledby="tab-plan">
+    <div class="portfolio-layout">
+      <div class="action-plan">
+        <div class="section-heading"><h2>Today's action plan</h2><span class="muted" id="plan-count"></span></div>
+        <div id="comparison-note" class="comparison-note hidden" role="status">Deal-value comparison is active. Emergency escalation stays in place.</div>
+        <div class="group-heading danger"><i data-lucide="circle-alert" aria-hidden="true"></i><h3>Immediate Emergencies</h3><span id="emergency-count" class="count"></span><button type="button" class="info" aria-label="Why emergencies come first" data-help="Live financial outages and active public complaints bypass weighted ranking. Their reference scores never justify postponing escalation."><i data-lucide="info" aria-hidden="true"></i></button></div>
+        <div id="emergency-cards" class="task-list"></div>
+        <div class="group-heading"><h3 id="queue-heading">Ranked Priorities</h3><span id="queue-count" class="count"></span></div>
+        <div id="queue-cards" class="task-list"></div>
       </div>
-
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-3xl">
-        7 Monday fires. ₹4.4 Cr at stake. Only 9 specialist hours.
-      </h1>
-      <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
-        An AI-assisted prioritization system for managing 12 business clients. It separates <strong>true emergencies</strong> from <strong>weighted priorities</strong>, checks your <strong>Engineer (8 hrs)</strong> and <strong>Demo Specialist (1 hr)</strong> availability, and pauses for <strong>human approval</strong> before any message goes out.
-      </p>
-
-      <!-- 12-CLIENT PORTFOLIO COVERAGE STRIP -->
-      <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5">
-        <span><strong class="text-slate-900">12 Clients Monitored</strong></span>
-        <span class="text-slate-300">|</span>
-        <span><strong class="text-blue-700">6 Active Triggers</strong> + 1 Internal Audit today</span>
-        <span class="text-slate-300">|</span>
-        <span><strong class="text-teal-700">6 Quiet Accounts</strong> (watched weekly for silent usage drops)</span>
-      </div>
-
-      <!-- 3 PLAIN-ENGLISH STEP TABS -->
-      <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-2.5" role="tablist">
-        <button type="button" data-step="plan" class="step-tab text-left p-3.5 rounded-xl border-2 border-blue-600 bg-blue-50/70 transition">
-          <span class="text-xs font-bold text-blue-700 uppercase tracking-wide block">Step 1 · Priority Plan</span>
-          <span class="text-sm font-bold text-slate-900 block mt-0.5">What should I do first?</span>
-          <span class="text-xs text-slate-600 block mt-0.5">Emergency lane, weighted math &amp; team hours</span>
-        </button>
-        <button type="button" data-step="ai" class="step-tab text-left p-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition">
-          <span class="text-xs font-bold text-slate-500 uppercase tracking-wide block">Step 2 · Live AI Triage</span>
-          <span class="text-sm font-bold text-slate-900 block mt-0.5">Test the AI on a new message</span>
-          <span class="text-xs text-slate-600 block mt-0.5">Watch AI score an email &amp; update the plan</span>
-        </button>
-        <button type="button" data-step="messages" class="step-tab text-left p-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition">
-          <span class="text-xs font-bold text-slate-500 uppercase tracking-wide block">Step 3 · Human Safety</span>
-          <span class="text-sm font-bold text-slate-900 block mt-0.5">Approve replies &amp; red lines</span>
-          <span class="text-xs text-slate-600 block mt-0.5">What AI drafts vs. never sends alone</span>
-        </button>
-      </div>
+      <aside class="sidebar" aria-label="Planning controls">
+        <section class="panel-card scenario-card">
+          <div class="panel-heading"><h2>Weekly scenario</h2><button type="button" class="info" aria-label="About weekly scenarios" data-help="Scenarios change factor weights and reorder ranked priorities. Emergency escalation and specialist hours stay unchanged unless you edit allocations."><i data-lucide="info" aria-hidden="true"></i></button></div>
+          <div class="scenario-grid" id="scenario-row"></div>
+          <div id="scenario-change" class="change-note hidden" aria-live="polite"></div>
+          <div class="compare-control" aria-label="Priority comparison"><button type="button" id="mode-smart" aria-pressed="true">Weighted priority</button><button type="button" id="mode-naive" aria-pressed="false">Deal value only</button></div>
+        </section>
+        <section class="panel-card scoring-card">
+          <div class="settings-heading"><h2>Priority Scoring Settings</h2><button type="button" class="info" aria-label="About priority scoring" data-help="Six factors receive 1–5 ratings. The weighted average uses full-precision weights normalized to 100%. Open a task's details to inspect every contribution."><i data-lucide="info" aria-hidden="true"></i></button></div>
+          <button type="button" class="text-button" id="btn-toggle-weights" aria-expanded="false" aria-controls="weights-drawer">Adjust Weights</button>
+          <div id="weights-drawer" class="weights-body hidden"><div class="weight-total"><span>Normalized total <strong>100%</strong></span><button type="button" class="text-button" id="btn-rebalance">Auto-Balance</button></div><div id="sliders-grid"></div><p class="small muted">All-zero weights use an equal split.</p></div>
+        </section>
+        <section class="panel-card capacity-card">
+          <div class="panel-heading"><h2>Resource capacity</h2><button type="button" class="info" aria-label="About resource capacity" data-help="Engineer and Demo Specialist budgets belong to different people. Hours are planning allocations, never confirmed bookings or resolution promises. Zero hours leaves the task unallocated."><i data-lucide="info" aria-hidden="true"></i></button></div>
+          <div id="capacity-budgets"></div>
+          <div id="capacity-warning" class="capacity-alert hidden" role="alert"></div>
+          <button type="button" id="btn-edit-allocations" class="text-button" aria-expanded="false" aria-controls="allocation-editor">Edit allocations</button>
+          <div id="allocation-editor" class="allocation-editor hidden"></div>
+          <div class="capacity-footnote"><i data-lucide="users-round" aria-hidden="true"></i>Kabir: Tier-2 Support · no Engineer hours</div>
+        </section>
+      </aside>
     </div>
-  </header>
-
-  <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
-
-    <!-- ==================== STEP 1: PRIORITY PLAN ==================== -->
-    <section id="panel-plan" class="space-y-6">
-
-      <!-- HOW PRIORITY WORKS + SCENARIO SWITCHER -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h2 class="text-base font-bold text-slate-900">1. How priority adapts to the week</h2>
-            <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Switch the weekly situation below—or compare against sorting blindly by contract value.</p>
-          </div>
-          <div class="inline-flex rounded-lg bg-slate-100 p-1 shrink-0 self-start">
-            <button type="button" id="mode-smart" class="px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-900 text-white transition">Smart System</button>
-            <button type="button" id="mode-naive" class="px-3 py-1.5 rounded-md text-xs font-semibold text-slate-600 hover:text-slate-900 transition">Compare: Deal Size Only</button>
-          </div>
-        </div>
-
-        <div id="scenario-row" class="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-          <button type="button" data-scenario="crisis" class="scenario-btn p-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-left transition">
-            <span class="text-xs font-bold text-blue-800 block">Today: Crisis Monday</span>
-            <span class="text-[11px] text-slate-600 block mt-0.5">Live outage &amp; public complaint</span>
-          </button>
-          <button type="button" data-scenario="renewal" class="scenario-btn p-3 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition">
-            <span class="text-xs font-bold text-slate-800 block">Quarter-End Crunch</span>
-            <span class="text-[11px] text-slate-600 block mt-0.5">Expiring contracts first</span>
-          </button>
-          <button type="button" data-scenario="exec" class="scenario-btn p-3 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition">
-            <span class="text-xs font-bold text-slate-800 block">Executive Visit Week</span>
-            <span class="text-[11px] text-slate-600 block mt-0.5">Leadership meetings &amp; debt</span>
-          </button>
-          <button type="button" data-scenario="growth" class="scenario-btn p-3 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition">
-            <span class="text-xs font-bold text-slate-800 block">Calm Growth Week</span>
-            <span class="text-[11px] text-slate-600 block mt-0.5">Expansion &amp; fixing repeat bugs</span>
-          </button>
-        </div>
-
-        <div id="mode-explanation" class="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs sm:text-sm text-blue-950 flex items-start gap-2.5">
-          <i data-lucide="info" class="w-4 h-4 text-blue-700 shrink-0 mt-0.5"></i>
-          <div id="mode-explanation-text"></div>
-        </div>
-
-        <!-- Expanders for Rubric & Weights -->
-        <div class="flex flex-wrap items-center gap-5 pt-1">
-          <button type="button" id="btn-toggle-rubric" class="text-xs font-semibold text-blue-700 hover:text-blue-900 inline-flex items-center gap-1.5 transition">
-            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-            <span id="toggle-rubric-label">See how the 6 factors are scored (1–5 scale)</span>
-          </button>
-          <button type="button" id="btn-toggle-weights" class="text-xs font-semibold text-slate-600 hover:text-blue-700 inline-flex items-center gap-1.5 transition">
-            <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
-            <span id="toggle-weights-label">Adjust the 6 factor weights live</span>
-          </button>
-        </div>
-
-        <!-- 1-5 Rubric Drawer (Zero shortforms) -->
-        <div id="rubric-drawer" class="hidden pt-3 border-t border-slate-200">
-          <p class="text-xs font-bold text-slate-900 mb-2">Every issue is scored 1 to 5 on six plain-English business factors:</p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
-            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">1. Deal Value &amp; Upside</strong>
-              <span class="text-slate-600">5 = ₹1 Cr+, 4 = ₹70–95L, 3 = ₹40–65L, 1 = ≤₹10L or internal.</span>
-            </div>
-            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">2. Deadline Urgency</strong>
-              <span class="text-slate-600">5 = Happening right now, 4 = Within 72 hrs / &lt;10-day renewal, 2 = Due Friday.</span>
-            </div>
-            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">3. Harm If Delayed</strong>
-              <span class="text-slate-600">5 = Irreversible external harm (unpaid farmers or public backlash), 1 = Reversible internal task.</span>
-            </div>
-            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">4. Churn &amp; Trust Risk</strong>
-              <span class="text-slate-600">5 = Active anger or silent renewal, 4 = Repeated failure, 1 = Routine admin.</span>
-            </div>
-            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">5. Fixes Repeat Bug</strong>
-              <span class="text-slate-600">5 = Stops a recurring failure permanently, 4 = Prevents future outage, 2 = One-off issue.</span>
-            </div>
-            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <strong class="text-slate-900 block">6. Growth &amp; Leadership Visibility</strong>
-              <span class="text-slate-600">5 = ₹60L expansion or executive visit next week, 3 = Standard retention, 1 = Low upside.</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Custom Weights Drawer with Auto-Balance -->
-        <div id="weights-drawer" class="hidden pt-3 border-t border-slate-200 space-y-3">
-          <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-            <span class="text-slate-600">Drag any slider—scores automatically normalize to 100%, or click Auto-Balance.</span>
-            <div class="flex flex-wrap items-center gap-3">
-              <label class="inline-flex items-center gap-1.5 font-medium text-slate-800 cursor-pointer">
-                <input type="checkbox" id="cb-safety-rules" checked class="w-3.5 h-3.5 rounded">
-                Separate Emergency Lane (Outage + Public Complaint)
-              </label>
-              <button type="button" id="btn-rebalance" class="px-2.5 py-1 rounded bg-slate-900 text-white font-semibold hover:bg-slate-800 transition">Auto-Balance 100%</button>
-            </div>
-          </div>
-          <div id="sliders-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
-        </div>
-      </div>
-
-      <!-- DYNAMIC 9-HOUR SPECIALIST CAPACITY BAR (REACTS TO AI-ADDED TASKS!) -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h2 class="text-base font-bold text-slate-900">2. Live specialist hours budget (9 hours total this week)</h2>
-            <p class="text-xs text-slate-600">Your Technical Engineer (8 hrs) and Sales Demo Specialist (1 hr) are separate people—and this bar updates automatically if AI adds a new emergency.</p>
-          </div>
-          <span id="capacity-status-pill" class="text-xs font-semibold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-full">Within Budget</span>
-        </div>
-
-        <div id="capacity-warning" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-900 font-medium"></div>
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
-          <div class="md:col-span-8 space-y-1.5">
-            <div class="flex justify-between text-xs font-semibold text-slate-700">
-              <span>Technical Engineer · <span id="eng-hours-text" class="mono">8.0 / 8.0 hrs</span></span>
-              <span id="eng-rev-text" class="mono text-blue-700">₹2.65 Cr Protected</span>
-            </div>
-            <div id="eng-bar" class="w-full h-9 rounded-lg overflow-hidden flex text-[11px] font-bold text-white bg-slate-100"></div>
-            <p class="text-[11px] text-slate-500">Kabir's ticket goes to Tier-2 Support (0 Engineer hrs). Renewal &amp; internal audit are handled by you + AI.</p>
-          </div>
-
-          <div class="md:col-span-4 space-y-1.5">
-            <div class="flex justify-between text-xs font-semibold text-slate-700">
-              <span>Sales Demo Specialist · <span id="demo-hours-text" class="mono">1.0 / 1.0 hr</span></span>
-              <span id="demo-rev-text" class="mono text-teal-700">+₹60L Upside</span>
-            </div>
-            <div id="demo-bar" class="w-full h-9 rounded-lg overflow-hidden flex text-[11px] font-bold text-white bg-slate-100"></div>
-            <p class="text-[11px] text-slate-500">Booked in parallel Monday morning—zero conflict with outages.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- TWO-TIER PRIORITY LIST (SOLVES THE 3.80 > 3.90 CONFUSION!) -->
-      <div class="space-y-5">
-        <!-- Lane 1: Emergency Overrides -->
-        <div id="emergency-section" class="space-y-2.5">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <h2 class="text-base font-bold text-rose-800 flex items-center gap-2">
-                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-                Lane A · Immediate Emergencies (Bypass Weighted Queue)
-              </h2>
-              <p class="text-xs text-slate-600">Live financial outages and active public reputation fires cannot wait for a score comparison—handle these first before 10:00 AM.</p>
-            </div>
-            <span id="emergency-count" class="text-xs font-bold text-rose-800 bg-rose-100 px-2.5 py-1 rounded-full">2 Immediate</span>
-          </div>
-          <div id="emergency-cards" class="space-y-2.5"></div>
-        </div>
-
-        <!-- Lane 2: Dynamically Ranked Queue -->
-        <div class="space-y-2.5">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <h2 id="queue-heading" class="text-base font-bold text-slate-900">Lane B · Ranked Priority Queue (Sorted Strictly by Weighted Score)</h2>
-              <p class="text-xs text-slate-600">Every item below is ordered highest-to-lowest by its transparent 6-factor score. Click any card to inspect the exact math and action plan.</p>
-            </div>
-            <span id="queue-count" class="text-xs font-bold text-slate-700 bg-slate-200 px-2.5 py-1 rounded-full">5 Ranked</span>
-          </div>
-          <div id="queue-cards" class="space-y-2.5"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== STEP 2: LIVE AI TRIAGE ==================== -->
-    <section id="panel-ai" class="hidden space-y-6">
-      <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-5">
-        <div>
-          <h2 class="text-lg font-bold text-slate-900">Test How the AI Triage Agent Handles a New Monday Message</h2>
-          <p class="text-sm text-slate-600 mt-1">In production, this agent scans Monday's ~120 emails, 40 tickets, 12 CRM accounts, and LinkedIn mentions at 7:00 AM. Pick a sample message below (or write your own) to watch the AI label all 6 factors, run the scoring math, check your 9 specialist hours, and pause for human approval.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <!-- Left: Message Input -->
-          <div class="lg:col-span-5 space-y-4">
-            <div>
-              <p class="text-xs font-semibold text-slate-700 mb-2">Pick a realistic incoming signal:</p>
-              <div class="flex flex-wrap gap-2">
-                <button type="button" data-sample="silent" class="sample-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-800 transition">Silent Client Going Dark (₹65L)</button>
-                <button type="button" data-sample="outage" class="sample-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-800 transition">Warehouse Dispatch Outage (₹85L)</button>
-                <button type="button" data-sample="upsell" class="sample-btn px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-blue-100 text-slate-800 transition">New Expansion Demo (₹50L)</button>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-3 gap-3">
-              <div class="col-span-2">
-                <label for="ai-client" class="block text-xs font-semibold text-slate-700 mb-1">Client Name</label>
-                <input id="ai-client" type="text" value="FreshMart Logistics" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg">
-              </div>
-              <div>
-                <label for="ai-acv" class="block text-xs font-semibold text-slate-700 mb-1">Deal (₹ Lakh)</label>
-                <input id="ai-acv" type="number" min="1" max="500" value="65" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg mono">
-              </div>
-            </div>
-
-            <div>
-              <label for="ai-message" class="block text-xs font-semibold text-slate-700 mb-1">Raw Client Email, Ticket, or Social Post</label>
-              <textarea id="ai-message" rows="4" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg">CRM alert: FreshMart Logistics (₹65L) has had zero logins from their warehouse manager for 14 days, invoice volume dropped 62% this week, and renewal is in 21 days with no reply to our check-in.</textarea>
-            </div>
-
-            <button type="button" id="btn-analyze" class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
-              <i data-lucide="sparkles" class="w-4 h-4"></i> Run AI Triage Agent
-            </button>
-
-            <!-- Tucked-away Developer Settings so first-time viewers aren't confused -->
-            <div class="pt-1">
-              <button type="button" id="btn-dev-settings" class="text-[11px] text-slate-400 hover:text-slate-700 underline">Developer option: override server key with your own Gemini API key</button>
-              <div id="dev-key-box" class="hidden mt-2">
-                <input id="ai-key" type="password" placeholder="Optional: AIzaSy... (leave blank to use hosted Vercel backend)" class="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg mono">
-              </div>
-            </div>
-          </div>
-
-          <!-- Right: Executive 5-Step Agent Flow (Clean light UI, not a coder console!) -->
-          <div class="lg:col-span-7 bg-slate-50 rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-col justify-between space-y-4">
-            <div class="space-y-3">
-              <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
-                <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                  <i data-lucide="workflow" class="w-4 h-4 text-blue-600"></i>
-                  Behind the Scenes: 5-Step AI Process
-                </h3>
-                <span id="agent-status-pill" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700">Ready</span>
-              </div>
-
-              <div id="agent-trace" class="space-y-2 text-xs min-h-[220px]">
-                <div class="p-4 rounded-xl bg-white border border-slate-200 text-slate-600 leading-relaxed">
-                  Click <strong>"Run AI Triage Agent"</strong> on the left to watch how AI reads messy text, labels the 6 business factors, runs transparent math, checks your 9 specialist hours, and asks for your approval before adding it to Monday's plan.
-                </div>
-              </div>
-
-              <div id="api-inspect-wrap" class="hidden pt-1">
-                <button type="button" id="btn-toggle-payload" class="text-xs font-medium text-blue-700 hover:underline">View technical API request &amp; JSON output</button>
-                <pre id="raw-payload-box" class="hidden mt-2 p-3 rounded-xl bg-slate-900 text-[11px] mono text-teal-300 overflow-x-auto max-h-48"></pre>
-              </div>
-            </div>
-
-            <button type="button" id="btn-add-to-list" disabled class="w-full py-2.5 px-4 rounded-xl bg-teal-600 text-white text-xs font-bold disabled:opacity-35 disabled:cursor-not-allowed hover:bg-teal-700 transition inline-flex items-center justify-center gap-1.5">
-              <i data-lucide="plus-circle" class="w-4 h-4"></i> Approve &amp; Add to Step 1 Plan (Updates Team Hours Live)
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== STEP 3: HUMAN SAFETY & DRAFTS ==================== -->
-    <section id="panel-messages" class="hidden space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
-          <div>
-            <h2 class="text-base font-bold text-slate-900">AI prepares the draft. You verify before anything is sent.</h2>
-            <p class="text-xs text-slate-600 mt-0.5">To prevent hallucinated fix times or robotic apologies, copying stays locked until every human check is ticked.</p>
-          </div>
-
-          <div class="flex flex-wrap gap-2">
-            <button type="button" data-msg="sushma" class="msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white">Sushma (2-Line Crisis Message)</button>
-            <button type="button" data-msg="kabir" class="msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Kabir (Public LinkedIn Reply)</button>
-            <button type="button" data-msg="vp" class="msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Leadership Pre-Brief (Orbit)</button>
-          </div>
-
-          <textarea id="msg-editor" rows="5" class="w-full p-3.5 text-sm border border-slate-300 rounded-xl leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-
-          <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 space-y-2">
-            <p class="text-xs font-bold text-amber-900">Required Human Verification Before Sending:</p>
-            <div id="msg-checks" class="space-y-2 text-xs text-amber-950"></div>
-          </div>
-
-          <div class="flex items-center justify-between pt-1">
-            <span id="msg-lock-hint" class="text-xs text-slate-500">Tick all boxes to unlock copy.</span>
-            <button type="button" id="btn-copy-msg" disabled class="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-800 transition inline-flex items-center gap-1.5">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Verified Message
-            </button>
-          </div>
-        </div>
-
-        <div class="lg:col-span-5 bg-slate-900 text-white rounded-2xl p-5 shadow-sm space-y-4">
-          <div class="flex items-center gap-2 text-rose-400">
-            <i data-lucide="shield-ban" class="w-5 h-5"></i>
-            <h2 class="text-base font-bold text-white">What AI Must NEVER Handle Alone</h2>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed">With a ₹1.2 Cr client like Sushma facing 40 unpaid farmers, these four decisions stay strictly human:</p>
-          <div class="space-y-2.5 text-xs">
-            <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-              <strong class="text-white block">1. Sending crisis apologies automatically</strong>
-              <span class="text-slate-300">An automated reply signals indifference when 40 suppliers are calling her directly.</span>
-            </div>
-            <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-              <strong class="text-white block">2. Promising when a technical bug will be fixed</strong>
-              <span class="text-slate-300">AI cannot inspect live server logs; guessing a wrong timeline breaks trust twice.</span>
-            </div>
-            <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-              <strong class="text-white block">3. Offering discounts, credits, or contract terms</strong>
-              <span class="text-slate-300">Commercial concessions require you and your manager Priya's direct approval.</span>
-            </div>
-            <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
-              <strong class="text-white block">4. Deciding when to pitch an expansion</strong>
-              <span class="text-slate-300">Only a human can judge when crisis recovery ends and trust is rebuilt.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg"></div>
-
+  </section>
+  <section id="panel-ai" class="panel-tab hidden" role="tabpanel" aria-labelledby="tab-ai">
+    <div class="workflow" aria-label="Analysis workflow"><span>Message</span><i data-lucide="chevron-right" aria-hidden="true"></i><span>AI assessment</span><i data-lucide="chevron-right" aria-hidden="true"></i><span>Priority</span><i data-lucide="chevron-right" aria-hidden="true"></i><span>Capacity</span><i data-lucide="chevron-right" aria-hidden="true"></i><span>Human approval</span></div>
+    <div class="triage-grid">
+      <section class="panel-card">
+        <div class="panel-heading"><h2>Incoming Message</h2><button type="button" class="info" aria-label="About incoming messages" data-help="Paste a message or try a sample from a separate account. The seven original Monday items stay in the portfolio. No live inbox or account lookup is connected."><i data-lucide="info" aria-hidden="true"></i></button></div>
+        <div class="examples" aria-label="Example scenarios"><button type="button" class="example-button" data-sample="silent">Usage drop</button><button type="button" class="example-button" data-sample="outage">Dispatch outage</button><button type="button" class="example-button" data-sample="upsell">Expansion demo</button></div>
+        <form id="triage-form">
+          <div class="field-grid"><div class="field"><label for="ai-client">Client name</label><input id="ai-client" maxlength="120" required value="FreshMart Logistics" autocomplete="organization"></div><div class="field"><label for="ai-acv">Contract value (₹ lakh)</label><input id="ai-acv" type="number" min="1" max="500" step="0.1" value="65" required></div></div>
+          <div class="field"><label for="ai-message">Incoming message</label><textarea id="ai-message" maxlength="3000" required rows="7">CRM alert: FreshMart Logistics (₹65L) has had zero logins from their warehouse manager for 14 days, invoice volume dropped 62% this week, and renewal is in 21 days with no reply to our check-in.</textarea></div>
+          <button type="submit" id="btn-analyze" class="button primary full"><i data-lucide="sparkles" aria-hidden="true"></i><span id="analyze-label">Analyze Message</span></button>
+          <label class="practice-control"><input id="use-simulator" type="checkbox"><span>Use offline simulator for practice</span><button type="button" class="info" aria-label="About simulation" data-help="Practice mode uses simple local rules and makes no AI request. Otherwise the secure Gemini backend is used, with clearly labelled simulator fallback on failure."><i data-lucide="info" aria-hidden="true"></i></button></label>
+        </form>
+        <p class="input-note"><i data-lucide="lock-keyhole" aria-hidden="true"></i>Credentials stay on the server.</p>
+      </section>
+      <section class="panel-card" aria-labelledby="analysis-heading">
+        <div class="panel-heading"><h2 id="analysis-heading">AI Analysis</h2><span id="agent-status-pill" class="badge gray" role="status">Awaiting message</span></div>
+        <div id="analysis-result"><div class="empty-state"><div class="empty-icon"><i data-lucide="scan-text" aria-hidden="true"></i></div><h3>Your next decision starts here</h3><p>Enter a client message to see its urgency, business impact and recommended action.</p></div></div>
+        <details class="technical-details" id="how-ai-works"><summary>How AI Works</summary><p>Gemini interprets the supplied message and proposes six factor labels, an emergency classification and a next action. JavaScript validates the labels, computes priority and checks the two specialist budgets. A person reviews the result before adding work. No messages or bookings are sent.</p><div id="api-inspect-wrap" class="hidden"><button type="button" id="btn-toggle-payload" class="text-button" aria-expanded="false" aria-controls="raw-payload-box">Inspect analysis data</button><pre id="raw-payload-box" class="payload hidden"></pre></div></details>
+      </section>
+    </div>
+  </section>
+  <section id="panel-messages" class="panel-tab hidden" role="tabpanel" aria-labelledby="tab-messages">
+    <div class="approval-layout">
+      <section class="panel-card">
+        <div class="panel-heading"><h2>Drafts Requiring Review</h2><span id="draft-status" class="badge amber">Needs review</span></div>
+        <div class="draft-tabs" aria-label="Select a draft"><button type="button" class="draft-tab" data-msg="sushma" aria-pressed="true">Sushma crisis response</button><button type="button" class="draft-tab" data-msg="kabir" aria-pressed="false">Kabir public reply</button><button type="button" class="draft-tab" data-msg="vp" aria-pressed="false">Orbit leadership brief</button></div>
+        <label for="msg-editor" class="draft-editor-label">Editable draft</label><textarea id="msg-editor" class="draft-editor" rows="7"></textarea>
+        <div class="verification-box"><div class="verification-heading"><span>Required verification <button type="button" class="info" aria-label="About draft verification" data-help="Complete every check and replace all bracketed placeholders. Any edit resets verification. Copying a verified draft still requires you to send it manually."><i data-lucide="info" aria-hidden="true"></i></button></span><span id="verification-count" class="badge gray">0 / 3</span></div><div id="msg-checks" class="checklist"></div></div>
+        <div class="approval-footer"><span id="msg-lock-hint" class="lock-status" aria-live="polite">Complete verification to unlock copying.</span><button type="button" id="btn-copy-msg" class="button primary" disabled><i data-lucide="copy" aria-hidden="true"></i>Copy Verified Draft</button></div>
+        <p class="approval-info"><i data-lucide="send" aria-hidden="true"></i>Copying does not send a message. Send manually after verification.</p>
+      </section>
+      <aside class="panel-card rules-card"><div class="panel-heading"><h2>Human Approval Rules</h2><i data-lucide="shield-check" class="muted" aria-hidden="true"></i></div><p class="rules-intro">Sensitive decisions stay with you.</p>
+        <details class="rule"><summary><i data-lucide="message-square-warning" aria-hidden="true"></i>No autonomous crisis communications</summary><p>Review the tone, facts and recipient before sending a crisis apology or public reply. Sushma and Kabir need personal ownership.</p></details>
+        <details class="rule"><summary><i data-lucide="clock" aria-hidden="true"></i>No unverified resolution promises</summary><p>AI cannot inspect live server logs. Only engineering can verify a technical diagnosis or clearance time.</p></details>
+        <details class="rule"><summary><i data-lucide="handshake" aria-hidden="true"></i>No unauthorized commercial commitments</summary><p>Discounts, credits and contract changes require your manager Priya's approval. Message her while she is travelling.</p></details>
+        <details class="rule"><summary><i data-lucide="pause-circle" aria-hidden="true"></i>No expansion pitch during a crisis</summary><p>A person decides when the issue is resolved and trust has recovered before starting an expansion conversation.</p></details>
+      </aside>
+    </div>
+  </section>
+  <footer class="footer-note"><span>Case 3 · Monday Morning Portfolio</span><span>Planning prototype · Human decisions, AI assistance</span></footer>
+</main>
+<div id="help-bubble" class="help-bubble hidden" role="tooltip"></div>
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 <script>
 const SCENARIOS = {
   crisis: {
@@ -429,8 +1976,8 @@ const INITIAL_TASKS = [
     timing: 'ACT AT 9:35 AM', timingStyle: 'bg-rose-100 text-rose-800', owner: 'Technical Engineer (4h) + You',
     why: 'Active financial outage hitting your largest client and 40 external suppliers.',
     evidence: 'Deal: 5 (₹1.2 Cr) · Urgency: 5 (stuck 2 days) · Harm: 5 (40 unpaid farmers)',
-    nextStep: 'Send 2-line ownership message at 9:35 AM. Put Technical Engineer on invoice logs immediately (4h Mon morning). Call Sushma at 11:00 AM sharp with root cause.',
-    rootCause: 'Weekend invoice batch failed silently with zero automated alerting.',
+    nextStep: 'Send a verified 2-line ownership message at 9:35 AM. Assign Technical Engineer to invoice logs (4h Mon morning). Call Sushma at 11:00 AM with verified progress; confirm a clearance time only after engineering verifies it.',
+    rootCause: 'Cause unverified. Inspect invoice batch logs and alerting before claiming a technical diagnosis.',
     scores: { F: 5, U: 5, I: 5, R: 5, S: 4, G: 4 }
   },
   {
@@ -443,7 +1990,7 @@ const INITIAL_TASKS = [
     why: 'Small contract, high public brand damage—takes 15 minutes to contain without using your Engineer.',
     evidence: 'Deal: 1 (₹5L) · Urgency: 5 (live public post) · Harm: 5 (visible to prospects)',
     nextStep: 'Post accountable public reply on LinkedIn + send your phone number privately. Escalate ticket to Senior Support Lead (0 Engineer hours).',
-    rootCause: 'Small-deal tickets sat untouched because support had no 48-hour age escalation rule.',
+    rootCause: 'Ticket ignored for 10 days. Investigate routing and escalation rules; the reason for the delay is unverified.',
     scores: { F: 1, U: 5, I: 5, R: 5, S: 3, G: 1 }
   },
   {
@@ -456,7 +2003,7 @@ const INITIAL_TASKS = [
     why: 'Silence 9 days before renewal is the strongest signal of hidden churn or a competing vendor.',
     evidence: 'Deal: 4 (₹70L) · Urgency: 4 (9 days left) · Churn Risk: 5 (no response)',
     nextStep: 'Call the buyer directly at 10:30 AM to uncover commercial or legal blockers; message Priya asynchronously if pricing sign-off is needed.',
-    rootCause: 'Revised terms were emailed without booking a live follow-up call to resolve objections.',
+    rootCause: 'No response to revised terms; a commercial, legal, or relationship blocker is a hypothesis to verify on the call.',
     scores: { F: 4, U: 4, I: 4, R: 5, S: 2, G: 3 }
   },
   {
@@ -469,7 +2016,7 @@ const INITIAL_TASKS = [
     why: 'Restarting the server twice only hid the symptom—a 4th failure will likely trigger churn.',
     evidence: 'Repeat Bug: 5 (3rd time) · Urgency: 4 (active sync gap) · Churn Risk: 4',
     nextStep: 'Assign 2.5h Technical Engineer Mon afternoon to inspect logs, ban restart-only closures, and add a 30-minute sync-lag alert.',
-    rootCause: 'Underlying memory leak, expired auth token, or dropped webhook was never fixed.',
+    rootCause: 'Third recurrence after two restarts. Investigate logs and delivery failures; no technical root cause is confirmed yet.',
     scores: { F: 3, U: 4, I: 4, R: 4, S: 5, G: 2 }
   },
   {
@@ -515,15 +2062,15 @@ const INITIAL_TASKS = [
 
 const MESSAGES = {
   sushma: {
-    text: `Sushma, I own this—I've pulled our Technical Engineer onto Annam Foods right now as our #1 priority to unblock all 40 supplier invoices.\nI will call you at [VERIFY CALLBACK TIME, e.g. 11:00 AM] sharp with the root cause and exact payout clearance time, and stay on this personally until every invoice is through.`,
+    text: `Sushma, I own this—our Technical Engineer is investigating the stuck invoices affecting 40 farmers and suppliers, and I am coordinating the response personally.\nI will call you at [VERIFY CALLBACK TIME] with verified progress and next steps; I will confirm a clearance time only after engineering has verified it.`,
     checks: [
       'Confirmed our Technical Engineer is actively inspecting Annam Foods logs right now',
-      'Confirmed I am personally free for the 11:00 AM callback',
+      'Confirmed I am personally free at the callback time written above',
       'Replaced [VERIFY...] tag and promised zero unverified fix times'
     ]
   },
   kabir: {
-    text: `Hi Kabir, waiting 10 days on a support ticket is unacceptable—we dropped the ball and I'm sorry for the frustration. I've escalated your ticket directly to our senior support lead and just sent you a private message with my phone number so we can get this fixed today.`,
+    text: `Hi Kabir, waiting 10 days is unacceptable. We dropped the ball, and I'm sorry. I've escalated your ticket to our senior support lead. I will send my phone number privately and personally follow through on the next update.`,
     checks: [
       'Confirmed Kabir’s ticket is already assigned to Senior Support Lead',
       'Ready to send private message with my phone number right after posting',
@@ -531,7 +2078,7 @@ const MESSAGES = {
     ]
   },
   vp: {
-    text: `Hi [VP Name] — quick pre-brief before next week's Orbit Electronics visit (₹90L). They have 3 open issues from last quarter:\n1. [Issue #1]: Fixed by our Technical Engineer before your visit.\n2. [Issues #2 & #3]: Root-caused with owner [VERIFY OWNER] and confirmed fix date [VERIFY DATE].\nRecommended opener: Acknowledge these in minute one so we own the room.`,
+    text: `Hi [VP Name] — pre-brief before next week's Orbit Electronics visit (₹90L). Three issues remain from last quarter:\n1. [ISSUE 1: verified status, owner, next update]\n2. [ISSUE 2: verified status, owner, next update]\n3. [ISSUE 3: verified status, owner, next update]\nRecommended opener: acknowledge the open issues and explain the verified recovery plan.`,
     checks: [
       'Completed 1.5h Technical Engineer audit of all 3 Orbit issues',
       'Filled in real engineering owner and confirmed fix dates',
@@ -563,245 +2110,347 @@ let state = {
   tasks: INITIAL_TASKS.map(t => ({ ...t, scores: { ...t.scores } })),
   openCardId: 1,
   parsedTask: null,
+  analyzing: false,
   activeMsg: 'sushma',
   msgChecked: {}
 };
 
-function showToast(txt) {
-  const el = document.getElementById('toast');
-  el.textContent = txt;
-  el.classList.remove('hidden');
-  clearTimeout(window._t);
-  window._t = setTimeout(() => el.classList.add('hidden'), 2600);
-}
+const TASK_META = {
+  1: { title: 'Annam Foods', problem: 'Supplier invoices blocked since Saturday; 40 farmers and suppliers unpaid.', next: 'Escalate the invoice outage and investigate logs immediately.' },
+  4: { title: 'Kabir · Toy Brand', problem: 'Public LinkedIn complaint after a support ticket was ignored for 10 days.', next: 'Acknowledge publicly and assign Tier-2 Support.' },
+  3: { title: 'Silent Renewal', problem: 'Contract expires in 9 days; no response to revised terms.', next: 'Call the buyer at 10:30 AM; message Priya on commercial blockers.' },
+  5: { title: 'Recurring Order Bug', problem: 'Automatic order updates missing for the third time this quarter.', next: 'Investigate the root cause; reject another restart-only closure.' },
+  6: { title: 'Orbit Electronics', problem: 'Vice President visits next week; three issues remain from last quarter.', next: 'Audit the three issues and prepare a leadership pre-brief.' },
+  2: { title: 'Wednesday Demo', problem: 'Delivery-partner scheduling demo requested; ₹60L potential expansion.', next: 'Request the Wednesday specialist slot and confirm the demo scope.' },
+  7: { title: 'Internal Audit', problem: 'Client notes and pipeline records need updating by Friday.', next: 'Stage account notes and review the proposed updates by Friday.' }
+};
+const SCENARIO_HELP = {
+  crisis: 'Urgency and harm carry half the weight. Live outages and public complaints always stay in the emergency lane.',
+  renewal: 'Deal Value and Churn Risk carry half the weight, emphasizing near-term renewal and retention.',
+  exec: 'Executive importance rises to 15%, with more weight on trust and recurring technical debt.',
+  growth: 'Growth and Repeat Bug together carry 45%. Emergencies remain pinned even in a growth-focused week.'
+};
+const FACTOR_HELP = {
+  F: 'Deal Value: 5 = ₹1 Cr or more including explicit expansion; 4 = ₹70–99L; 3 = ₹40–69L; 2 = above ₹10L and below ₹40L; 1 = ₹10L or less / internal.',
+  U: 'Deadline Urgency: 5 = immediate live harm; 4 = within 72 hours or renewal in under 10 days; 3 = this week; 2 = Friday administration; 1 = no deadline.',
+  I: 'Harm if Delayed: 5 = external financial or public harm; 4 = substantial customer impact; 3 = limited disruption; 2 = reversible inconvenience; 1 = internal administration.',
+  R: 'Churn Risk: 5 = active anger or a silent near-term renewal; 4 = repeated failure; 3 = warning signs; 2 = ordinary request; 1 = routine administration.',
+  S: 'Repeat Bug: 5 = recurring failure needing a permanent fix; 4 = outage prevention; 3 = possible systemic debt; 2 = one-off issue; 1 = no technical issue.',
+  G: 'Growth / Executive Importance: 5 = material expansion or an executive visit next week; 4 = strong strategic signal; 3 = ordinary retention; 2 = limited upside; 1 = none.'
+};
+FACTORS.find(f => f.key === 'U').label = 'Deadline Urgency';
+FACTORS.find(f => f.key === 'G').label = 'Growth / Executive Importance';
+SCENARIOS.crisis.name = 'Crisis Monday';
+state.openCardId = null;
+state.expandedTasks = new Set();
+state.addedSignals = new Set();
+state.triageReviewed = false;
+state.analysisMeta = null;
+state.currentStep = 'plan';
+state.tasks.forEach(task => { task.planningResource = task.engHours > 0 ? 'engineer' : task.demoHours > 0 ? 'demo' : null; });
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+}
+function icon(name) { return '<i data-lucide="' + name + '" aria-hidden="true"></i>'; }
+function info(label, message) {
+  return '<button type="button" class="info" aria-label="' + escapeHtml(label) + '" data-help="' + escapeHtml(message) + '">' + icon('info') + '</button>';
+}
+function refreshIcons() { if (window.lucide) window.lucide.createIcons(); }
+function showToast(text) {
+  const toast = document.getElementById('toast');
+  toast.textContent = text;
+  toast.classList.remove('hidden');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => toast.classList.add('hidden'), 3500);
+}
 function getNormalizedWeights() {
-  const w = state.weights;
-  const sum = Object.values(w).reduce((a, b) => a + b, 0) || 100;
-  const out = {};
-  FACTORS.forEach(f => { out[f.key] = (w[f.key] / sum) * 100; });
-  return out;
+  const sum = FACTORS.reduce((total, factor) => total + state.weights[factor.key], 0);
+  return Object.fromEntries(FACTORS.map(factor => [factor.key, sum > 0 ? state.weights[factor.key] / sum * 100 : 100 / FACTORS.length]));
 }
-
-function scoreTask(t) {
-  const nw = getNormalizedWeights();
-  const val = FACTORS.reduce((acc, f) => acc + t.scores[f.key] * (nw[f.key] / 100), 0);
-  return Number(val.toFixed(2));
+function scoreTask(task) {
+  const weights = getNormalizedWeights();
+  return Number(FACTORS.reduce((sum, factor) => sum + task.scores[factor.key] * weights[factor.key] / 100, 0).toFixed(2));
 }
-
-function formatPlainMath(t) {
-  const nw = getNormalizedWeights();
-  const parts = FACTORS.map(f => `${f.label} (${t.scores[f.key]}×${Math.round(nw[f.key])}%)`);
-  return `${parts.join(' + ')} = ${scoreTask(t).toFixed(2)} / 5.00`;
+function formatPlainMath(task) {
+  const weights = getNormalizedWeights();
+  return FACTORS.map(factor => factor.label + ' (' + task.scores[factor.key] + '×' + Number(weights[factor.key].toFixed(2)) + '%)').join(' + ') + ' = ' + scoreTask(task).toFixed(2) + ' / 5.00 (rounded; uses full-precision weights)';
 }
-
-function renderCapacityBar() {
-  const engTasks = state.tasks.filter(t => t.engHours > 0);
-  const demoTasks = state.tasks.filter(t => t.demoHours > 0);
-  const engSum = engTasks.reduce((s, t) => s + t.engHours, 0);
-  const demoSum = demoTasks.reduce((s, t) => s + t.demoHours, 0);
-  const engRev = engTasks.reduce((s, t) => s + t.deal, 0);
-  const demoRev = demoTasks.reduce((s, t) => s + (t.upside || t.deal), 0);
-
-  document.getElementById('eng-hours-text').textContent = `${engSum.toFixed(1)} / 8.0 hrs`;
-  document.getElementById('eng-rev-text').textContent = `₹${(engRev / 100).toFixed(2)} Cr Protected`;
-  document.getElementById('demo-hours-text').textContent = `${demoSum.toFixed(1)} / 1.0 hr`;
-  document.getElementById('demo-rev-text').textContent = `+₹${demoRev}L Upside`;
-
-  const engBase = Math.max(8, engSum);
-  document.getElementById('eng-bar').innerHTML = engTasks.map((t, i) => `
-    <div class="${t.barColor} flex items-center justify-center px-1.5 truncate ${i > 0 ? 'border-l border-white/30' : ''}" style="width:${(t.engHours / engBase) * 100}%">
-      ${t.shortLabel} · ${t.engHours}h
-    </div>
-  `).join('');
-
-  const demoBase = Math.max(1, demoSum);
-  document.getElementById('demo-bar').innerHTML = demoTasks.map((t, i) => `
-    <div class="${t.barColor} flex items-center justify-center px-1.5 truncate ${i > 0 ? 'border-l border-white/30' : ''}" style="width:${(t.demoHours / demoBase) * 100}%">
-      ${t.shortLabel} · ${t.demoHours}h
-    </div>
-  `).join('');
-
-  const warn = document.getElementById('capacity-warning');
-  const pill = document.getElementById('capacity-status-pill');
-  if (engSum > 8 || demoSum > 1) {
-    const msgs = [];
-    if (engSum > 8) msgs.push(`Technical Engineer is overbooked by ${(engSum - 8).toFixed(1)} hrs (${engSum.toFixed(1)}/8.0h) — defer Orbit's 1.5h audit to Wednesday or pull backup.`);
-    if (demoSum > 1) msgs.push(`Sales Demo Specialist is overbooked by ${(demoSum - 1).toFixed(1)} hrs (${demoSum.toFixed(1)}/1.0h) — schedule the second demo for next week.`);
-    warn.textContent = `Capacity Alert: ${msgs.join(' ')}`;
-    warn.classList.remove('hidden');
-    pill.textContent = 'Overbooked — Tradeoff Needed';
-    pill.className = 'text-xs font-semibold text-rose-800 bg-rose-100 px-2.5 py-1 rounded-full';
-  } else {
-    warn.classList.add('hidden');
-    pill.textContent = 'Within 9h Budget';
-    pill.className = 'text-xs font-semibold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-full';
+function taskMeta(task) {
+  return TASK_META[task.id] || { title: task.clientName || task.name.split(' — ')[0], problem: task.why, next: task.nextStep };
+}
+function taskLabel(task) { return taskMeta(task).title; }
+function hours(value) { return Number(value.toFixed(2)).toString(); }
+function isEmergency(task) { return task.gate === 'OUTAGE' || task.gate === 'PR'; }
+function resourceOf(task) { return task.planningResource || (task.engHours > 0 ? 'engineer' : task.demoHours > 0 ? 'demo' : null); }
+function assignmentText(task) {
+  if (resourceOf(task) === 'engineer') return 'Engineer · ' + (task.engHours ? hours(task.engHours) + 'h' : 'unallocated') + (task.id === 1 ? ' + You' : '');
+  if (resourceOf(task) === 'demo') return 'Demo Specialist · ' + (task.demoHours ? hours(task.demoHours) + 'h' : 'unallocated');
+  if (task.gate === 'PR') return 'You + Tier-2 Support · 0 Engineer hours';
+  return task.id === 3 ? 'You · Priya by message' : 'You · no specialist hours';
+}
+function getPriorityGroups(mode = state.mode) {
+  const scored = state.tasks.map(task => ({ ...task, score: scoreTask(task) }));
+  return {
+    emergencies: scored.filter(isEmergency).sort((a, b) => {
+      if (a.id === 1) return -1;
+      if (b.id === 1) return 1;
+      return Number(b.gate === 'OUTAGE') - Number(a.gate === 'OUTAGE') || a.id - b.id;
+    }),
+    ranked: scored.filter(task => !isEmergency(task)).sort(mode === 'naive' ? (a, b) => (b.deal + b.upside) - (a.deal + a.upside) || a.id - b.id : (a, b) => b.score - a.score || a.id - b.id)
+  };
+}
+function getPortfolioTotals() {
+  const accounts = new Map();
+  state.tasks.filter(task => task.deal > 0).forEach(task => {
+    const key = (task.clientName || taskLabel(task)).toLowerCase().replace(/[^a-z0-9]/g, '');
+    const previous = accounts.get(key);
+    if (!previous) accounts.set(key, { deal: task.deal, upside: task.upside || 0 });
+    else previous.upside = Math.max(previous.upside, task.upside || 0);
+  });
+  return {
+    clients: 6 + accounts.size, active: state.tasks.filter(task => task.deal > 0).length,
+    internal: state.tasks.filter(task => task.deal === 0).length,
+    acv: [...accounts.values()].reduce((sum, account) => sum + account.deal, 0),
+    upside: [...accounts.values()].reduce((sum, account) => sum + account.upside, 0)
+  };
+}
+function getCapacitySummary(extraTask = null) {
+  const tasks = extraTask ? [...state.tasks, extraTask] : state.tasks;
+  const summary = {};
+  for (const [key, available, field] of [['engineer', 8, 'engHours'], ['demo', 1, 'demoHours']]) {
+    const assignments = tasks.filter(task => resourceOf(task) === key);
+    const used = Number(assignments.reduce((sum, task) => sum + task[field], 0).toFixed(2));
+    summary[key] = { available, used, remaining: Number((available - used).toFixed(2)), overbooked: used > available, assignments };
   }
+  summary.unallocated = tasks.filter(task => resourceOf(task) && task[resourceOf(task) === 'engineer' ? 'engHours' : 'demoHours'] === 0);
+  return summary;
 }
-
-function buildCardHTML(t, rankNum, isEmergency) {
-  const isOpen = state.openCardId === t.id;
-  const badgeBg = isEmergency ? 'bg-rose-600 text-white' : rankNum <= 2 ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-800';
-  const rightMetric = state.mode === 'naive'
-    ? `<span class="text-xs font-bold mono text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">${t.dealText}</span>`
-    : `<div class="text-right">
-         <span class="text-base font-extrabold mono ${isEmergency ? 'text-rose-700' : 'text-blue-700'}">${t.score.toFixed(2)}</span>
-         <span class="text-[11px] text-slate-400 block leading-none">/ 5.0</span>
-       </div>`;
-
-  return `
-    <div class="bg-white rounded-2xl border ${isOpen ? 'border-blue-400 ring-1 ring-blue-100' : isEmergency ? 'border-rose-200' : 'border-slate-200'} shadow-sm overflow-hidden transition">
-      <div class="p-4 flex flex-wrap sm:flex-nowrap items-start justify-between gap-3 cursor-pointer card-header" data-cid="${t.id}">
-        <div class="flex items-start gap-3.5 min-w-0">
-          <div class="w-8 h-8 rounded-full ${badgeBg} flex items-center justify-center text-xs font-extrabold mono shrink-0 mt-0.5">${isEmergency ? '!' : '#' + rankNum}</div>
-          <div class="min-w-0">
-            <div class="flex flex-wrap items-center gap-2 mb-1">
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md ${t.timingStyle}">${t.timing}</span>
-              <span class="text-xs font-medium text-slate-500 mono">${t.dealText}</span>
-            </div>
-            <h3 class="text-sm sm:text-base font-bold text-slate-900 leading-snug">${t.name}</h3>
-            <p class="text-xs sm:text-sm text-slate-600 mt-1">${t.why}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-3 shrink-0 ml-auto">
-          <div class="hidden sm:block text-right">
-            <span class="text-[11px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">${t.owner}</span>
-          </div>
-          ${rightMetric}
-          <i data-lucide="${isOpen ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4 text-slate-400"></i>
-        </div>
-      </div>
-
-      ${isOpen ? `
-        <div class="px-4 pb-4 pt-3 bg-slate-50 border-t border-slate-200 space-y-3 text-xs sm:text-sm">
-          <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
-            <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">How this score was calculated (normalized to 100%)</div>
-            <div class="text-xs mono text-blue-900 leading-relaxed">${formatPlainMath(t)}</div>
-            <div class="text-xs text-slate-600"><strong>Why those 1–5 ratings:</strong> ${t.evidence}</div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <span class="font-bold text-slate-900 block mb-1">Exact Next Step (${t.owner}):</span>
-              <p class="text-slate-700 leading-relaxed">${t.nextStep}</p>
-            </div>
-            <div>
-              <span class="font-bold text-slate-900 block mb-1">Underlying Root Cause:</span>
-              <p class="text-slate-700 leading-relaxed">${t.rootCause}</p>
-            </div>
-          </div>
-        </div>
-      ` : ''}
-    </div>
-  `;
+function setAllocation(id, resource, value) {
+  const task = state.tasks.find(item => item.id === Number(id));
+  if (!task || resourceOf(task) !== resource || !Number.isFinite(value) || value < 0 || value > 24 || Math.abs(value * 4 - Math.round(value * 4)) > 1e-8) return false;
+  const field = resource === 'engineer' ? 'engHours' : 'demoHours';
+  if (task[field] !== value) state.triageReviewed = false;
+  task[field] = value;
+  return true;
 }
-
-function renderPlan() {
-  renderCapacityBar();
-
-  const expBox = document.getElementById('mode-explanation');
-  const expTxt = document.getElementById('mode-explanation-text');
-  const emSec = document.getElementById('emergency-section');
-  const queueHeading = document.getElementById('queue-heading');
-
-  const scored = state.tasks.map(t => ({ ...t, score: scoreTask(t) }));
-
-  if (state.mode === 'naive') {
-    emSec.classList.add('hidden');
-    queueHeading.textContent = 'Naive Ranking (Sorted Only by Contract Value)';
-    expBox.className = 'p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs sm:text-sm text-rose-950 flex items-start gap-2.5';
-    expTxt.innerHTML = '<strong>Why Deal-Size-Only sorting fails:</strong> Kabir’s live LinkedIn backlash drops to the bottom (#6) while public brand damage spreads all day, and Orbit’s next-week visit jumps ahead of today’s 9-day silent renewal and chronic order-sync failures.';
-    const naiveSorted = [...scored].sort((a, b) => (b.deal + b.upside) - (a.deal + a.upside));
-    document.getElementById('queue-count').textContent = `${naiveSorted.length} Items`;
-    document.getElementById('queue-cards').innerHTML = naiveSorted.map((t, i) => buildCardHTML(t, i + 1, false)).join('');
-  } else {
-    expBox.className = 'p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs sm:text-sm text-blue-950 flex items-start gap-2.5';
-    expTxt.innerHTML = SCENARIOS[state.scenario]
-      ? SCENARIOS[state.scenario].note
-      : '<strong>Custom weights active:</strong> Scores are automatically normalized to 100% so every calculation stays transparent.';
-
-    const emergencies = state.safetyRules
-      ? scored.filter(t => t.gate === 'OUTAGE' || t.gate === 'PR').sort((a, b) => b.score - a.score)
-      : [];
-    const regular = state.safetyRules
-      ? scored.filter(t => t.gate !== 'OUTAGE' && t.gate !== 'PR').sort((a, b) => b.score - a.score)
-      : [...scored].sort((a, b) => b.score - a.score);
-
-    if (emergencies.length > 0) {
-      emSec.classList.remove('hidden');
-      document.getElementById('emergency-count').textContent = `${emergencies.length} Immediate`;
-      document.getElementById('emergency-cards').innerHTML = emergencies.map((t, i) => buildCardHTML(t, i + 1, true)).join('');
-      queueHeading.textContent = 'Lane B · Ranked Priority Queue (Sorted Strictly by Weighted Score)';
-    } else {
-      emSec.classList.add('hidden');
-      queueHeading.textContent = 'All Items Ranked Strictly by Weighted Score (Emergency Lane Off)';
+function signalFingerprint(client, value, message) {
+  const normalize = text => text.trim().toLowerCase().replace(/\s+/g, ' ');
+  return JSON.stringify([normalize(client), value, normalize(message)]);
+}
+function commitParsedTask() {
+  if (!state.parsedTask || !state.triageReviewed) return false;
+  const task = state.parsedTask;
+  if (state.addedSignals.has(task.fingerprint)) return false;
+  if (state.tasks.some(item => item.id === task.id)) task.id = Math.max(...state.tasks.map(item => item.id)) + 1;
+  state.tasks.push(task);
+  state.addedSignals.add(task.fingerprint);
+  state.parsedTask = null;
+  state.triageReviewed = false;
+  return true;
+}
+function balanceWeights() {
+  const weights = getNormalizedWeights();
+  const units = FACTORS.map(factor => ({ key: factor.key, value: Math.floor(weights[factor.key] / 5), remainder: weights[factor.key] / 5 % 1 }));
+  let remaining = 20 - units.reduce((sum, item) => sum + item.value, 0);
+  [...units].sort((a, b) => b.remainder - a.remainder).forEach(item => { if (remaining > 0) { item.value++; remaining--; } });
+  units.forEach(item => { state.weights[item.key] = item.value * 5; });
+}
+function describeScenarioChange(previousOrder, previousWeights) {
+  const next = getPriorityGroups('smart').ranked;
+  const movements = next.map((task, index) => {
+    const oldIndex = previousOrder.indexOf(task.id);
+    return oldIndex >= 0 && oldIndex !== index ? taskLabel(task) + ': #' + (oldIndex + 1) + ' to #' + (index + 1) : null;
+  }).filter(Boolean);
+  const changes = FACTORS.map(factor => ({ ...factor, delta: state.weights[factor.key] - previousWeights[factor.key] })).filter(factor => factor.delta > 0).sort((a, b) => b.delta - a.delta);
+  const drivers = changes.slice(0, 2).map(factor => factor.label + ' increased to ' + state.weights[factor.key] + '%').join('; ');
+  return (movements.length ? movements.slice(0, 3).join(' · ') + '.' : 'Scores updated; queue order is unchanged.') + (drivers ? ' ' + drivers + '.' : '') + ' Emergencies stay pinned; hours are unchanged.';
+}
+function currentActionPlan(task) {
+  const original = INITIAL_TASKS.find(item => item.id === task.id);
+  if (!original) return task.nextStep;
+  let text = task.nextStep;
+  for (const [field] of [['engHours'], ['demoHours']]) {
+    if (original[field] > 0 && original[field] !== task[field]) {
+      const old = String(original[field]).replace('.', '\\.');
+      text = text.replace(new RegExp('\\b' + old + '(h\\b| hours?\\b|-hour\\b)', 'g'), hours(task[field]) + 'h');
     }
-
-    document.getElementById('queue-count').textContent = `${regular.length} Ranked`;
-    document.getElementById('queue-cards').innerHTML = regular.map((t, i) => buildCardHTML(t, i + 1, false)).join('');
   }
-
-  document.querySelectorAll('.card-header').forEach(el => {
-    el.addEventListener('click', () => {
-      const id = Number(el.getAttribute('data-cid'));
-      state.openCardId = state.openCardId === id ? null : id;
-      renderPlan();
-    });
-  });
-
-  if (window.lucide) lucide.createIcons();
+  return text;
 }
-
-function renderSliders() {
-  const nw = getNormalizedWeights();
-  const grid = document.getElementById('sliders-grid');
-  grid.innerHTML = FACTORS.map(f => `
-    <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-      <div class="flex justify-between text-xs mb-1">
-        <span class="font-semibold text-slate-700">${f.label}</span>
-        <span class="mono font-bold text-blue-700">${Math.round(nw[f.key])}%</span>
-      </div>
-      <input type="range" data-w="${f.key}" min="0" max="50" step="5" value="${state.weights[f.key]}" class="w-range w-full h-1.5 cursor-pointer">
-    </div>
-  `).join('');
-
-  grid.querySelectorAll('.w-range').forEach(sl => {
-    sl.addEventListener('input', (e) => {
-      state.weights[e.target.getAttribute('data-w')] = Number(e.target.value);
-      state.scenario = 'custom'; state.mode = 'smart';
-      syncModeButtons(); syncScenarioButtons(); renderSliders(); renderPlan();
-    });
-  });
+function buildCardHTML(task, rank, emergency) {
+  const meta = taskMeta(task);
+  const e = escapeHtml;
+  const weights = getNormalizedWeights();
+  const isOpen = state.expandedTasks.has(task.id);
+  const scoreMarkup = emergency ? '<span class="badge red">Emergency</span>' : state.mode === 'naive' ? '<span class="badge gray">Value comparison</span>' : '<span class="badge blue mono">' + task.score.toFixed(2) + ' / 5</span>';
+  const formula = '<details class="math-details"><summary>How is this score calculated?</summary>' +
+    (emergency ? '<p class="small muted" style="margin-top:8px">Reference score only. This task bypasses the ranked queue regardless of its weighted score.</p>' : '') +
+    '<table class="factor-table"><thead><tr><th>Factor</th><th>Rating</th><th>Weight</th><th>Contribution</th></tr></thead><tbody>' +
+    FACTORS.map(factor => '<tr><td>' + e(factor.label) + '</td><td>' + task.scores[factor.key] + '/5</td><td>' + Number(weights[factor.key].toFixed(2)) + '%</td><td>' + (task.scores[factor.key] * weights[factor.key] / 100).toFixed(3) + '</td></tr>').join('') +
+    '</tbody></table><p class="formula">' + e(formatPlainMath(task)) + '</p></details>';
+  return '<article class="task' + (emergency ? ' emergency' : '') + '" id="task-' + task.id + '">' +
+    '<div class="task-content"><div class="task-top"><div class="task-title-wrap">' +
+    (emergency ? '' : '<span class="rank" aria-label="Rank ' + rank + '">' + rank + '</span>') +
+    '<h3 class="task-title">' + e(meta.title) + '</h3>' + scoreMarkup + '</div><span class="deal">' + e(task.dealText.replace('/yr contract', ' / yr')) + '</span></div>' +
+    '<p class="task-problem">' + e(meta.problem) + '</p><div class="task-bottom"><span class="assignment">' + icon(resourceOf(task) === 'demo' ? 'presentation' : resourceOf(task) === 'engineer' ? 'wrench' : 'user-round') + e(assignmentText(task)) + '</span>' +
+    '<span class="badge gray">' + e(task.timing) + '</span></div><p class="next-action"><strong>Next:</strong> ' + e(meta.next) + '</p></div>' +
+    '<details class="task-details" data-task-id="' + task.id + '"' + (isOpen ? ' open' : '') + '><summary aria-label="View details for ' + e(meta.title) + '">View Details</summary>' +
+    '<div class="task-detail-content"><div><span class="detail-label">Why this needs attention</span>' + e(task.why) + '</div>' +
+    '<div><span class="detail-label">Evidence</span>' + e(task.evidence) + '</div>' +
+    '<div><span class="detail-label">Current resource assignment</span>' + e(assignmentText(task)) + '. Planning allocation; no booking or completion is confirmed.</div>' +
+    '<div><span class="detail-label">Action plan</span>' + e(currentActionPlan(task)) + '</div><div><span class="detail-label">Investigation notes</span>' + e(task.rootCause) + '</div>' + formula + '</div></details></article>';
 }
-
+function renderKpis() {
+  const capacity = getCapacitySummary();
+  const totals = getPortfolioTotals();
+  const items = [
+    { value: totals.clients, label: 'Clients Monitored', icon: 'building-2' },
+    { value: getPriorityGroups().emergencies.length, label: 'Immediate Emergencies', icon: 'circle-alert', emergency: true },
+    { value: hours(capacity.engineer.used) + '/8', label: 'Engineer Hours Allocated', icon: 'wrench', over: capacity.engineer.overbooked },
+    { value: hours(capacity.demo.used) + '/1', label: 'Demo Specialist Hour' + (capacity.demo.used === 1 ? '' : 's') + ' Allocated', icon: 'presentation', over: capacity.demo.overbooked }
+  ];
+  document.getElementById('kpi-strip').innerHTML = items.map(item => '<div class="kpi' + (item.emergency ? ' emergency' : '') + '"><div class="kpi-icon">' + icon(item.icon) + '</div><div><div class="kpi-value mono' + (item.over ? ' over' : '') + '">' + item.value + '</div><div class="kpi-label">' + item.label + '</div></div></div>').join('');
+  document.getElementById('portfolio-coverage').innerHTML = '<strong>' + totals.active + ' active client triggers</strong> <span class="separator">·</span> ' + totals.internal + ' internal task' + (totals.internal === 1 ? '' : 's') + ' <span class="separator">·</span> 6 quiet accounts';
+  document.getElementById('portfolio-finance').innerHTML = '<span>Active contracts <strong>₹' + (totals.acv / 100).toFixed(2) + ' Cr</strong></span><span>Potential expansion <strong>₹' + hours(totals.upside) + 'L</strong></span>' + info('About contract values', 'Annual contract value and potential expansion are separate. These are supplied portfolio values, not a claim that all revenue is threatened or protected. New account details are unverified inputs.');
+}
+function segmentColor(task, index) { return task.gate === 'OUTAGE' ? '#bd4e5d' : ['#3964d4', '#7894de', '#486b9e', '#5b7399'][index % 4]; }
+function renderCapacityBar(renderEditors = true) {
+  const capacity = getCapacitySummary();
+  document.getElementById('capacity-budgets').innerHTML = ['engineer', 'demo'].map(resource => {
+    const item = capacity[resource];
+    const field = resource === 'engineer' ? 'engHours' : 'demoHours';
+    const title = resource === 'engineer' ? 'Technical Engineer' : 'Demo Specialist';
+    const active = item.assignments.filter(task => task[field] > 0);
+    const denominator = Math.max(item.available, item.used);
+    return '<div class="budget-block"><div class="budget-heading"><strong>' + title + '</strong><span class="usage mono' + (item.overbooked ? ' over' : '') + '" id="' + (resource === 'engineer' ? 'eng-hours-text' : 'demo-hours-text') + '">' + hours(item.used) + ' / ' + item.available + 'h</span></div>' +
+      '<div class="capacity-bar" role="img" aria-label="' + title + ': ' + hours(item.used) + ' of ' + item.available + ' hours allocated">' +
+      active.map((task, index) => '<div class="capacity-segment" style="width:' + task[field] / denominator * 100 + '%;background:' + segmentColor(task, index) + '" title="' + escapeHtml(taskLabel(task)) + ': ' + hours(task[field]) + 'h">' + hours(task[field]) + 'h</div>').join('') +
+      '</div><div class="remaining' + (item.overbooked ? ' over' : '') + '">' + (item.overbooked ? hours(-item.remaining) + 'h over capacity' : hours(item.remaining) + 'h remaining this week') + '</div><div class="capacity-legend">' +
+      item.assignments.map((task, index) => '<div class="legend-row"><span class="legend-name"><span class="swatch" style="background:' + segmentColor(task, index) + '"></span>' + escapeHtml(taskLabel(task)) + '</span><span class="mono">' + (task[field] ? hours(task[field]) + 'h' : 'Unallocated') + '</span></div>').join('') + '</div></div>';
+  }).join('');
+  const conflicts = ['engineer', 'demo'].filter(resource => capacity[resource].overbooked);
+  const warning = document.getElementById('capacity-warning');
+  const messages = conflicts.map(resource => {
+    const item = capacity[resource];
+    const field = resource === 'engineer' ? 'engHours' : 'demoHours';
+    return (resource === 'engineer' ? 'Engineer' : 'Demo Specialist') + ' exceeds capacity by ' + hours(-item.remaining) + 'h. Conflicting assignments: ' + item.assignments.filter(task => task[field] > 0).map(task => taskLabel(task) + ' (' + hours(task[field]) + 'h)').join(', ') + '.';
+  });
+  if (messages.length) messages.push('Reallocate hours, explicitly defer work, or message Priya to request additional capacity. Moving work to another day this week does not free hours.');
+  if (capacity.unallocated.length) messages.push('Unallocated work: ' + capacity.unallocated.map(taskLabel).join(', ') + '. Assign hours or confirm deferral; these tasks remain in the plan.');
+  warning.innerHTML = '<strong>' + (conflicts.length ? 'Capacity conflict · action required' : 'Work needs an allocation') + '</strong>' + escapeHtml(messages.join(' '));
+  warning.classList.toggle('hidden', !messages.length);
+  if (renderEditors) renderAllocationEditor();
+}
+function renderAllocationEditor() {
+  const capacity = getCapacitySummary();
+  document.getElementById('allocation-editor').innerHTML = ['engineer', 'demo'].map(resource =>
+    '<h3 class="small">' + (resource === 'engineer' ? 'Engineer hours' : 'Demo Specialist hours') + '</h3>' +
+    capacity[resource].assignments.map(task => {
+      const field = resource === 'engineer' ? 'engHours' : 'demoHours';
+      const label = taskLabel(task) + ' ' + (resource === 'engineer' ? 'Engineer' : 'Demo Specialist') + ' hours';
+      return '<div class="allocation-row"><label for="hours-' + task.id + '">' + escapeHtml(taskLabel(task)) + '</label><div class="hour-control"><button type="button" data-hour-step="-0.25" data-task="' + task.id + '" data-resource="' + resource + '" aria-label="Decrease ' + escapeHtml(label) + '">−</button><input id="hours-' + task.id + '" data-allocation="' + resource + '" data-task="' + task.id + '" aria-label="' + escapeHtml(label) + '" type="number" min="0" max="24" step="0.25" value="' + task[field] + '"><button type="button" data-hour-step="0.25" data-task="' + task.id + '" data-resource="' + resource + '" aria-label="Increase ' + escapeHtml(label) + '">+</button></div></div>';
+    }).join('')
+  ).join('') + '<p id="allocation-error" class="small over hidden" role="alert"></p><p class="small muted">Set 0h to leave a task unallocated. This does not mark it resolved.</p>';
+}
+function renderPlan(options = {}) {
+  document.querySelectorAll('.task-details').forEach(detail => { if (detail.open) state.expandedTasks.add(Number(detail.dataset.taskId)); else state.expandedTasks.delete(Number(detail.dataset.taskId)); });
+  const groups = getPriorityGroups();
+  renderKpis();
+  renderCapacityBar(options.editors !== false);
+  document.getElementById('plan-count').textContent = state.tasks.length + ' items to act on';
+  document.getElementById('emergency-count').textContent = groups.emergencies.length;
+  document.getElementById('queue-count').textContent = groups.ranked.length;
+  document.getElementById('queue-heading').textContent = state.mode === 'naive' ? 'Priorities · Deal-Value Comparison' : 'Ranked Priorities';
+  document.getElementById('comparison-note').classList.toggle('hidden', state.mode !== 'naive');
+  document.getElementById('emergency-cards').innerHTML = groups.emergencies.map((task, index) => buildCardHTML(task, index + 1, true)).join('');
+  document.getElementById('queue-cards').innerHTML = groups.ranked.map((task, index) => buildCardHTML(task, index + 1, false)).join('');
+  syncModeButtons();
+  refreshIcons();
+}
+function renderScenarios() {
+  document.getElementById('scenario-row').innerHTML = Object.entries(SCENARIOS).map(([key, scenario]) =>
+    '<div class="scenario-wrap"><button type="button" class="scenario-btn" data-scenario="' + key + '" aria-pressed="' + (state.scenario === key) + '">' + escapeHtml(scenario.name) + '</button>' + info('About ' + scenario.name, SCENARIO_HELP[key]) + '</div>'
+  ).join('');
+}
 function syncModeButtons() {
-  const smart = state.mode === 'smart';
-  document.getElementById('mode-smart').className = smart
-    ? 'px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-900 text-white transition'
-    : 'px-3 py-1.5 rounded-md text-xs font-semibold text-slate-600 hover:text-slate-900 transition';
-  document.getElementById('mode-naive').className = !smart
-    ? 'px-3 py-1.5 rounded-md text-xs font-semibold bg-rose-600 text-white transition'
-    : 'px-3 py-1.5 rounded-md text-xs font-semibold text-slate-600 hover:text-slate-900 transition';
-  document.getElementById('scenario-row').classList.toggle('opacity-40', !smart);
+  document.getElementById('mode-smart').setAttribute('aria-pressed', state.mode === 'smart');
+  document.getElementById('mode-naive').setAttribute('aria-pressed', state.mode === 'naive');
+}
+function renderSliders() {
+  const weights = getNormalizedWeights();
+  document.getElementById('sliders-grid').innerHTML = FACTORS.map(factor =>
+    '<div class="weight-row"><div class="weight-label"><label for="weight-' + factor.key + '">' + factor.label + '</label>' + info('Scoring ' + factor.label, FACTOR_HELP[factor.key]) + '<span class="percent" id="weight-percent-' + factor.key + '">' + Number(weights[factor.key].toFixed(2)) + '%</span></div><input type="range" id="weight-' + factor.key + '" data-weight="' + factor.key + '" aria-label="' + factor.label + ' weight" min="0" max="100" step="5" value="' + state.weights[factor.key] + '"></div>'
+  ).join('');
+}
+function switchScenario(key) {
+  if (!SCENARIOS[key]) return;
+  const previousOrder = getPriorityGroups('smart').ranked.map(task => task.id);
+  const previousWeights = { ...state.weights };
+  state.scenario = key;
+  state.triageReviewed = false;
+  state.mode = 'smart';
+  state.weights = { ...SCENARIOS[key].weights };
+  document.getElementById('scenario-change').innerHTML = '<strong>What Changed?</strong>' + escapeHtml(describeScenarioChange(previousOrder, previousWeights));
+  document.getElementById('scenario-change').classList.remove('hidden');
+  renderScenarios(); renderSliders(); renderPlan();
+}
+function canCopyDraft(key = state.activeMsg) {
+  return Boolean(MESSAGES[key].text.trim() && state.msgChecked[key]?.every(Boolean) && !/\[[^\]]+\]/.test(MESSAGES[key].text));
+}
+function syncDraftLock() {
+  const checks = state.msgChecked[state.activeMsg] || [];
+  const ready = canCopyDraft();
+  const placeholders = /\[[^\]]+\]/.test(MESSAGES[state.activeMsg].text);
+  document.getElementById('btn-copy-msg').disabled = !ready;
+  document.getElementById('btn-copy-msg').classList.toggle('success', ready);
+  document.getElementById('draft-status').textContent = ready ? 'Ready to copy' : 'Needs review';
+  document.getElementById('draft-status').className = 'badge ' + (ready ? 'teal' : 'amber');
+  document.getElementById('verification-count').textContent = checks.filter(Boolean).length + ' / ' + checks.length;
+  document.getElementById('msg-lock-hint').textContent = ready ? 'Verified for copying. Send manually after review.' : placeholders ? 'Replace bracketed placeholders and complete every check.' : 'Complete every check to unlock copying.';
+}
+function renderMessageTab(key) {
+  state.activeMsg = key;
+  const message = MESSAGES[key];
+  if (!state.msgChecked[key]) state.msgChecked[key] = message.checks.map(() => false);
+  document.getElementById('msg-editor').value = message.text;
+  document.getElementById('msg-checks').innerHTML = message.checks.map((check, index) => '<label><input type="checkbox" data-check="' + index + '"' + (state.msgChecked[key][index] ? ' checked' : '') + '><span>' + escapeHtml(check) + '</span></label>').join('');
+  document.querySelectorAll('.draft-tab').forEach(button => button.setAttribute('aria-pressed', button.dataset.msg === key));
+  syncDraftLock();
+}
+function getExportPlan() {
+  const groups = getPriorityGroups();
+  const capacity = getCapacitySummary();
+  return {
+    exportedAt: new Date().toISOString(), scenario: SCENARIOS[state.scenario]?.name || 'Custom weights',
+    comparisonMode: state.mode === 'naive' ? 'Deal value only (emergencies remain pinned)' : 'Weighted priority',
+    normalizedWeights: Object.fromEntries(FACTORS.map(factor => [factor.label, getNormalizedWeights()[factor.key]])),
+    portfolio: getPortfolioTotals(), capacity: Object.fromEntries(['engineer', 'demo'].map(resource => [resource, { available: capacity[resource].available, allocated: capacity[resource].used, remaining: capacity[resource].remaining, overbooked: capacity[resource].overbooked }])),
+    unallocatedWork: capacity.unallocated.map(taskLabel),
+    items: [...groups.emergencies, ...groups.ranked].map(task => ({
+      id: task.id, name: taskLabel(task), lane: isEmergency(task) ? 'Immediate Emergency' : 'Ranked Priority',
+      referenceScore: task.score, math: formatPlainMath(task),
+      factors: Object.fromEntries(FACTORS.map(factor => [factor.label, task.scores[factor.key]])),
+      owner: assignmentText(task), engineerHours: task.engHours, demoSpecialistHours: task.demoHours,
+      nextAction: currentActionPlan(task), source: task.source || 'Original Monday case'
+    })),
+    externalActionsExecuted: false
+  };
+}
+function explicitExpansionLakh(message) {
+  const match = message.match(/(?:₹|INR|Rs\.?)\s*(\d+(?:\.\d+)?)\s*(Cr(?:ore)?|L(?:akh)?s?)\s+(?:expansion|upside)\b/i);
+  if (!match) return 0;
+  return Number(match[1]) * (/^cr/i.test(match[2]) ? 100 : 1);
 }
 
-function syncScenarioButtons() {
-  document.querySelectorAll('.scenario-btn').forEach(b => {
-    const active = b.getAttribute('data-scenario') === state.scenario && state.mode === 'smart';
-    b.className = active
-      ? 'scenario-btn p-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-left transition'
-      : 'scenario-btn p-3 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition';
-  });
-}
-
-// ==================== STEP 2: EXECUTIVE 5-STEP AI PROCESS ====================
 function localAnalyze(client, acv, msg) {
   const t = msg.toLowerCase();
-  const outage = /(stopped|stuck|outage|down|cannot print|failed|waiting)/.test(t);
-  const pr = /(linkedin|twitter|public|post|ignored)/.test(t);
+  const outage = /\b(stopped|stuck|outage|halted|cannot print|unpaid|not processing)\b/.test(t) && !/\b(resolved|restored|no outage|no longer stuck)\b/.test(t);
+  const pr = /\b(linkedin|twitter|social media|public post)\b/.test(t) && /\b(complaint|ignored|unacceptable|waiting|support|ticket)\b/.test(t);
   const silent = /(zero logins|dropped|silent|no reply|renewal)/.test(t);
-  const upsell = /(expand|demo|walkthrough|pilot|module|new warehouse)/.test(t);
-
-  const F = acv >= 100 ? 5 : acv >= 65 ? 4 : acv >= 40 ? 3 : 2;
+  const upsell = /\b(demo|walkthrough)\b/.test(t);
+  const totalValue = acv + explicitExpansionLakh(msg);
+  const F = totalValue >= 100 ? 5 : totalValue >= 70 ? 4 : totalValue >= 40 ? 3 : totalValue > 10 ? 2 : 1;
   const U = outage || pr ? 5 : silent ? 4 : upsell ? 3 : 2;
   const I = outage || pr ? 5 : silent ? 4 : 2;
   const R = outage || pr || silent ? 5 : upsell ? 2 : 3;
@@ -809,288 +2458,352 @@ function localAnalyze(client, acv, msg) {
   const G = upsell ? 5 : acv >= 80 ? 4 : 2;
 
   const gate = outage ? 'OUTAGE' : pr ? 'PR' : 'NONE';
-  const engHours = outage ? 2.0 : 0;
-  const demoHours = upsell ? 1.0 : 0;
-  const owner = outage ? 'Technical Engineer (2h) + You' : upsell ? 'Sales Demo Specialist (1h)' : 'You (Today)';
-  const timing = outage ? 'ACT RIGHT NOW' : pr ? 'CONTAIN TODAY' : silent ? 'CALL TODAY' : upsell ? 'BOOK IN PARALLEL' : 'THIS WEEK';
-  const timingStyle = outage || pr ? 'bg-rose-100 text-rose-800' : upsell ? 'bg-teal-100 text-teal-800' : 'bg-blue-100 text-blue-800';
-  const why = outage ? 'Detected active operational outage blocking client dispatch and billing.'
+  const why = outage ? 'Possible active financial or operational halt; verify the affected workflow before responding.'
     : pr ? 'Detected public reputation complaint requiring immediate human containment.'
     : silent ? 'Detected silent churn risk (usage drop + upcoming renewal with zero reply).'
     : upsell ? 'Detected high-intent expansion request for the Sales Demo Specialist.'
     : 'Standard client inquiry flagged for human review.';
-  const confidence = (outage || pr || silent || upsell) ? 88 : 68;
-
   return {
-    id: Date.now(),
-    name: `${client} — ${outage ? 'Live Outage Alert' : silent ? 'Silent Churn Risk' : upsell ? 'Expansion Demo Ask' : 'New Client Signal'}`,
-    shortLabel: client.split(' ')[0],
-    deal: acv, upside: upsell ? 45 : 0, dealText: `₹${acv}L/yr contract`, gate,
-    engHours, demoHours, barColor: outage ? 'bg-rose-500' : 'bg-teal-500',
-    timing, timingStyle, owner, why,
-    evidence: `AI labeled Deal: ${F}, Urgency: ${U}, Harm: ${I}, Churn: ${R}, Repeat Bug: ${S}, Growth: ${G} (${confidence}% confidence)`,
-    nextStep: outage ? 'Send 2-line ownership ack + mobilize Technical Engineer immediately.'
-      : silent ? 'Call operations sponsor today to diagnose 14-day drop before renewal.'
-      : upsell ? 'Book Sales Demo Specialist walkthrough and prepare ROI case.'
+    gate, specialist: outage ? 'Engineer' : pr ? 'Support' : upsell ? 'Demo Specialist' : 'None', why,
+    nextStep: outage ? 'You acknowledge the outage and assign a Technical Engineer to investigate immediately.'
+      : pr ? 'You acknowledge the public complaint and assign Tier-2 Support; verify the ticket before replying.'
+      : silent ? 'You call the account sponsor to verify the usage and renewal concerns.'
+      : upsell ? 'You request a Sales Demo Specialist slot and confirm preparation details.'
       : 'Review manually and follow up within 24 hours.',
-    rootCause: `Extracted from message: "${msg.slice(0, 95)}${msg.length > 95 ? '...' : ''}"`,
-    scores: { F, U, I, R, S, G }, confidence
+    scores: { F, U, I, R, S, G }, confidence: 0
   };
 }
 
-function addStepRow(num, title, detail, badgeText, badgeCls) {
-  const trace = document.getElementById('agent-trace');
-  const row = document.createElement('div');
-  row.className = 'p-3 rounded-xl bg-white border border-slate-200 flex items-start justify-between gap-3';
-  row.innerHTML = `
-    <div class="flex items-start gap-2.5 min-w-0">
-      <div class="w-5 h-5 rounded-full bg-blue-600 text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">${num}</div>
-      <div class="min-w-0">
-        <strong class="text-slate-900 block">${title}</strong>
-        <span class="text-slate-600 leading-relaxed">${detail}</span>
-      </div>
-    </div>
-    <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${badgeCls}">${badgeText}</span>
-  `;
-  trace.appendChild(row);
-}
-
-const wait = (ms) => new Promise(r => setTimeout(r, ms));
-
-async function runAnalyzer() {
-  const client = document.getElementById('ai-client').value.trim() || 'New Client';
-  const acv = Math.max(1, Number(document.getElementById('ai-acv').value) || 50);
-  const msg = document.getElementById('ai-message').value.trim();
-  const key = document.getElementById('ai-key').value.trim();
-  if (!msg) { showToast('Please enter a client message first.'); return; }
-
-  const trace = document.getElementById('agent-trace');
-  const pill = document.getElementById('agent-status-pill');
-  const addBtn = document.getElementById('btn-add-to-list');
-  const inspectWrap = document.getElementById('api-inspect-wrap');
-
-  trace.innerHTML = '';
-  addBtn.disabled = true;
-  inspectWrap.classList.add('hidden');
-  pill.textContent = 'Running...';
-  pill.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800';
-
-  addStepRow(1, 'Read & Match Client Record', `Matched "${client}" (₹${acv}L/yr contract) against Tarang Cloud's 12-client portfolio.`, 'Done', 'bg-slate-100 text-slate-700');
-  await wait(280);
-
-  let parsed = localAnalyze(client, acv, msg);
-  let engineSource = 'Built-in Simulator';
-  let endpointUsed = 'POST /api/triage (Vercel Serverless → Gemini 2.5 Flash)';
-
-  if (key) {
-    endpointUsed = 'POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
-    try {
-      const res = await fetch(`${endpointUsed}?key=${encodeURIComponent(key)}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: `Return ONLY raw JSON {"gate":"OUTAGE"|"PR"|"NONE","why":string,"nextStep":string,"confidence":number,"scores":{"F":1-5,"U":1-5,"I":1-5,"R":1-5,"S":1-5,"G":1-5}} for "${client}" (₹${acv}L): "${msg}"` }] }] })
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      const raw = (data.candidates?.[0]?.content?.parts?.[0]?.text || '').replace(/```json|```/g, '').trim();
-      const j = JSON.parse(raw);
-      parsed = { ...parsed, ...j, scores: j.scores || parsed.scores };
-      engineSource = 'Live Gemini 2.5 Flash';
-    } catch (e) {
-      engineSource = 'Simulator Fallback';
-    }
-  } else {
-    try {
-      const res = await fetch('/api/triage', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ client, acv, message: msg })
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const j = await res.json();
-      parsed = { ...parsed, ...j, scores: j.scores || parsed.scores };
-      engineSource = 'Live Gemini (Vercel Server)';
-    } catch (e) {
-      engineSource = 'Offline Simulator';
-    }
+function validateClassification(value) {
+  if (!value || !['OUTAGE', 'PR', 'NONE'].includes(value.gate) ||
+      !['why', 'nextStep'].every(key => typeof value[key] === 'string' && value[key].trim().length > 0 && value[key].length <= 600) ||
+      !Number.isInteger(value.confidence) || value.confidence < 0 || value.confidence > 100 ||
+      !FACTORS.every(f => Number.isInteger(value.scores?.[f.key]) && value.scores[f.key] >= 1 && value.scores[f.key] <= 5)) {
+    throw new Error('Live AI returned invalid factor labels.');
   }
-
-  addStepRow(2, 'AI Labels 6 Risk Factors', `Scored Deal ${parsed.scores.F}/5, Urgency ${parsed.scores.U}/5, Harm ${parsed.scores.I}/5, Churn ${parsed.scores.R}/5, Repeat Bug ${parsed.scores.S}/5, Growth ${parsed.scores.G}/5 (${parsed.confidence}% confidence).`, engineSource, engineSource.startsWith('Live') ? 'bg-teal-100 text-teal-800' : 'bg-blue-100 text-blue-800');
-  await wait(300);
-
-  const calcScore = scoreTask(parsed);
-  const laneText = (parsed.gate === 'OUTAGE' || parsed.gate === 'PR') ? 'Lane A · Immediate Emergency' : 'Lane B · Ranked Queue';
-  addStepRow(3, 'Calculate Transparent Priority', `Weighted score = ${calcScore.toFixed(2)} / 5.00 under "${SCENARIOS[state.scenario]?.name || 'Custom'}". Placed in ${laneText}.`, `${calcScore.toFixed(2)} / 5`, 'bg-blue-100 text-blue-800');
-  await wait(280);
-
-  const curEng = state.tasks.reduce((s, t) => s + t.engHours, 0);
-  const capDetail = parsed.engHours > 0
-    ? `Needs ${parsed.engHours}h Technical Engineer — will bring week total to ${(curEng + parsed.engHours).toFixed(1)}/8.0 hrs (triggers capacity tradeoff alert in Step 1).`
-    : `Assigned to ${parsed.owner} — zero Technical Engineer hours consumed.`;
-  addStepRow(4, 'Check 9-Hour Specialist Budget', capDetail, parsed.engHours > 0 && curEng + parsed.engHours > 8 ? 'Over Cap Alert' : 'Fits Budget', parsed.engHours > 0 && curEng + parsed.engHours > 8 ? 'bg-rose-100 text-rose-800' : 'bg-teal-100 text-teal-800');
-  await wait(260);
-
-  addStepRow(5, 'Pause for Human Approval', `${parsed.why} AI will never send client replies automatically.`, 'Human Gate', 'bg-amber-100 text-amber-900');
-
-  state.parsedTask = parsed;
-  pill.textContent = engineSource.startsWith('Live') ? 'Live AI Complete' : 'Analysis Complete';
-  pill.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-800';
-
-  document.getElementById('raw-payload-box').textContent = JSON.stringify({
-    endpoint: endpointUsed,
-    engine: engineSource,
-    extracted_labels: parsed.scores,
-    emergency_override: parsed.gate,
-    deterministic_score: calcScore,
-    confidence_pct: parsed.confidence,
-    assigned_owner: parsed.owner
-  }, null, 2);
-
-  inspectWrap.classList.remove('hidden');
-  addBtn.disabled = false;
+  // Older deployments have no specialist field. Infer from their classification/action only.
+  const specialist = value.specialist ?? (value.gate === 'OUTAGE' ? 'Engineer' : value.gate === 'PR' ? 'Support' : /demo|walkthrough/i.test(value.nextStep) ? 'Demo Specialist' : 'None');
+  if (!['Engineer', 'Demo Specialist', 'Support', 'None'].includes(specialist)) throw new Error('Live AI returned an invalid specialist.');
+  return {
+    gate: value.gate, specialist, why: value.why.trim(), nextStep: value.nextStep.trim(), confidence: value.confidence,
+    scores: Object.fromEntries(FACTORS.map(f => [f.key, value.scores[f.key]]))
+  };
 }
 
-// ==================== STEP 3: HUMAN DRAFTS ====================
-function renderMessageTab(key) {
-  state.activeMsg = key;
-  const m = MESSAGES[key];
-  document.getElementById('msg-editor').value = m.text;
-  if (!state.msgChecked[key]) state.msgChecked[key] = m.checks.map(() => false);
-
-  const box = document.getElementById('msg-checks');
-  box.innerHTML = m.checks.map((c, idx) => `
-    <label class="flex items-start gap-2 cursor-pointer">
-      <input type="checkbox" data-idx="${idx}" ${state.msgChecked[key][idx] ? 'checked' : ''} class="m-cb mt-0.5 w-4 h-4 rounded">
-      <span>${c}</span>
-    </label>
-  `).join('');
-
-  const syncLock = () => {
-    const ok = state.msgChecked[key].every(Boolean);
-    document.getElementById('btn-copy-msg').disabled = !ok;
-    document.getElementById('msg-lock-hint').textContent = ok
-      ? 'All human checks confirmed — safe to copy and send.'
-      : 'Tick all boxes to unlock copy.';
+function buildAnalyzedTask(client, acv, msg, labels, live) {
+  const outage = labels.gate === 'OUTAGE';
+  const publicComplaint = labels.gate === 'PR';
+  const engineer = outage || (!publicComplaint && labels.specialist === 'Engineer');
+  const demo = !outage && !publicComplaint && labels.specialist === 'Demo Specialist';
+  const engHours = engineer ? 2 : 0;
+  const demoHours = demo ? 1 : 0;
+  const upside = explicitExpansionLakh(msg);
+  return {
+    id: Date.now(), clientName: client, planningResource: engineer ? 'engineer' : demo ? 'demo' : null, name: `${client} — ${outage ? 'Live Outage Alert' : publicComplaint ? 'Public Complaint' : demo ? 'Demo Request' : 'Client Signal'}`,
+    shortLabel: client.split(' ')[0], deal: acv, upside, dealText: `₹${acv}L/yr contract${upside ? ` + ₹${upside}L stated expansion` : ''}`,
+    gate: labels.gate, scores: { ...labels.scores }, confidence: live ? labels.confidence : null,
+    engHours, demoHours, barColor: engineer ? 'bg-rose-500' : 'bg-teal-500',
+    timing: outage || publicComplaint ? 'ACT RIGHT NOW' : demo ? 'REQUEST DEMO SLOT' : 'REVIEW TODAY',
+    timingStyle: outage || publicComplaint ? 'bg-rose-100 text-rose-800' : 'bg-blue-100 text-blue-800',
+    owner: engineer ? 'Technical Engineer (2h proposed) + You' : publicComplaint || labels.specialist === 'Support' ? 'You + Tier-2 Support (0 Engineer hours)' : demo ? 'Sales Demo Specialist (1h proposed)' : 'You',
+    why: labels.why, nextStep: labels.nextStep,
+    evidence: `${live ? 'Live AI labels' : 'Practice simulator rules'}: ${FACTORS.map(f => `${f.label}: ${labels.scores[f.key]}/5`).join(' · ')}. ${live ? `Model-reported confidence: ${labels.confidence}% (not calibrated).` : 'No model confidence; human review required.'}`,
+    rootCause: `Unverified. Supplied signal: "${msg.slice(0, 180)}${msg.length > 180 ? '...' : ''}"`,
+    source: live ? 'Live AI' : 'Practice simulator'
   };
+}
 
-  box.querySelectorAll('.m-cb').forEach(cb => {
-    cb.addEventListener('change', (e) => {
-      state.msgChecked[key][Number(e.target.getAttribute('data-idx'))] = e.target.checked;
-      syncLock();
-    });
-  });
-
-  document.querySelectorAll('.msg-tab').forEach(b => {
-    const active = b.getAttribute('data-msg') === key;
-    b.className = active
-      ? 'msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white'
-      : 'msg-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
-  });
-  syncLock();
+function renderAnalysis() {
+  const task = state.parsedTask;
+  if (!task) return;
+  const live = task.source === 'Live AI';
+  const duplicate = state.addedSignals.has(task.fingerprint);
+  const capacity = getCapacitySummary(duplicate ? null : task);
+  const conflict = capacity.engineer.overbooked || capacity.demo.overbooked;
+  const projected = (duplicate ? getPriorityGroups('smart').ranked : [...getPriorityGroups('smart').ranked, { ...task, score: scoreTask(task) }]).filter(item => !isEmergency(item)).sort((a, b) => b.score - a.score || a.id - b.id);
+  const rankId = duplicate ? state.tasks.find(item => item.fingerprint === task.fingerprint)?.id : task.id;
+  const position = projected.findIndex(item => item.id === rankId) + 1;
+  const emergency = isEmergency(task);
+  const meta = state.analysisMeta;
+  document.getElementById('agent-status-pill').textContent = live ? 'Live Gemini' : 'Offline simulator';
+  document.getElementById('agent-status-pill').className = 'badge ' + (live ? 'teal' : 'amber');
+  const factors = FACTORS.map(factor => '<div class="factor-score"><div class="factor-score-title"><span>' + factor.label + '</span><strong>' + task.scores[factor.key] + ' / 5</strong></div><div class="score-scale" aria-hidden="true">' + Array.from({ length: 5 }, (_, index) => '<span class="' + (index < task.scores[factor.key] ? 'filled' : '') + '"></span>').join('') + '</div></div>').join('');
+  const capacityText = duplicate ? 'Already included in the current portfolio. No additional hours will be allocated.' : conflict ? 'Capacity conflict: ' + [
+    capacity.engineer.overbooked ? 'Engineer is ' + hours(-capacity.engineer.remaining) + 'h over budget' : '',
+    capacity.demo.overbooked ? 'Demo Specialist is ' + hours(-capacity.demo.remaining) + 'h over budget' : ''
+  ].filter(Boolean).join('; ') + '. Reallocate, defer work or request additional capacity. Adding the task leaves this conflict unresolved.' : 'Proposed hours fit within both current budgets. No specialist has been booked.';
+  document.getElementById('analysis-result').innerHTML = '<div class="analysis-body">' +
+    (meta?.fallback ? '<div class="inline-notice" role="status">' + escapeHtml(meta.fallback) + ' Showing simulator output, not live AI.</div>' : '') +
+    '<div class="analysis-topline"><h3 class="analysis-title">' + escapeHtml(task.clientName) + '</h3><span class="badge ' + (emergency ? 'red' : 'gray') + '">' + (task.gate === 'OUTAGE' ? 'Operational outage' : task.gate === 'PR' ? 'Public complaint' : 'No emergency detected') + '</span></div>' +
+    '<p class="analysis-summary">' + escapeHtml(task.why) + '</p>' +
+    '<div class="priority-result"><strong>' + (emergency ? 'Immediate emergency · escalate now' : 'Proposed rank #' + position + ' · ' + scoreTask(task).toFixed(2) + ' / 5') + '</strong><p>' + (emergency ? 'Outside weighted ranking. Escalation cannot wait for a score comparison.' : 'Calculated using ' + escapeHtml(SCENARIOS[state.scenario]?.name || 'custom weights') + '. Existing emergencies stay first.') + '</p></div>' +
+    '<div class="factor-grid">' + factors + '</div>' +
+    '<div class="confidence-line">' + (live ? 'Model confidence: ' + task.confidence + '%' : 'Confidence: not available in simulation') + info('About AI confidence', 'Live model confidence is self-reported, not a calibrated probability of correctness. The offline simulator does not produce model confidence. Verify important facts yourself.') + '</div>' +
+    '<div class="action-box"><strong>Recommended next action</strong>' + escapeHtml(task.nextStep) + '</div>' +
+    '<div class="analysis-resource"><strong>' + escapeHtml(assignmentText(task)) + '</strong><div class="capacity-prediction"><span class="prediction-item' + (capacity.engineer.overbooked ? ' conflict' : '') + '">Engineer ' + hours(capacity.engineer.used) + ' / 8h</span><span class="prediction-item' + (capacity.demo.overbooked ? ' conflict' : '') + '">Demo Specialist ' + hours(capacity.demo.used) + ' / 1h</span></div><p class="' + (conflict ? 'over' : 'muted') + '">' + escapeHtml(capacityText) + '</p></div>' +
+    '<div class="analysis-approval">' +
+    (duplicate ? '<div class="inline-notice" role="status">This message has already been added to the portfolio. A duplicate cannot be added.</div>' :
+      '<label class="review-check"><input id="triage-review" type="checkbox"' + (state.triageReviewed ? ' checked' : '') + '><span>I reviewed the classification, next action and proposed specialist hours.</span></label>') +
+    '<button type="button" id="btn-add-to-list" class="button primary full"' + (!state.triageReviewed || duplicate ? ' disabled' : '') + '>' + icon('plus') + 'Approve &amp; Add to Portfolio</button><p class="small muted">' + (duplicate ? 'Already added · no further action taken.' : 'Awaiting human approval. Adds planning work; does not send or book anything.') + '</p></div></div>';
+  document.getElementById('api-inspect-wrap').classList.remove('hidden');
+  document.getElementById('raw-payload-box').textContent = JSON.stringify({
+    endpoint: meta?.endpoint, source: task.source, fallbackReason: meta?.fallback || null,
+    factors: Object.fromEntries(FACTORS.map(factor => [factor.label, task.scores[factor.key]])),
+    emergencyClassification: task.gate, normalizedWeights: getExportPlan().normalizedWeights,
+    weightedScore: scoreTask(task), confidence: task.confidence, proposedOwner: assignmentText(task),
+    proposedEngineerHours: task.engHours, proposedDemoSpecialistHours: task.demoHours
+  }, null, 2);
+  refreshIcons();
+}
+function invalidateAnalysis() {
+  if (state.analyzing) return;
+  state.parsedTask = null;
+  state.triageReviewed = false;
+  state.analysisMeta = null;
+  document.getElementById('agent-status-pill').textContent = 'Awaiting analysis';
+  document.getElementById('agent-status-pill').className = 'badge gray';
+  document.getElementById('analysis-result').innerHTML = '<div class="empty-state"><div class="empty-icon">' + icon('scan-text') + '</div><h3>Ready for a new assessment</h3><p>Analyze the current message to see its priority, proposed action and capacity impact.</p></div>';
+  document.getElementById('api-inspect-wrap').classList.add('hidden');
+  refreshIcons();
+}
+async function runAnalyzer() {
+  if (state.analyzing) return;
+  const client = document.getElementById('ai-client').value.trim();
+  const acv = Number(document.getElementById('ai-acv').value);
+  const message = document.getElementById('ai-message').value.trim();
+  if (!client || client.length > 120 || !message || message.length > 3000 || !Number.isFinite(acv) || acv < 1 || acv > 500) {
+    showToast('Enter a client name, a message and a contract value from 1 to 500 lakh.');
+    return;
+  }
+  state.analyzing = true;
+  state.parsedTask = null;
+  state.triageReviewed = false;
+  const fields = document.querySelectorAll('#triage-form input, #triage-form textarea, [data-sample], #btn-analyze');
+  fields.forEach(field => { field.disabled = true; });
+  document.getElementById('analyze-label').textContent = 'Analyzing message…';
+  document.getElementById('agent-status-pill').textContent = 'Analyzing…';
+  document.getElementById('agent-status-pill').className = 'badge blue';
+  document.getElementById('analysis-result').innerHTML = '<div class="empty-state" role="status"><div class="empty-icon">' + icon('sparkles') + '</div><h3>Assessing the incoming message</h3><p>Checking the risk labels, weighted priority and specialist capacity.</p></div>';
+  document.getElementById('api-inspect-wrap').classList.add('hidden');
+  document.getElementById('analysis-heading').setAttribute('aria-busy', 'true');
+  refreshIcons();
+  try {
+    const practice = document.getElementById('use-simulator').checked;
+    let labels = localAnalyze(client, acv, message);
+    let live = false;
+    let fallback = '';
+    if (!practice) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 25000);
+      try {
+        const response = await fetch('/api/triage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ client, acv, message }), signal: controller.signal });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        labels = validateClassification(await response.json());
+        live = true;
+      } catch (error) {
+        fallback = error.name === 'AbortError' ? 'The live service timed out.' : /^HTTP \d{3}$/.test(error.message) ? 'The live service was unavailable (' + error.message + ').' : 'The live service could not provide a valid classification.';
+      } finally { clearTimeout(timer); }
+    }
+    const task = buildAnalyzedTask(client, acv, message, labels, live);
+    task.fingerprint = signalFingerprint(client, acv, message);
+    state.parsedTask = task;
+    state.analysisMeta = { endpoint: practice ? 'Local simulator; no network request' : 'POST /api/triage', fallback };
+    renderAnalysis();
+  } catch {
+    document.getElementById('agent-status-pill').textContent = 'Analysis failed';
+    document.getElementById('analysis-result').innerHTML = '<div class="inline-notice" role="alert">The analysis could not finish. Review the message and try again. Nothing has been added.</div>';
+  } finally {
+    state.analyzing = false;
+    fields.forEach(field => { field.disabled = false; });
+    document.getElementById('analyze-label').textContent = 'Analyze Message';
+    document.getElementById('analysis-heading').removeAttribute('aria-busy');
+  }
 }
 
 // ==================== EVENTS ====================
-function switchStep(step) {
-  ['plan', 'ai', 'messages'].forEach(s => document.getElementById(`panel-${s}`).classList.toggle('hidden', s !== step));
-  document.querySelectorAll('.step-tab').forEach(btn => {
-    const active = btn.getAttribute('data-step') === step;
-    btn.className = active
-      ? 'step-tab text-left p-3.5 rounded-xl border-2 border-blue-600 bg-blue-50/70 transition'
-      : 'step-tab text-left p-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition';
-    const kicker = btn.querySelector('span');
-    if (kicker) kicker.className = active ? 'text-xs font-bold text-blue-700 uppercase tracking-wide block' : 'text-xs font-bold text-slate-500 uppercase tracking-wide block';
+function closeHelp() {
+  document.getElementById('help-bubble').classList.add('hidden');
+  document.querySelectorAll('.info[aria-expanded=true]').forEach(button => {
+    button.setAttribute('aria-expanded', 'false');
+    button.removeAttribute('aria-describedby');
   });
 }
-
-document.querySelectorAll('.step-tab').forEach(b => b.addEventListener('click', () => switchStep(b.getAttribute('data-step'))));
-document.getElementById('mode-smart').addEventListener('click', () => { state.mode = 'smart'; syncModeButtons(); syncScenarioButtons(); renderPlan(); });
-document.getElementById('mode-naive').addEventListener('click', () => { state.mode = 'naive'; syncModeButtons(); syncScenarioButtons(); renderPlan(); });
-
-document.querySelectorAll('.scenario-btn').forEach(b => {
-  b.addEventListener('click', () => {
-    const sc = b.getAttribute('data-scenario');
-    state.mode = 'smart'; state.scenario = sc; state.weights = { ...SCENARIOS[sc].weights };
-    syncModeButtons(); syncScenarioButtons(); renderSliders(); renderPlan();
-    showToast(`Switched to ${SCENARIOS[sc].name}`);
+function toggleHelp(button) {
+  const wasOpen = button.getAttribute('aria-expanded') === 'true';
+  closeHelp();
+  if (wasOpen) return;
+  const bubble = document.getElementById('help-bubble');
+  const viewportWidth = document.documentElement.clientWidth;
+  bubble.style.maxWidth = Math.min(300, viewportWidth - 32) + 'px';
+  bubble.textContent = button.dataset.help;
+  bubble.classList.remove('hidden');
+  button.setAttribute('aria-expanded', 'true');
+  button.setAttribute('aria-describedby', 'help-bubble');
+  const box = button.getBoundingClientRect();
+  const left = Math.max(16, Math.min(box.left - 6, viewportWidth - bubble.offsetWidth - 16));
+  const below = box.bottom + 8;
+  bubble.style.left = left + 'px';
+  bubble.style.top = (below + bubble.offsetHeight < window.innerHeight - 12 ? below : Math.max(12, box.top - bubble.offsetHeight - 8)) + 'px';
+}
+function switchStep(step, focus = false) {
+  closeHelp();
+  state.currentStep = step;
+  for (const name of ['plan', 'ai', 'messages']) document.getElementById('panel-' + name).classList.toggle('hidden', name !== step);
+  document.querySelectorAll('.nav-tab').forEach(button => {
+    const selected = button.dataset.step === step;
+    button.setAttribute('aria-selected', selected);
+    button.tabIndex = selected ? 0 : -1;
+    if (selected && focus) button.focus();
   });
-});
-
-document.getElementById('btn-toggle-rubric').addEventListener('click', () => {
-  const hidden = document.getElementById('rubric-drawer').classList.toggle('hidden');
-  document.getElementById('toggle-rubric-label').textContent = hidden ? 'See how the 6 factors are scored (1–5 scale)' : 'Hide 1–5 scoring guide';
-});
-
-document.getElementById('btn-toggle-weights').addEventListener('click', () => {
-  const hidden = document.getElementById('weights-drawer').classList.toggle('hidden');
-  document.getElementById('toggle-weights-label').textContent = hidden ? 'Adjust the 6 factor weights live' : 'Hide weight sliders';
-});
-
-document.getElementById('btn-rebalance').addEventListener('click', () => {
-  const nw = getNormalizedWeights();
-  let running = 0;
-  FACTORS.forEach((f, idx) => {
-    if (idx === FACTORS.length - 1) state.weights[f.key] = Math.max(0, 100 - running);
-    else { const v = Math.round(nw[f.key] / 5) * 5; state.weights[f.key] = v; running += v; }
-  });
-  renderSliders(); renderPlan();
-  showToast('Weights auto-balanced cleanly to 100%');
-});
-
-document.getElementById('cb-safety-rules').addEventListener('change', (e) => { state.safetyRules = e.target.checked; renderPlan(); });
-
-document.querySelectorAll('.sample-btn').forEach(b => {
-  b.addEventListener('click', () => {
-    const s = SAMPLES[b.getAttribute('data-sample')];
-    document.getElementById('ai-client').value = s.client;
-    document.getElementById('ai-acv').value = s.acv;
-    document.getElementById('ai-message').value = s.msg;
-    showToast(`Loaded sample: ${s.client}`);
-  });
-});
-
-document.getElementById('btn-dev-settings').addEventListener('click', () => {
-  document.getElementById('dev-key-box').classList.toggle('hidden');
-});
-
-document.getElementById('btn-analyze').addEventListener('click', runAnalyzer);
-document.getElementById('btn-toggle-payload').addEventListener('click', () => document.getElementById('raw-payload-box').classList.toggle('hidden'));
-
-document.getElementById('btn-add-to-list').addEventListener('click', () => {
-  if (!state.parsedTask) return;
-  state.tasks.push(state.parsedTask);
-  state.openCardId = state.parsedTask.id;
-  state.parsedTask = null;
-  document.getElementById('btn-add-to-list').disabled = true;
-  state.mode = 'smart'; syncModeButtons(); renderPlan(); switchStep('plan');
-  showToast('Added to Step 1 Plan & updated 9h specialist budget!');
-});
-
-document.querySelectorAll('.msg-tab').forEach(b => b.addEventListener('click', () => renderMessageTab(b.getAttribute('data-msg'))));
-
-document.getElementById('btn-copy-msg').addEventListener('click', () => {
-  const txt = document.getElementById('msg-editor').value;
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(txt).then(() => showToast('Verified message copied!')).catch(() => {
-      const el = document.getElementById('msg-editor'); el.select(); document.execCommand('copy'); showToast('Verified message copied!');
-    });
-  } else {
-    const el = document.getElementById('msg-editor'); el.select(); document.execCommand('copy'); showToast('Verified message copied!');
+  if (step === 'ai' && state.parsedTask) renderAnalysis();
+}
+document.addEventListener('click', event => {
+  const help = event.target.closest('button[data-help]');
+  if (help) { toggleHelp(help); return; }
+  if (!event.target.closest('#help-bubble')) closeHelp();
+  const tab = event.target.closest('[data-step]');
+  if (tab) switchStep(tab.dataset.step);
+  const scenario = event.target.closest('[data-scenario]');
+  if (scenario) switchScenario(scenario.dataset.scenario);
+  const sample = event.target.closest('[data-sample]');
+  if (sample && !state.analyzing) {
+    const item = SAMPLES[sample.dataset.sample];
+    document.getElementById('ai-client').value = item.client;
+    document.getElementById('ai-acv').value = item.acv;
+    document.getElementById('ai-message').value = item.msg;
+    invalidateAnalysis();
+  }
+  const draft = event.target.closest('[data-msg]');
+  if (draft) renderMessageTab(draft.dataset.msg);
+  const adjustment = event.target.closest('[data-hour-step]');
+  if (adjustment) {
+    const input = document.getElementById('hours-' + adjustment.dataset.task);
+    const nextValue = Math.max(0, Math.min(24, Number(input.value) + Number(adjustment.dataset.hourStep)));
+    if (setAllocation(adjustment.dataset.task, adjustment.dataset.resource, nextValue)) {
+      input.value = nextValue;
+      input.setCustomValidity('');
+      input.removeAttribute('aria-invalid');
+      syncAllocationValidation();
+      renderPlan({ editors: false });
+    }
+  }
+  if (event.target.closest('#btn-add-to-list')) {
+    if (!commitParsedTask()) return;
+    state.mode = 'smart';
+    renderPlan();
+    switchStep('plan', true);
+    document.getElementById('agent-status-pill').textContent = 'Added to portfolio';
+    document.getElementById('analysis-result').innerHTML = '<div class="empty-state"><div class="empty-icon">' + icon('check') + '</div><h3>Added to the portfolio</h3><p>The task and proposed hours are now in the plan. Any capacity conflict remains unresolved until you reallocate, defer work or secure more capacity.</p></div>';
+    document.getElementById('api-inspect-wrap').classList.add('hidden');
+    refreshIcons();
+    showToast('Task added to the portfolio. No external action has been taken.');
   }
 });
-
-document.getElementById('btn-export-json').addEventListener('click', () => {
-  const scored = state.tasks.map(t => ({ name: t.name, lane: (state.safetyRules && (t.gate === 'OUTAGE' || t.gate === 'PR')) ? 'Emergency' : 'Ranked Queue', score: scoreTask(t), math: formatPlainMath(t), owner: t.owner }));
-  const blob = new Blob([JSON.stringify({ scenario: state.scenario, items: scored }, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'tarang-cloud-priority-plan.json';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-  showToast('Exported priority plan');
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeHelp();
+  if (event.target.matches('.nav-tab') && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+    event.preventDefault();
+    const tabs = [...document.querySelectorAll('.nav-tab')];
+    const index = tabs.indexOf(event.target);
+    const target = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+    switchStep(tabs[target].dataset.step, true);
+  }
 });
+window.addEventListener('resize', closeHelp);
+window.addEventListener('scroll', closeHelp, { passive: true });
+document.getElementById('mode-smart').addEventListener('click', () => { state.mode = 'smart'; renderPlan(); });
+document.getElementById('mode-naive').addEventListener('click', () => { state.mode = 'naive'; renderPlan(); });
+document.getElementById('btn-toggle-weights').addEventListener('click', event => {
+  const open = document.getElementById('weights-drawer').classList.toggle('hidden') === false;
+  event.currentTarget.setAttribute('aria-expanded', open);
+  event.currentTarget.textContent = open ? 'Close settings' : 'Adjust Weights';
+});
+document.getElementById('btn-rebalance').addEventListener('click', () => { state.triageReviewed = false; balanceWeights(); renderSliders(); renderPlan(); });
+document.getElementById('sliders-grid').addEventListener('input', event => {
+  const key = event.target.dataset.weight;
+  if (!key) return;
+  state.weights[key] = Number(event.target.value);
+  state.triageReviewed = false;
+  state.scenario = 'custom';
+  state.mode = 'smart';
+  const weights = getNormalizedWeights();
+  FACTORS.forEach(factor => { document.getElementById('weight-percent-' + factor.key).textContent = Number(weights[factor.key].toFixed(2)) + '%'; });
+  document.querySelectorAll('[data-scenario]').forEach(button => button.setAttribute('aria-pressed', 'false'));
+  document.getElementById('scenario-change').innerHTML = '<strong>Custom weights</strong>Scores and ranked priorities update immediately. Emergency escalation stays in place.';
+  document.getElementById('scenario-change').classList.remove('hidden');
+  renderPlan();
+});
+document.getElementById('btn-edit-allocations').addEventListener('click', event => {
+  const open = document.getElementById('allocation-editor').classList.toggle('hidden') === false;
+  event.currentTarget.setAttribute('aria-expanded', open);
+  event.currentTarget.textContent = open ? 'Close allocations' : 'Edit allocations';
+});
+function syncAllocationValidation() {
+  const invalid = [...document.querySelectorAll('[data-allocation]')].some(input => !input.validity.valid);
+  const error = document.getElementById('allocation-error');
+  error.textContent = invalid ? 'Enter 0–24 hours in quarter-hour increments. Invalid edits have not been applied.' : '';
+  error.classList.toggle('hidden', !invalid);
+}
+document.getElementById('allocation-editor').addEventListener('input', event => {
+  if (!event.target.dataset.allocation) return;
+  const input = event.target;
+  const valid = setAllocation(input.dataset.task, input.dataset.allocation, Number(input.value));
+  input.setCustomValidity(valid ? '' : 'Enter 0–24 hours in quarter-hour increments.');
+  input.setAttribute('aria-invalid', String(!valid));
+  syncAllocationValidation();
+  if (valid) renderPlan({ editors: false });
+});
+document.getElementById('triage-form').addEventListener('submit', event => { event.preventDefault(); runAnalyzer(); });
+['ai-client', 'ai-acv', 'ai-message', 'use-simulator'].forEach(id => document.getElementById(id).addEventListener('input', invalidateAnalysis));
+document.getElementById('analysis-result').addEventListener('change', event => {
+  if (event.target.id !== 'triage-review') return;
+  state.triageReviewed = event.target.checked;
+  document.getElementById('btn-add-to-list').disabled = !state.triageReviewed || state.addedSignals.has(state.parsedTask.fingerprint);
+});
+document.getElementById('btn-toggle-payload').addEventListener('click', event => {
+  const open = document.getElementById('raw-payload-box').classList.toggle('hidden') === false;
+  event.currentTarget.setAttribute('aria-expanded', open);
+});
+document.getElementById('msg-editor').addEventListener('input', event => {
+  MESSAGES[state.activeMsg].text = event.target.value;
+  state.msgChecked[state.activeMsg] = MESSAGES[state.activeMsg].checks.map(() => false);
+  document.querySelectorAll('#msg-checks input').forEach(checkbox => { checkbox.checked = false; });
+  syncDraftLock();
+});
+document.getElementById('msg-checks').addEventListener('change', event => {
+  if (!event.target.matches('[data-check]')) return;
+  state.msgChecked[state.activeMsg][Number(event.target.dataset.check)] = event.target.checked;
+  syncDraftLock();
+});
+document.getElementById('btn-copy-msg').addEventListener('click', async () => {
+  if (!canCopyDraft()) return;
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(MESSAGES[state.activeMsg].text);
+    showToast('Verified draft copied. Send manually after review.');
+  } catch {
+    const editor = document.getElementById('msg-editor');
+    editor.select();
+    if (document.execCommand('copy')) showToast('Verified draft copied. Send manually after review.');
+    else showToast('Copy failed. Select and copy the verified text manually.');
+  }
+});
+document.getElementById('btn-export-json').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(getExportPlan(), null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'tarang-cloud-portfolio-plan.json';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  showToast('Portfolio plan exported with weights and specialist allocations.');
+});
+document.querySelector('.navigation').setAttribute('role', 'tablist');
+renderScenarios(); renderSliders(); renderPlan(); renderMessageTab('sushma');
+window.addEventListener('DOMContentLoaded', refreshIcons);
 
-renderSliders();
-renderPlan();
-renderMessageTab('sushma');
-if (window.lucide) lucide.createIcons();
 </script>
 </body>
 </html>
